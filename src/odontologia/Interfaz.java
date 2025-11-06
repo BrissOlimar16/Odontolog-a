@@ -147,7 +147,6 @@ public class Interfaz extends javax.swing.JFrame {
         Reporte = new javax.swing.JDialog();
         jPanel18 = new javax.swing.JPanel();
         jLabel64 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
         Cliente = new javax.swing.JDialog();
         jPanel15 = new javax.swing.JPanel();
         jLabel54 = new javax.swing.JLabel();
@@ -1372,25 +1371,17 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(16, 16, 16))
         );
 
-        jButton7.setText("hola");
-
         javax.swing.GroupLayout ReporteLayout = new javax.swing.GroupLayout(Reporte.getContentPane());
         Reporte.getContentPane().setLayout(ReporteLayout);
         ReporteLayout.setHorizontalGroup(
             ReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(ReporteLayout.createSequentialGroup()
-                .addGap(203, 203, 203)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ReporteLayout.setVerticalGroup(
             ReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ReporteLayout.createSequentialGroup()
                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(161, 161, 161)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 136, Short.MAX_VALUE))
+                .addGap(0, 429, Short.MAX_VALUE))
         );
 
         Cliente.setTitle("Cliente");
@@ -2734,7 +2725,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
