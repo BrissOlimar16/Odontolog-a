@@ -1,5 +1,5 @@
 
-package odontologia;
+package Controlador;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
