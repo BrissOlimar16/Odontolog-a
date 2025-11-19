@@ -2639,7 +2639,7 @@ public class Interfaz extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-             UIManager.setLookAndFeel( "com.jtattoo.plaf.mint.MintLookAndFeel");
+            // UIManager.setLookAndFeel( "com.jtattoo.plaf.mint.MintLookAndFeel");
         //</editor-fold>
         }
         catch (Exception ex) {

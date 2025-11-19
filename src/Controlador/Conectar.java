@@ -10,8 +10,8 @@ public class Conectar {
     public static Connection server_con;
     public static String MENSAJE="";
     private String host="localhost:5432";
-    private String dbname="postgres";
-    private String passwd="david";
+    private String dbname="Odontología";
+    private String passwd="101621";
   
     public java.sql.Connection conectaServidor(){
         try {
@@ -70,4 +70,6 @@ public class Conectar {
             MENSAJE=e.getMessage();
         }
     }
+    
+    
 }
