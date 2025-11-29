@@ -10,8 +10,10 @@ public class Conectar {
     public static Connection server_con;
     public static String MENSAJE="";
     private String host="localhost:5432";
-    private String dbname="Odontología";
+    private String dbname="Odontologia";
     private String passwd="101621";
+    
+    String url="jdbc:postgresql://"+host+"/"+dbname;
   
     public java.sql.Connection conectaServidor(){
         try {
@@ -25,17 +27,6 @@ public class Conectar {
         return server_con;
     }
     
-    public void creaBD(String stm){
-        try {
-            MENSAJE="";
-            c2 = server_con;
-            Statement s = c2.createStatement();
-            s.executeUpdate(stm);
-            c2.close();
-        } catch (SQLException ex) {
-            MENSAJE=ex.getMessage();
-        }  
-    }
     public java.sql.Connection conectaBD(){
         String url="jdbc:postgresql://"+host+"/"+dbname;
         MENSAJE="";
@@ -71,5 +62,23 @@ public class Conectar {
         }
     }
     
-    
+    public static boolean ConectarAdmin(String usuario, String contraseña){
+        if(usuario == null || usuario.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese un usuario");
+            return false;
+        }
+        if(contraseña.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese su contraseña");
+            return false;
+        }
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Odontologia",usuario,contraseña)){
+            System.out.println("Conexión establecida correctamente");
+            return true;
+        }
+        catch(SQLException e){
+            System.out.println("Error al conectar: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

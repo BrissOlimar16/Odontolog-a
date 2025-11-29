@@ -1,5 +1,6 @@
 package Controlador;
 
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import odontologia.Interfaz;
@@ -52,5 +53,5 @@ public class Funciones extends Interfaz {
 //        }
 //    }
     
-    
+
 }

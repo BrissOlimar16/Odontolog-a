@@ -30,8 +30,8 @@ public class Interfaz extends javax.swing.JFrame {
      */
     public Interfaz() {
         initComponents();
-        NombreUsuario.setText("Ingresar Usuario");
-        NombreUsuario.setForeground(Color.GRAY);
+//        NombreUsuario.setText("Ingresar Usuario");
+//        NombreUsuario.setForeground(Color.GRAY);
         ContraseñaUsuario.setText("Contraseña");
         ContraseñaUsuario.setForeground(Color.GRAY);
         ContraseñaUsuario.setEchoChar((char) 0);
@@ -55,10 +55,10 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         IngresarApp = new javax.swing.JButton();
         cancelarIngreso = new javax.swing.JButton();
-        NombreUsuario = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
+        Usuario = new javax.swing.JComboBox<>();
         Caja = new javax.swing.JDialog();
         jPanel6 = new javax.swing.JPanel();
         MontoInicial = new javax.swing.JTextField();
@@ -195,21 +195,19 @@ public class Interfaz extends javax.swing.JFrame {
         cancelarIngreso.setText("Cancelar");
         cancelarIngreso.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102)));
 
-        NombreUsuario.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102)));
-        NombreUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                NombreUsuarioFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                NombreUsuarioFocusLost(evt);
-            }
-        });
-
         jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/odontologia.png"))); // NOI18N
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/avatar (1).png"))); // NOI18N
 
         jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/cerrar.png"))); // NOI18N
+
+        Usuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", " " }));
+        Usuario.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102)));
+        Usuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UsuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -237,14 +235,14 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGap(34, 34, 34)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ContraseñaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(NombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 34, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(cancelarIngreso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel11)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(Usuario, javax.swing.GroupLayout.Alignment.LEADING, 0, 120, Short.MAX_VALUE)
+                            .addComponent(ContraseñaUsuario, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -262,25 +260,24 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(jLabel12)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(NombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))
+                                .addGap(25, 25, 25)
+                                .addComponent(ContraseñaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel28)
-                            .addComponent(ContraseñaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))
-                        .addGap(26, 26, 26))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel28)
+                                    .addComponent(jLabel10))))
+                        .addGap(26, 26, 26)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cancelarIngreso)
@@ -1022,24 +1019,15 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void IngresarAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarAppActionPerformed
-        IngresasUsuario.setVisible(false);
-        Caja.setLocationRelativeTo(null);
-        Caja.setVisible(true);
+        String usuario = Usuario.getSelectedItem().toString();
+        String contraseña = new String(ContraseñaUsuario.getPassword());
+        boolean conectado = Controlador.Conectar.ConectarAdmin(usuario, contraseña);
+        if(conectado){
+            IngresasUsuario.setVisible(false);
+            Caja.setLocationRelativeTo(null);
+            Caja.setVisible(true);
+        }
     }//GEN-LAST:event_IngresarAppActionPerformed
-
-    private void NombreUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NombreUsuarioFocusGained
-        if (NombreUsuario.getText().equals("Ingresar Usuario")) {
-            NombreUsuario.setText("");
-            NombreUsuario.setForeground(Color.BLACK);
-        }
-    }//GEN-LAST:event_NombreUsuarioFocusGained
-
-    private void NombreUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NombreUsuarioFocusLost
-        if (NombreUsuario.getText().isEmpty()) {
-            NombreUsuario.setText("Ingresar Usuario");
-            NombreUsuario.setForeground(Color.GRAY);
-        }
-    }//GEN-LAST:event_NombreUsuarioFocusLost
 
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
         Pantalla.setVisible(false);        
@@ -1159,6 +1147,10 @@ public class Interfaz extends javax.swing.JFrame {
         BusquedaProducto.setVisible(false);
     }//GEN-LAST:event_btnCancelarPActionPerformed
 
+    private void UsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UsuarioActionPerformed
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1213,10 +1205,10 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton IngresarApp;
     private javax.swing.JDialog IngresasUsuario;
     private javax.swing.JTextField MontoInicial;
-    private javax.swing.JTextField NombreUsuario;
     public static javax.swing.JPanel Pantalla;
     private javax.swing.JDialog Reporte;
     private javax.swing.JDialog Salida_Dinero;
+    private javax.swing.JComboBox<String> Usuario;
     private javax.swing.JButton btnAceptarP;
     private javax.swing.JButton btnAgrgar;
     private javax.swing.JButton btnBorrar;
