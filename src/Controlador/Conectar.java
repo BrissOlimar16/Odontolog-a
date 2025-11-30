@@ -11,7 +11,8 @@ public class Conectar {
     public static String MENSAJE="";
     private String host="localhost:5432";
     private String dbname="Odontologia";
-    private String passwd="101621";
+    //private String passwd="101621";
+    private String passwd="david";
     
     String url="jdbc:postgresql://"+host+"/"+dbname;
   

@@ -24,10 +24,11 @@ public class Interfaz extends javax.swing.JFrame {
     Nuevo_Cliente nc;
     Tratamientos tm;
     
+    public static Object[] linea=new Object[8];
+    public static int id=0;
+    public static String query= "SELECT * FROM producto";
     Dimension tamanio = Toolkit.getDefaultToolkit().getScreenSize();
-    /**
-     * Creates new form Interfaz
-     */
+    
     public Interfaz() {
         initComponents();
 //        NombreUsuario.setText("Ingresar Usuario");
@@ -1019,14 +1020,14 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void IngresarAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarAppActionPerformed
-        String usuario = Usuario.getSelectedItem().toString();
-        String contraseña = new String(ContraseñaUsuario.getPassword());
-        boolean conectado = Controlador.Conectar.ConectarAdmin(usuario, contraseña);
-        if(conectado){
+//        String usuario = Usuario.getSelectedItem().toString();
+//        String contraseña = new String(ContraseñaUsuario.getPassword());
+//        boolean conectado = Controlador.Conectar.ConectarAdmin(usuario, contraseña);
+//        if(conectado){
             IngresasUsuario.setVisible(false);
             Caja.setLocationRelativeTo(null);
             Caja.setVisible(true);
-        }
+//        }
     }//GEN-LAST:event_IngresarAppActionPerformed
 
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed

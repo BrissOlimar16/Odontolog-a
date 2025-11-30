@@ -268,7 +268,7 @@ public class Productos extends javax.swing.JPanel {
                 //                cont.equals("Selecciona") || piez.equals("Selecciona")) {
                 //            JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
                 //        } else {
-                //insertar();
+                insertar();
                 //}
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -278,6 +278,22 @@ public class Productos extends javax.swing.JPanel {
         this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+        public void insertar(){
+        String insert="INSERT INTO producto(id_producto, nombre, descripcion, existencias)VALUES "
+                + "("+txtCodigoBarras.getText()+",'"+txtInsumo.getText()+"','"+txtDescripcion.getText()+"',"+134567+")";       
+        try{            
+            new Controlador.Conectar().ejecutar(insert);
+            System.out.println(insert);
+            JOptionPane.showMessageDialog(null, "Se inserto correctamente el producto");
+            //Productos.setVisible(false);
+            //limpiaTabla();
+            //consultarU(query);
+           // txtCodigoBarras1.setText("");
+            txtInsumo.setText("");
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
