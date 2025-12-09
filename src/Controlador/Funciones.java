@@ -16,7 +16,7 @@ public class Funciones extends Interfaz {
     }
     
     public static void consultarU(String query, DefaultTableModel t){
-        java.sql.ResultSet r= new Controlador.Conectar().consulta(query); 
+        java.sql.ResultSet r= new Controlador.Conectar().consultas(query); 
         int i=1;
         try{                      
             while(r.next())
@@ -44,7 +44,7 @@ public class Funciones extends Interfaz {
 //    public static void buscando(String buscar){
 //        limpiaTabla(t1);        
 //        if (!buscar.trim().isEmpty()) { 
-//            consultarU("SELECT * FROM inventario_dental WHERE "
+//            consultarU("SELECT * FROM PRODUCTO WHERE "
 //            + "insumo ILIKE '%" + buscar + "%' OR " // ILIKE para búsqueda sin distinción entre mayúsculas/minúsculas en PostgreSQL
 //            + "descripcion ILIKE '%" + buscar + "%' OR "
 //            + "CAST(no_item AS TEXT) LIKE '%" + buscar + "%' OR " // Convierte matrícula a texto para buscar coincidencias parciales

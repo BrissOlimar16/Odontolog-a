@@ -8,11 +8,12 @@ public class Conectar {
     public static  Connection c;   
     private static Connection c2;
     public static Connection server_con;
+    private static Connection u;
     public static String MENSAJE="";
     private String host="localhost:5432";
     private String dbname="Odontologia";
-    //private String passwd="101621";
-    private String passwd="david";
+    private String passwd="101621";
+    //private String passwd="david";
     
     String url="jdbc:postgresql://"+host+"/"+dbname;
   
@@ -40,15 +41,14 @@ public class Conectar {
         return c;
     }
     
-    public java.sql.ResultSet consulta(String consul){
+
+    public java.sql.ResultSet consultas(String consul){
         java.sql.ResultSet r=null;
-        MENSAJE="";
         try {
             java.sql.Statement stm= c.createStatement();
-            r = stm.executeQuery(consul);
-            System.out.println(consul);
+            r = stm.executeQuery(consul); 
         }catch(SQLException e){
-            MENSAJE=e.getMessage();
+           System.out.println(e.getMessage());
         }
         return r;
     }
@@ -63,7 +63,7 @@ public class Conectar {
         }
     }
     
-    public static boolean ConectarAdmin(String usuario, String contraseña){
+    public static boolean ConectarUsuario(String usuario, String contraseña){
         if(usuario == null || usuario.isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese un usuario");
             return false;
@@ -73,6 +73,7 @@ public class Conectar {
             return false;
         }
         try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Odontologia",usuario,contraseña)){
+            u=con;
             System.out.println("Conexión establecida correctamente");
             return true;
         }
@@ -81,5 +82,133 @@ public class Conectar {
             return false;
         }
     }
+    
+    public static int turnoBD(String turno, java.sql.Time hora, java.sql.Time hora1){
+    String sql = "INSERT INTO turno (nombreturno, horainicio, horafin) VALUES (?, ?, ?);";
+    try(PreparedStatement pstm = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        pstm.setString(1, turno);
+        pstm.setTime(2, hora);
+        pstm.setTime(3, hora1);
+        pstm.executeUpdate();
+        ResultSet rs = pstm.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getInt(1);  // se obtiene el id_turno generado
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al insertar turno: " + e.getMessage());
+    }
+    return -1; 
+}
+
+
+   public static void datosEmpleado(int matricula, String nombre, String apellidos, String telefono, String correo, int idTurno){
+    String sql = "INSERT INTO empleado (id_empleado, nombre, apellido, telefonoo, correo, id_turno) VALUES (?, ?, ?, ?, ?, ?);";
+    try(PreparedStatement pstm = c.prepareStatement(sql)) {
+        pstm.setInt(1, matricula);
+        pstm.setString(2, nombre);
+        pstm.setString(3, apellidos);
+        pstm.setString(4, telefono);
+        pstm.setString(5, correo);
+        pstm.setInt(6, idTurno);
+        pstm.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println("Error al insertar empleado: " + e.getMessage());
+    }
+}
+
+    
+    public static void CrearRol(String usuario, String contraseña){
+        String sql = "CREATE ROLE " + usuario + " WITH LOGIN PASSWORD '" + contraseña + "' CREATEROLE;";
+        try (PreparedStatement pstm = c.prepareStatement(sql)) {
+            pstm.executeUpdate();
+            System.out.println("Se creó el nuevo rol");
+        } 
+        catch (SQLException e) {
+            System.out.println("Error al crear el rol: " + e.getMessage());
+        }
+    }
+    
+    public static int obtenerTurnoDeEmpleado(int idEmpleado) {
+        String sql = "SELECT id_turno FROM empleado WHERE id_empleado = ?";
+        try (PreparedStatement pstm = c.prepareStatement(sql)) {
+            pstm.setInt(1, idEmpleado);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id_turno");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener turno: " + e.getMessage());
+        }
+        return -1; 
+    }
+    
+    public static void EliminarEmpleado(int id){
+        String sql="DELETE FROM empleado WHERE id_empleado=?;";
+        try(PreparedStatement pstm = c.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            int filas = pstm.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Empleado eliminado correctamente");
+            } else {
+                System.out.println("No existe un empleado con ese ID");
+            }
+        }
+        catch(SQLException e){
+            System.out.println("Error al eliminar los datos del empleado: " + e.getMessage());
+        }
+    }
+    
+    public static void eliminarTurno(int idTurno) {
+        String sql = "DELETE FROM turno WHERE id_turno = ?";
+        try (PreparedStatement pstm = c.prepareStatement(sql)) {
+            pstm.setInt(1, idTurno);
+            pstm.executeUpdate();
+            System.out.println("Turno eliminado");
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar turno: " + e.getMessage());
+        }
+    }
+    
+    public static void eliminarET(int idEmpleado) {
+    int idTurno = obtenerTurnoDeEmpleado(idEmpleado);
+    if (idTurno == -1) {
+        System.out.println("No se encontró turno para ese empleado");
+        return;
+    }
+    EliminarEmpleado(idEmpleado);
+    eliminarTurno(idTurno);
+}
+    
+   public static void EliminarRol(String usuario) {
+        String sql = "DROP ROLE \"" + usuario + "\";";
+        try (Statement stmt = c.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Rol eliminado correctamente");
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar el rol: " + e.getMessage());
+        }
+    }
+   
+        public static void EditarEmpleado(int id, String nombre, String apellido, String telefono, String correo) {
+            String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefono = ?,correo=?, id_turno = ? WHERE id_empleado = ?";
+            try (PreparedStatement pstm = c.prepareStatement(sql)) {
+                pstm.setString(1, nombre);
+                pstm.setString(2, apellido);
+                pstm.setString(3, telefono);
+                pstm.setString(4, correo);
+                pstm.setInt(6, id);
+                int filas = pstm.executeUpdate();
+                if (filas > 0) {
+                    System.out.println("Empleado actualizado correctamente");
+                } else {
+                    System.out.println("No se encontró el empleado con ese ID");
+                }
+            } 
+            catch (SQLException e) {
+                System.out.println("Error al actualizar el empleado: " + e.getMessage());
+            }
+        }
+        
 
 }
+

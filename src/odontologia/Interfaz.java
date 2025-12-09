@@ -23,7 +23,7 @@ public class Interfaz extends javax.swing.JFrame {
     Entrada_Dinero ed;
     Nuevo_Cliente nc;
     Tratamientos tm;
-    
+    Empleados Em;
     public static Object[] linea=new Object[8];
     public static int id=0;
     public static String query= "SELECT * FROM producto";
@@ -202,7 +202,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/cerrar.png"))); // NOI18N
 
-        Usuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", " " }));
+        Usuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", "cajero1", " " }));
         Usuario.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102)));
         Usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -916,6 +916,11 @@ public class Interfaz extends javax.swing.JFrame {
         }
 
         btnEmpleado.setText("Empleado");
+        btnEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmpleadoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PantallaLayout = new javax.swing.GroupLayout(Pantalla);
         Pantalla.setLayout(PantallaLayout);
@@ -1022,7 +1027,7 @@ public class Interfaz extends javax.swing.JFrame {
     private void IngresarAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarAppActionPerformed
 //        String usuario = Usuario.getSelectedItem().toString();
 //        String contraseña = new String(ContraseñaUsuario.getPassword());
-//        boolean conectado = Controlador.Conectar.ConectarAdmin(usuario, contraseña);
+//        boolean conectado = Controlador.Conectar.ConectarUsuario(usuario, contraseña);
 //        if(conectado){
             IngresasUsuario.setVisible(false);
             Caja.setLocationRelativeTo(null);
@@ -1152,6 +1157,14 @@ public class Interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_UsuarioActionPerformed
 
+    private void btnEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadoActionPerformed
+        Pantalla.setVisible(false);        
+        this.add(Em);
+        Em.setBounds(0, 0, this.getWidth(), this.getHeight());
+        Em.setVisible(true);
+        Controlador.Funciones.limpiaTabla(Empleados.modelo);
+    }//GEN-LAST:event_btnEmpleadoActionPerformed
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1195,6 +1208,7 @@ public class Interfaz extends javax.swing.JFrame {
         ed = new Entrada_Dinero();
         nc = new Nuevo_Cliente();
         tm = new Tratamientos();
+        Em= new Empleados();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
