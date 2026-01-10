@@ -73,6 +73,12 @@ public class Entrada_Dinero extends javax.swing.JPanel {
         lbCantidadEntrada.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lbCantidadEntrada.setText("Cantidad:");
 
+        txtCantidadEntrada.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadEntradaKeyTyped(evt);
+            }
+        });
+
         lbDesEntrada.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         lbDesEntrada.setText("Descripción:");
 
@@ -127,13 +133,20 @@ public class Entrada_Dinero extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarEntradaActionPerformed
-        // TODO add your handling code here:
+        Interfaz.Pantalla.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnCancelarEntradaActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Interfaz.Pantalla.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtCantidadEntradaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyTyped
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) 
+            evt.consume();
+    }//GEN-LAST:event_txtCantidadEntradaKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

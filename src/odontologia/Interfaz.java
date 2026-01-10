@@ -1,9 +1,13 @@
 package odontologia;
 
+import Controlador.Funciones;
+import static Controlador.Funciones.limpiaTabla;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,9 +29,21 @@ public class Interfaz extends javax.swing.JFrame {
     Tratamientos tm;
     Empleados Em;
     public static Object[] linea=new Object[8];
-    public static int id=0;
-    public static String query= "SELECT * FROM producto";
+    public static String id="", codi="";
+    //public static String query= "SELECT * FROM producto";
+    public static String query= "SELECT p.Id_Producto, p.Nombre, p.Descripcion, p.Costo, p.Existencias, pp.tipoCliente, pp.Precio " +
+    "FROM producto p JOIN precioproducto pp ON p.Id_Producto = pp.Id_Producto WHERE pp.tipoCliente = 'externo' ORDER BY p.Id_Producto, pp.Precio";
+    
+   String query2 = "SELECT p.id_producto, p.nombre, p.descripcion, p.costo, p.existencias, " +
+                "pp_ext.precio AS precio_externo, pp_int.precio AS precio_interno " +
+                "FROM producto p " +
+                "LEFT JOIN precioproducto pp_ext ON p.id_producto = pp_ext.id_producto AND pp_ext.tipocliente = 'externo' " +
+                "LEFT JOIN precioproducto pp_int ON p.id_producto = pp_int.id_producto AND pp_int.tipocliente = 'interno' " +
+                "WHERE CAST(p.id_producto AS TEXT) = '" + codi + "'";
+    
     Dimension tamanio = Toolkit.getDefaultToolkit().getScreenSize();
+    
+    public String buscar="";
     
     public Interfaz() {
         initComponents();
@@ -37,7 +53,8 @@ public class Interfaz extends javax.swing.JFrame {
         ContraseñaUsuario.setForeground(Color.GRAY);
         ContraseñaUsuario.setEchoChar((char) 0);
         setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        setResizable(false);      
+        setResizable(false);
+        t1 = (DefaultTableModel)tablaBusqueda.getModel();
         inicializarPanels();
     }
 
@@ -418,7 +435,7 @@ public class Interfaz extends javax.swing.JFrame {
             ReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ReporteLayout.createSequentialGroup()
                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 429, Short.MAX_VALUE))
+                .addGap(0, 401, Short.MAX_VALUE))
         );
 
         Entrada_Dinero.setSize(new java.awt.Dimension(350, 250));
@@ -606,6 +623,11 @@ public class Interfaz extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tablaBusqueda);
 
         btnModificarP.setText("Modificar Producto");
+        btnModificarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarPActionPerformed(evt);
+            }
+        });
 
         btnEliminarP.setText("Elimanar Producto");
         btnEliminarP.addActionListener(new java.awt.event.ActionListener() {
@@ -659,14 +681,14 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(btnAceptarP)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelarP)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
             .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(BusquedaProductoLayout.createSequentialGroup()
                 .addGroup(BusquedaProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(BusquedaProductoLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2))
                     .addGroup(BusquedaProductoLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(txtBusquedaP, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1043,6 +1065,7 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEntradasActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        limpiaTabla(t1);
         BusquedaProducto.setLocation(900, 150);
         BusquedaProducto.setVisible(true);
         //Funciones.limpiaTabla(t1);
@@ -1053,8 +1076,11 @@ public class Interfaz extends javax.swing.JFrame {
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
         Pantalla.setVisible(false);        
         this.add(nc);
-        nc.setBounds(0, 0, 466, 376);
+        nc.setBounds(0, 0, this.getWidth(), this.getHeight());
         nc.setVisible(true);
+        nc.jpExtras.setVisible(false);
+        Funciones.limpiaTabla(Nuevo_Cliente.t2);
+        Funciones.consultarC(Nuevo_Cliente.quer,Nuevo_Cliente.t2);
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnSalidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidasActionPerformed
@@ -1077,8 +1103,9 @@ public class Interfaz extends javax.swing.JFrame {
     private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
         Pantalla.setVisible(false);        
         this.add(bi);
-        bi.setBounds(0, 0, 506, 580);
+        bi.setBounds(0, 0, this.getWidth(), this.getHeight());
         bi.setVisible(true);
+        //bi.jPanel1.setVisible(false);
     }//GEN-LAST:event_btnInventarioActionPerformed
 
     private void ContraseñaUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ContraseñaUsuarioFocusGained
@@ -1114,37 +1141,39 @@ public class Interfaz extends javax.swing.JFrame {
     private void btnServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnServiciosActionPerformed
         Pantalla.setVisible(false);
         this.add(tm);
-        tm.setBounds(0, 0, 770, 670);
+        tm.setBounds(0, 0, this.getWidth(), this.getHeight());
         tm.setVisible(true);
     }//GEN-LAST:event_btnServiciosActionPerformed
 
     private void txtBusquedaPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaPKeyReleased
-//        buscar = txtBusquedaP.getText();
-//        Funciones.buscando(buscar);
+        buscar = txtBusquedaP.getText();
+        Controlador.Funciones.buscando(buscar);
     }//GEN-LAST:event_txtBusquedaPKeyReleased
 
     private void btnEliminarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPActionPerformed
-//        if(seleccionado()){
-//            JLabel x = new JLabel("Confirma que desea eliminar el usuario "+ tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),1));
-//            Object[] x1={"",x};
-//            int si = JOptionPane.showConfirmDialog(null,x1,"Ejemplo",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-//            if(si==JOptionPane.OK_OPTION){
-//                try{
-//                    String c="delete from inventario_dental where no_item="+ tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),0)+"";
-//                    new Controlador.Conectar().ejecutar(c);
-//                    System.out.println(c);
-//                    Funciones.buscando(buscar);
-//                    if (!Controlador.Conectar.MENSAJE.equals("")){
-//                        JOptionPane.showMessageDialog(null, "Error: El producto "+ tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),1)+" no se pudo eliminar!");
-//                    }
-//                }catch(Exception ex) {
-//                    System.out.println(ex.getMessage());
-//                }
-//            }
-//        }else{
-//            JOptionPane.showMessageDialog(null, "Seleccione un producto en la tabla");
-//            Funciones.buscando(buscar);
-//        }
+        if(seleccionado()){
+            JLabel x = new JLabel("Confirma que desea eliminar el producto "+ tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),1));
+            Object[] x1={"",x};
+            int si = JOptionPane.showConfirmDialog(null,x1,"Alerta",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+            if(si==JOptionPane.OK_OPTION){
+                try{
+                    String c="DELETE FROM precioproducto WHERE id_producto = '"+ tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),0)+"'"+
+                            "; DELETE FROM producto WHERE id_producto = '"+ tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),0) +"'";
+                    new Controlador.Conectar().ejecutar(c);
+                    System.out.println(c);
+                    Funciones.buscando(buscar);
+                    if (!Controlador.Conectar.MENSAJE.equals("")){
+                        JOptionPane.showMessageDialog(null, "Error: El producto "+ tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),1)+" no se pudo eliminar!");
+                    }
+                }catch(Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+                txtBusquedaP.setText("");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un producto en la tabla");
+            Funciones.buscando(buscar);
+        }
     }//GEN-LAST:event_btnEliminarPActionPerformed
 
     private void btnCancelarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPActionPerformed
@@ -1164,6 +1193,25 @@ public class Interfaz extends javax.swing.JFrame {
         Em.setVisible(true);
         Controlador.Funciones.limpiaTabla(Empleados.modelo);
     }//GEN-LAST:event_btnEmpleadoActionPerformed
+
+    private void btnModificarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPActionPerformed
+        if(seleccionado()){
+            Pantalla.setVisible(false);        
+            this.add(p);
+            p.setBounds(0, 0, this.getWidth(), this.getHeight());
+            p.setVisible(true);
+            p.lbTitulo6.setText("MODIFICAR PRODUCTO");
+            txtBusquedaP.setText("");
+            BusquedaProducto.setVisible(false);
+            codi= tablaBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),0).toString().trim();
+            System.out.println(codi);
+           Productos ventanaProd = new Productos();
+           ventanaProd.traerProducto(query2);            
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un producto en la tabla");
+            Funciones.buscando(buscar);
+        }
+    }//GEN-LAST:event_btnModificarPActionPerformed
 
     
     public static void main(String args[]) {
@@ -1211,6 +1259,12 @@ public class Interfaz extends javax.swing.JFrame {
         Em= new Empleados();
     }
 
+    public boolean seleccionado(){
+        if (tablaBusqueda.getSelectedRow()!=-1){
+           return true;
+        }
+        else return false;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog BusquedaProducto;
     private javax.swing.JDialog Caja;
@@ -1291,7 +1345,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel lbTitulo2;
     private javax.swing.JLabel mensajeDinero;
     private javax.swing.JButton registroDinero;
-    private javax.swing.JTable tablaBusqueda;
+    public javax.swing.JTable tablaBusqueda;
     private javax.swing.JTable tablaVenta;
     private javax.swing.JTextField txtBusquedaP;
     private javax.swing.JTextField txtCantidadEntrada;

@@ -12,10 +12,8 @@ import static odontologia.Interfaz.*;
  */
 public class BusquedaInventario extends javax.swing.JPanel {
     public java.sql.Connection cp = null;
-    /**
-     * Creates new form BusquedaInventario
-     */
-    public BusquedaInventario() {
+    
+    public BusquedaInventario() {       
         initComponents();     
         cp = new Controlador.Conectar().conectaBD();
         t = (DefaultTableModel)tablaInventario.getModel();
@@ -36,11 +34,9 @@ public class BusquedaInventario extends javax.swing.JPanel {
         jLabel69 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         lbTitulo = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lbDescripcion1 = new javax.swing.JLabel();
         lbDisponibles1 = new javax.swing.JLabel();
-        btnGuardar1 = new javax.swing.JButton();
         lbTexto1 = new javax.swing.JLabel();
         lbPrecioCosto1 = new javax.swing.JLabel();
         lbMinimo1 = new javax.swing.JLabel();
@@ -54,11 +50,16 @@ public class BusquedaInventario extends javax.swing.JPanel {
         txtMinimo1 = new javax.swing.JTextField();
         txtMaximo1 = new javax.swing.JTextField();
         jSpinner2 = new javax.swing.JSpinner();
-        btnCancelar1 = new javax.swing.JButton();
         lbPrecioVenta1 = new javax.swing.JLabel();
         txtCodigoBarras1 = new javax.swing.JTextField();
         lbCodigo_Barras1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnbuscar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnGuardar1 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
 
         Inventario.setTitle("INVENTARIO");
 
@@ -158,7 +159,7 @@ public class BusquedaInventario extends javax.swing.JPanel {
         lbTitulo.setBackground(new java.awt.Color(255, 255, 255));
         lbTitulo.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lbTitulo.setForeground(new java.awt.Color(255, 255, 255));
-        lbTitulo.setText("NUEVO PRODUCTO ");
+        lbTitulo.setText("MÁS PRODUCTO ");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -177,14 +178,6 @@ public class BusquedaInventario extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jButton2.setText("Reporte de Inventario");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbDescripcion1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
@@ -195,15 +188,11 @@ public class BusquedaInventario extends javax.swing.JPanel {
         lbDisponibles1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbDisponibles1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbDisponibles1.setText("Hay");
-        jPanel1.add(lbDisponibles1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 133, -1));
-
-        btnGuardar1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        btnGuardar1.setText("Guardar Producto");
-        jPanel1.add(btnGuardar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 370, -1, -1));
+        jPanel1.add(lbDisponibles1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 70, -1));
 
         lbTexto1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbTexto1.setText("en este momento.");
-        jPanel1.add(lbTexto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, 117, -1));
+        jPanel1.add(lbTexto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 270, 117, -1));
 
         lbPrecioCosto1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbPrecioCosto1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -213,7 +202,7 @@ public class BusquedaInventario extends javax.swing.JPanel {
         lbMinimo1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbMinimo1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbMinimo1.setText("Mínimo");
-        jPanel1.add(lbMinimo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 82, -1));
+        jPanel1.add(lbMinimo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 80, -1));
 
         lbGanancia1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbGanancia1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -242,15 +231,6 @@ public class BusquedaInventario extends javax.swing.JPanel {
         jPanel1.add(txtMaximo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 71, -1));
         jPanel1.add(jSpinner2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 118, -1));
 
-        btnCancelar1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        btnCancelar1.setText("Cancelar");
-        btnCancelar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelar1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnCancelar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 370, -1, -1));
-
         lbPrecioVenta1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbPrecioVenta1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbPrecioVenta1.setText("Precio Venta");
@@ -263,6 +243,58 @@ public class BusquedaInventario extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 18)); // NOI18N
         jLabel2.setText("AGREGAR INVENTARIO");
 
+        btnbuscar.setText("Buscar");
+        btnbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuscarActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+
+        jButton2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        jButton2.setText("Reporte de Inventario");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnGuardar1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        btnGuardar1.setText("Guardar Producto");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnGuardar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(358, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -271,35 +303,46 @@ public class BusquedaInventario extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(43, 43, 43)
-                            .addComponent(lbCodigo_Barras1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCodigoBarras1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(188, 188, 188)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                        .addGap(83, 83, 83)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(lbCodigo_Barras1)
+                                .addGap(26, 26, 26)
+                                .addComponent(txtCodigoBarras1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbCodigo_Barras1)
-                    .addComponent(txtCodigoBarras1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbCodigo_Barras1)
+                            .addComponent(txtCodigoBarras1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnbuscar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -325,17 +368,33 @@ public class BusquedaInventario extends javax.swing.JPanel {
 //        Pantalla.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void btnCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1ActionPerformed
+    private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
+    String buscar = txtCodigoBarras1.getText().trim();    
+            try {
+                int n = Integer.parseInt(buscar);
+                Funciones.buscando(n+"");
+//                txtBusquedaP.setText(n+"");
+//                txtCodigo.setText("");
+//                BusquedaProducto.setLocation(900, 150);
+//                BusquedaProducto.setVisible(true);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
+                txtCodigoBarras1.setText("");
+            } 
+    }//GEN-LAST:event_btnbuscarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         Interfaz.Pantalla.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_btnCancelar1ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Inventario;
-    private javax.swing.JButton btnCancelar1;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar1;
+    private javax.swing.JButton btnbuscar;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel52;
@@ -343,10 +402,12 @@ public class BusquedaInventario extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
-    private javax.swing.JPanel jPanel1;
+    public javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JLabel lbCodigo_Barras1;
     private javax.swing.JLabel lbDescripcion1;
