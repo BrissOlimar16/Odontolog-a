@@ -1049,12 +1049,33 @@ public class Interfaz extends javax.swing.JFrame {
     private void IngresarAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarAppActionPerformed
 //        String usuario = Usuario.getSelectedItem().toString();
 //        String contraseña = new String(ContraseñaUsuario.getPassword());
-//        boolean conectado = Controlador.Conectar.ConectarUsuario(usuario, contraseña);
-//        if(conectado){
-            IngresasUsuario.setVisible(false);
-            Caja.setLocationRelativeTo(null);
-            Caja.setVisible(true);
+//        string conectado = Controlador.Conectar.validarUsuario(usuario, contraseña);
+//       if(conectado){
+//            IngresasUsuario.setVisible(false);
+//            Caja.setLocationRelativeTo(null);
+//            Caja.setVisible(true);
 //        }
+
+        Controlador.Conectar con = new Controlador.Conectar();
+        String usuario = Usuario.getSelectedItem().toString();
+        String contraseña = new String(ContraseñaUsuario.getPassword());
+        String rolEncontrado = con.validarUsuario(usuario, contraseña);
+
+        if (rolEncontrado != null) {
+            if (rolEncontrado.equals("Administrador")) {
+                // Abrir ventana Admin con todos los permisos
+                IngresasUsuario.setVisible(false);
+                Caja.setLocationRelativeTo(null);
+                Caja.setVisible(true);
+            } else {
+                // Abrir ventana Cajero y ocultar botones de "Eliminar" o "Usuarios"
+                IngresasUsuario.setVisible(false);
+                Caja.setLocationRelativeTo(null);
+                Caja.setVisible(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+        }
     }//GEN-LAST:event_IngresarAppActionPerformed
 
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed

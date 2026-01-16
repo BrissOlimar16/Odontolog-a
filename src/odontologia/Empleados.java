@@ -759,8 +759,9 @@ public class Empleados extends javax.swing.JPanel {
                JOptionPane.showMessageDialog(this, "Error al crear turno");
                return;
            }
-           String matricula = matriculaEmpleado3.getText();
-           int id = Integer.parseInt(matricula);
+//           String matricula = matriculaEmpleado3.getText();
+//           int id = Integer.parseInt(matricula);
+           int id=Integer.parseInt(matriculaEmpleado3.getText());
            String nombre = NombreEmpleado3.getText();
            String apellidos = apellidosEmpleados3.getText();
            String telefono = telefonoE.getText();
@@ -768,17 +769,21 @@ public class Empleados extends javax.swing.JPanel {
            Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
            String Usuario = usuario.getSelectedItem().toString();
            String contraseña = contraseñaE2.getText();
-           Controlador.Conectar.CrearRol(Usuario.replace(" ", ""), contraseña);
-           JOptionPane.showMessageDialog(this,"se guardo correctamente");
-           matriculaEmpleado3.setText("");
-           NombreEmpleado3.setText("");
-           apellidosEmpleados3.setText("");
-           telefonoE.setText("");
-           correoE.setText("");
-           contraseñaE2.setText("");
+           //Controlador.Conectar.CrearRol(Usuario.replace(" ", ""), contraseña);
+           Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
+           String nombreUsuario = nombre.toLowerCase().trim() + id; 
+        
+           //String contraseña = contraseñaE2.getText();
+           
+           Controlador.Conectar.CrearRol(nombreUsuario, contraseña, Usuario, id);
+           JOptionPane.showMessageDialog(this, "¡Éxito! Empleado guardado.\nUsuario: " + nombreUsuario + "\nRol: " + Usuario);
+           limpiarCampos();
            Registra.setVisible(false);
+           
+           JOptionPane.showMessageDialog(this,"se guardo correctamente");
     }//GEN-LAST:event_GuardarActionPerformed
 
+    
     private void cancelar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelar5ActionPerformed
         Eliminar.setVisible(false);
     }//GEN-LAST:event_cancelar5ActionPerformed
@@ -858,7 +863,14 @@ public class Empleados extends javax.swing.JPanel {
          }  
     }
     
-    
+    public void limpiarCampos() {
+        matriculaEmpleado3.setText("");
+        NombreEmpleado3.setText("");
+        apellidosEmpleados3.setText("");
+        telefonoE.setText("");
+        correoE.setText("");
+        contraseñaE2.setText("");
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
