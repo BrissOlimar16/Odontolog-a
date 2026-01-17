@@ -110,20 +110,51 @@ public class Conectar {
     
     
     public static int turnoBD(String turno, java.sql.Time hora, java.sql.Time hora1){
-    String sql = "INSERT INTO turno (nombreturno, horainicio, horafin) VALUES (?, ?, ?);";
-    try(PreparedStatement pstm = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-        pstm.setString(1, turno);
-        pstm.setTime(2, hora);
-        pstm.setTime(3, hora1);
-        pstm.executeUpdate();
-        ResultSet rs = pstm.getGeneratedKeys();
-        if (rs.next()) {
-            return rs.getInt(1);  // se obtiene el id_turno generado
+//    String sql = "INSERT INTO turno (nombreturno, horainicio, horafin) VALUES (?, ?, ?);";
+//    try(PreparedStatement pstm = c.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+//        pstm.setString(1, turno);
+//        pstm.setTime(2, hora);
+//        pstm.setTime(3, hora1);
+//        pstm.executeUpdate();
+//        ResultSet rs = pstm.getGeneratedKeys();
+//        if (rs.next()) {
+//            return rs.getInt(1);  // se obtiene el id_turno generado
+//        }
+//    } catch (SQLException e) {
+//        System.out.println("Error al insertar turno: " + e.getMessage());
+//    }
+//    return -1; 
+
+
+        try {
+            if (c == null || c.isClosed()) {
+                // Aquí intenta conectar si la conexión se perdió o no existe
+                new Conectar().conectaBD(); 
+            }
+        } catch (SQLException e) {
+            System.out.println("Error de conexión previa: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al insertar turno: " + e.getMessage());
-    }
-    return -1; 
+
+        String sql = "INSERT INTO turno (nombreturno, horainicio, horafin) VALUES (?, ?, ?);";
+
+        // El RETURN_GENERATED_KEYS es para obtener el ID que Render asigne automáticamente
+        try (PreparedStatement pstm = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstm.setString(1, turno);
+            pstm.setTime(2, hora);
+            pstm.setTime(3, hora1);
+
+            pstm.executeUpdate();
+
+            ResultSet rs = pstm.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1); // Retorna el ID generado por la secuencia
+            }
+        } catch (SQLException e) {
+            // ¡ESTO ES LO MÁS IMPORTANTE! Revisa la consola de NetBeans para ver este mensaje:
+            System.out.println("ERROR REAL EN TURNO_BD: " + e.getMessage());
+            e.printStackTrace(); 
+        }
+        return -1;
 }
 
 
@@ -248,6 +279,53 @@ public class Conectar {
     }
     
     
+    public static void eliminarEmpleadoCompleto(int idEmpleado) {
+        try {
+            // Asegurar conexión
+            if (c == null || c.isClosed()) new Conectar().conectaBD();
+
+            // 1. Obtener el ID del turno antes de borrar al empleado
+            int idTurno = obtenerTurnoDeEmpleado(idEmpleado);
+
+            // 2. Eliminar de la tabla USUARIOS (el hijo más lejano)
+            String sqlUsuario = "DELETE FROM usuarios WHERE id_empleado = ?";
+            try (PreparedStatement pstU = c.prepareStatement(sqlUsuario)) {
+                pstU.setInt(1, idEmpleado);
+                pstU.executeUpdate();
+                System.out.println("Usuario de acceso eliminado.");
+            }
+
+            // 3. Eliminar de la tabla EMPLEADO
+            String sqlEmpleado = "DELETE FROM empleado WHERE id_empleado = ?";
+            try (PreparedStatement pstE = c.prepareStatement(sqlEmpleado)) {
+                pstE.setInt(1, idEmpleado);
+                pstE.executeUpdate();
+                System.out.println("Datos del empleado eliminados.");
+            }
+
+            // 4. Eliminar de la tabla TURNO (el padre original)
+            if (idTurno != -1) {
+                String sqlTurno = "DELETE FROM turno WHERE id_turno = ?";
+                try (PreparedStatement pstT = c.prepareStatement(sqlTurno)) {
+                    pstT.setInt(1, idTurno);
+                    pstT.executeUpdate();
+                    System.out.println("Turno del empleado eliminado.");
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Empleado y todos sus registros eliminados con éxito.");
+
+        } catch (SQLException e) {
+            System.out.println("Error crítico al eliminar: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar: " + e.getMessage());
+        }
+    }
+    
+    
+    
+    
+    
+    
    
         public static void EditarEmpleado(int id, String nombre, String apellido, String telefono, String correo) {
             String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefono = ?,correo=?, id_turno = ? WHERE id_empleado = ?";
@@ -268,6 +346,9 @@ public class Conectar {
                 System.out.println("Error al actualizar el empleado: " + e.getMessage());
             }
         }
+        
+        
+        
         
 
 }

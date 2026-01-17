@@ -747,40 +747,93 @@ public class Empleados extends javax.swing.JPanel {
     }//GEN-LAST:event_EditarEActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
-           String turno = "";
-           if (matutino.isSelected()) turno = matutino.getText();
-           else if (vespertino.isSelected()) turno = vespertino.getText();
-           Date date = (Date) HoraInicio.getValue();
-           java.sql.Time hora = new java.sql.Time(date.getTime());
-           Date date1 = (Date) HoraFin.getValue();
-           java.sql.Time hora1 = new java.sql.Time(date1.getTime());
-           int idTurno = Controlador.Conectar.turnoBD(turno, hora, hora1);
-           if (idTurno == -1) {
-               JOptionPane.showMessageDialog(this, "Error al crear turno");
-               return;
-           }
-//           String matricula = matriculaEmpleado3.getText();
-//           int id = Integer.parseInt(matricula);
-           int id=Integer.parseInt(matriculaEmpleado3.getText());
-           String nombre = NombreEmpleado3.getText();
-           String apellidos = apellidosEmpleados3.getText();
-           String telefono = telefonoE.getText();
-           String correo = correoE.getText();
-           Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
-           String Usuario = usuario.getSelectedItem().toString();
-           String contraseña = contraseñaE2.getText();
-           //Controlador.Conectar.CrearRol(Usuario.replace(" ", ""), contraseña);
-           Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
-           String nombreUsuario = nombre.toLowerCase().trim() + id; 
+//           String turno = "";
+//           if (matutino.isSelected()) turno = matutino.getText();
+//           else if (vespertino.isSelected()) turno = vespertino.getText();
+//           Date date = (Date) HoraInicio.getValue();
+//           java.sql.Time hora = new java.sql.Time(date.getTime());
+//           Date date1 = (Date) HoraFin.getValue();
+//           java.sql.Time hora1 = new java.sql.Time(date1.getTime());
+//           int idTurno = Controlador.Conectar.turnoBD(turno, hora, hora1);
+//           if (idTurno == -1) {
+//               JOptionPane.showMessageDialog(this, "Error al crear turno");
+//               return;
+//           }
+////           String matricula = matriculaEmpleado3.getText();
+////           int id = Integer.parseInt(matricula);
+//           int id=Integer.parseInt(matriculaEmpleado3.getText());
+//           String nombre = NombreEmpleado3.getText();
+//           String apellidos = apellidosEmpleados3.getText();
+//           String telefono = telefonoE.getText();
+//           String correo = correoE.getText();
+//           Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
+//           String Usuario = usuario.getSelectedItem().toString();
+//           String contraseña = contraseñaE2.getText();
+//           //Controlador.Conectar.CrearRol(Usuario.replace(" ", ""), contraseña);
+//           Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
+//           String nombreUsuario = nombre.toLowerCase().trim() + id; 
+//        
+//           //String contraseña = contraseñaE2.getText();
+//           
+//           Controlador.Conectar.CrearRol(nombreUsuario, contraseña, Usuario, id);
+//           JOptionPane.showMessageDialog(this, "¡Éxito! Empleado guardado.\nUsuario: " + nombreUsuario + "\nRol: " + Usuario);
+//           limpiarCampos();
+//           Registra.setVisible(false);
+//           
+//           JOptionPane.showMessageDialog(this,"se guardo correctamente");
+
+        try {
+        // 1. TURNO
+        String turno = matutino.isSelected() ? "Matutino" : "Vespertino";
+        java.sql.Time hora = new java.sql.Time(((Date) HoraInicio.getValue()).getTime());
+        java.sql.Time hora1 = new java.sql.Time(((Date) HoraFin.getValue()).getTime());
         
-           //String contraseña = contraseñaE2.getText();
-           
-           Controlador.Conectar.CrearRol(nombreUsuario, contraseña, Usuario, id);
-           JOptionPane.showMessageDialog(this, "¡Éxito! Empleado guardado.\nUsuario: " + nombreUsuario + "\nRol: " + Usuario);
-           limpiarCampos();
-           Registra.setVisible(false);
-           
-           JOptionPane.showMessageDialog(this,"se guardo correctamente");
+        int idTurno = Controlador.Conectar.turnoBD(turno, hora, hora1);
+        
+        if (idTurno == -1) {
+            JOptionPane.showMessageDialog(this, "Error al crear turno (revisa la consola)");
+            return;
+        }
+
+        // 2. EMPLEADO
+        int id = Integer.parseInt(matriculaEmpleado3.getText());
+        String nombre = NombreEmpleado3.getText();
+        String apellidos = apellidosEmpleados3.getText();
+        String telefono = telefonoE.getText();
+        String correo = correoE.getText();
+
+        // LLAMAR SOLO UNA VEZ A datosEmpleado
+        Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
+
+        // 3. USUARIO Y ROL
+
+            // 1. Obtener el rol exactamente como está en el combo ("Cajero 1", "Cajero 2", etc.)
+        String rolSeleccionado = usuario.getSelectedItem().toString(); 
+
+        // 2. Obtener los demás datos
+        String nombreUsuario = NombreEmpleado3.getText().toLowerCase().trim() + id; 
+        String contraseña = contraseñaE2.getText();
+
+        // 3. Mandarlo a la tabla sin filtros
+        Controlador.Conectar.CrearRol(nombreUsuario, contraseña, rolSeleccionado, id);
+            
+        // 4. ÉXITO
+        JOptionPane.showMessageDialog(this, "¡Guardado con éxito!\nUsuario: " + nombreUsuario);
+        
+        // Limpiar y cerrar
+        limpiarCampos();
+        Registra.setVisible(false);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La matrícula debe ser numérica.");
+        } catch (Exception e) {
+            // Si sale el error de "duplicate key", avisa al usuario
+            if(e.getMessage().contains("duplicate key")) {
+                JOptionPane.showMessageDialog(this, "Esa matrícula ya está registrada.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_GuardarActionPerformed
 
     
@@ -789,15 +842,23 @@ public class Empleados extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelar5ActionPerformed
 
     private void EliminarEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarEMActionPerformed
-        String matricula = matriculaEmpleado4.getText();
-        int id = Integer.parseInt(matricula);
-        String Usuario = usuario1.getSelectedItem().toString();
-        Controlador.Conectar.eliminarET(id);
-        Controlador.Conectar.EliminarRol(Usuario.replace(" ",""));
-        JOptionPane.showMessageDialog(this,"se elimino correctamente");
-        matriculaEmpleado4.setText("");
-        Eliminar.setVisible(false);
-        Controlador.Funciones.limpiaTabla(modelo);
+//        String matricula = matriculaEmpleado4.getText();
+//        int id = Integer.parseInt(matricula);
+//        String Usuario = usuario1.getSelectedItem().toString();
+//        Controlador.Conectar.eliminarET(id);
+//        Controlador.Conectar.EliminarRol(Usuario.replace(" ",""));
+//        JOptionPane.showMessageDialog(this,"se elimino correctamente");
+//        matriculaEmpleado4.setText("");
+//        Eliminar.setVisible(false);
+//        Controlador.Funciones.limpiaTabla(modelo);
+
+        int id = Integer.parseInt(matriculaEmpleado4.getText());
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estás seguro de eliminar al empleado y su acceso?");
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            Controlador.Conectar.eliminarEmpleadoCompleto(id);
+            // Aquí podrías actualizar tu JTable para que ya no aparezca
+        }
     }//GEN-LAST:event_EliminarEMActionPerformed
 
     private void matriculaEmpleado4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matriculaEmpleado4ActionPerformed
