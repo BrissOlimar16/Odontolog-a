@@ -1,8 +1,14 @@
 package Controlador;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.sql.Time;
+import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import odontologia.Interfaz;
 import static odontologia.Nuevo_Cliente.t2;
@@ -108,4 +114,153 @@ public class Funciones extends Interfaz {
             consultarC(query, t2);
         }
     }
+    
+    public static void registrarEmpleado(boolean matutinoSeleccionado,
+        Date horaInicio,
+        Date horaFin,
+        int idEmpleado,
+        String nombre,
+        String apellidos,
+        String telefono,
+        String correo,
+        String rolSeleccionado,
+        String contraseña,
+        Component jdialog ){
+         
+        try {
+            // 1. TURNO
+            String turno = matutinoSeleccionado ? "Matutino" : "Vespertino";
+            Time hora = new Time(horaInicio.getTime());
+            Time hora1 = new Time(horaFin.getTime());
+
+            int idTurno = Controlador.Conectar.turnoBD(turno, hora, hora1);
+
+            if (idTurno == -1) {
+                JOptionPane.showMessageDialog(jdialog, "Error al crear turno");
+                return;
+            }
+
+            // 2. EMPLEADO
+            Controlador.Conectar.datosEmpleado(
+                    idEmpleado,
+                    nombre,
+                    apellidos,
+                    telefono,
+                    correo,
+                    idTurno
+            );
+
+            // 3. USUARIO Y ROL
+            String nombreUsuario = nombre.toLowerCase().trim() + idEmpleado;
+
+            Controlador.Conectar.CrearRol(
+                    nombreUsuario,
+                    contraseña,
+                    rolSeleccionado,
+                    idEmpleado
+            );
+
+            JOptionPane.showMessageDialog(
+                    jdialog,
+                    "¡Guardado con éxito!\nUsuario: " + nombreUsuario
+            );
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(jdialog, "La matrícula debe ser numérica.");
+        } catch (Exception e) {
+            if (e.getMessage().contains("duplicate key")) {
+                JOptionPane.showMessageDialog(jdialog, "Esa matrícula ya está registrada.");
+            } else {
+                JOptionPane.showMessageDialog(jdialog, "Error inesperado: " + e.getMessage());
+            }
+        }
+    
+    } 
+    
+    
+    public static void eliminarEmpleado(String Matricula, Component jdialog){
+        int id = Integer.parseInt(Matricula);
+        int respuesta = JOptionPane.showConfirmDialog(jdialog, "¿Estás seguro de eliminar al empleado y su acceso?");
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            Controlador.Conectar.eliminarEmpleadoCompleto(id);
+            // Aquí podrías actualizar tu JTable para que ya no aparezca
+        }
+    }
+    
+
+    
+    public static void editarEmpleado(
+            int idEmpleado,
+            String nombre,
+            String apellidos,
+            String telefono,
+            String correo,
+            Component jdialog
+    ) {
+        try {
+            boolean actualizado = Controlador.Conectar.actualizarEmpleado(
+                    idEmpleado,
+                    nombre,
+                    apellidos,
+                    telefono,
+                    correo
+            );
+
+            if (actualizado) {
+                JOptionPane.showMessageDialog(
+                        jdialog,
+                        "Datos del empleado actualizados correctamente"
+                );
+            } else {
+                JOptionPane.showMessageDialog(
+                        jdialog,
+                        "No se encontró el empleado para actualizar"
+                );
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    jdialog,
+                    "Error al actualizar empleado: " + e.getMessage()
+            );
+        }
+    }
+    
+    public static void cargarEmpleadosEnTabla(JTable tabla) {
+
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.setRowCount(0);
+
+            modelo.addColumn("Matrícula");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Apellidos");
+            modelo.addColumn("Teléfono");
+            modelo.addColumn("Correo");
+            modelo.addColumn("Turno");
+
+            try (ResultSet rs = Conectar.consultarEmpleados()) {
+
+                while (rs.next()) {
+                    modelo.addRow(new Object[]{
+                        rs.getInt("id_empleado"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("telefonoo"),
+                        rs.getString("correo"),
+                        rs.getString("nombreturno")
+                    });
+                }
+
+                tabla.setModel(modelo);
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Error al consultar empleados: " + e.getMessage()
+                );
+            }
+        }
+
+    
 }

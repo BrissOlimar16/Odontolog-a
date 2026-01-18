@@ -327,29 +327,76 @@ public class Conectar {
     
     
    
-        public static void EditarEmpleado(int id, String nombre, String apellido, String telefono, String correo) {
-            String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefono = ?,correo=?, id_turno = ? WHERE id_empleado = ?";
-            try (PreparedStatement pstm = c.prepareStatement(sql)) {
-                pstm.setString(1, nombre);
-                pstm.setString(2, apellido);
-                pstm.setString(3, telefono);
-                pstm.setString(4, correo);
-                pstm.setInt(6, id);
-                int filas = pstm.executeUpdate();
-                if (filas > 0) {
-                    System.out.println("Empleado actualizado correctamente");
-                } else {
-                    System.out.println("No se encontró el empleado con ese ID");
-                }
-            } 
-            catch (SQLException e) {
-                System.out.println("Error al actualizar el empleado: " + e.getMessage());
-            }
+//        public static void EditarEmpleado(int id, String nombre, String apellido, String telefono, String correo) {
+//            String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefono = ?,correo=?, id_turno = ? WHERE id_empleado = ?";
+//            try (PreparedStatement pstm = c.prepareStatement(sql)) {
+//                pstm.setString(1, nombre);
+//                pstm.setString(2, apellido);
+//                pstm.setString(3, telefono);
+//                pstm.setString(4, correo);
+//                pstm.setInt(6, id);
+//                int filas = pstm.executeUpdate();
+//                if (filas > 0) {
+//                    System.out.println("Empleado actualizado correctamente");
+//                } else {
+//                    System.out.println("No se encontró el empleado con ese ID");
+//                }
+//            } 
+//            catch (SQLException e) {
+//                System.out.println("Error al actualizar el empleado: " + e.getMessage());
+//            }
+//        }
+        
+        
+        public static boolean actualizarEmpleado(int idEmpleado, String nombre,
+        String apellidos,
+            String telefono,
+            String correo) throws SQLException {
+
+        String sql = """
+            UPDATE empleado
+            SET nombre = ?, apellido = ?, telefonoo = ?, correo = ?
+            WHERE id_empleado = ?
+        """;
+
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            ps.setString(2, apellidos);
+            ps.setString(3, telefono);
+            ps.setString(4, correo);
+            ps.setInt(5, idEmpleado);
+
+            return ps.executeUpdate() > 0;
         }
+    }
         
         
+        public static Connection getConexion() throws SQLException {
+            if (c == null || c.isClosed()) {
+                c = DriverManager.getConnection(url, user, passwd);
+            }
+            return c;
+        }
+
         
-        
+        public static ResultSet consultarEmpleados() throws SQLException {
+
+            String sql = """
+                SELECT 
+                    e.id_empleado,
+                    e.nombre,
+                    e.apellido,
+                    e.telefonoo,
+                    e.correo,
+                    t.nombreturno
+                FROM empleado e
+                JOIN turno t ON e.id_turno = t.id_turno
+                ORDER BY e.id_empleado
+            """;
+
+            PreparedStatement ps = getConexion().prepareStatement(sql);
+            return ps.executeQuery();
+        }
 
 }
 

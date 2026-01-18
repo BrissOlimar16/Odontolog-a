@@ -26,41 +26,9 @@ public class Tratamientos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel45 = new javax.swing.JLabel();
-        jLabel46 = new javax.swing.JLabel();
-        jLabel47 = new javax.swing.JLabel();
-        jLabel48 = new javax.swing.JLabel();
-        jLabel49 = new javax.swing.JLabel();
-        jLabel50 = new javax.swing.JLabel();
-        jLabel51 = new javax.swing.JLabel();
-        jLabel53 = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
         lbTitulo3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-
-        jLabel45.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel45.setText("General");
-
-        jLabel46.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel46.setText("Operatoria Dental");
-
-        jLabel47.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel47.setText("Preventiva");
-
-        jLabel48.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel48.setText("Exodoncia");
-
-        jLabel49.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel49.setText("Reabilitacion");
-
-        jLabel50.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel50.setText("Radiografias");
-
-        jLabel51.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel51.setText("Terapia Pulpar");
-
-        jLabel53.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel53.setText("Tomografias");
 
         jPanel22.setBackground(new java.awt.Color(0, 0, 153));
 
@@ -98,54 +66,18 @@ public class Tratamientos extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel45)
-                .addGap(102, 102, 102)
-                .addComponent(jLabel47)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel46)
-                .addGap(113, 113, 113)
-                .addComponent(jLabel48)
-                .addGap(25, 25, 25))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(185, 185, 185))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel51)
-                    .addGap(92, 92, 92)
-                    .addComponent(jLabel49)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
-                    .addComponent(jLabel50)
-                    .addGap(148, 148, 148)
-                    .addComponent(jLabel53)
-                    .addContainerGap()))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel46)
-                    .addComponent(jLabel47)
-                    .addComponent(jLabel45)
-                    .addComponent(jLabel48))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 412, Short.MAX_VALUE)
                 .addComponent(jButton3)
-                .addGap(172, 172, 172))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(243, 243, 243)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel51)
-                        .addComponent(jLabel49)
-                        .addComponent(jLabel50)
-                        .addComponent(jLabel53))
-                    .addContainerGap(213, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -157,14 +89,6 @@ public class Tratamientos extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel45;
-    private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel53;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JLabel lbTitulo3;
     // End of variables declaration//GEN-END:variables
