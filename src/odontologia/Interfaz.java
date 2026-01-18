@@ -534,7 +534,6 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(20, 20, 20))
         );
 
-        Salida_Dinero.setPreferredSize(new java.awt.Dimension(378, 238));
         Salida_Dinero.setResizable(false);
         Salida_Dinero.setSize(new java.awt.Dimension(350, 250));
 
@@ -991,9 +990,9 @@ public class Interfaz extends javax.swing.JFrame {
                         .addComponent(btnClientes)
                         .addGap(18, 18, 18)
                         .addComponent(btnProductos)
-                        .addGap(18, 18, 18)
+                        .addGap(24, 24, 24)
                         .addComponent(btnServicios)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(CorteCaja)
                         .addGap(18, 18, 18)
                         .addComponent(btnReporte)
@@ -1041,8 +1040,9 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(btnInventario)
                     .addComponent(btnClientes)
                     .addComponent(btnProductos)
-                    .addComponent(btnServicios)
-                    .addComponent(CorteCaja)
+                    .addGroup(PantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(CorteCaja)
+                        .addComponent(btnServicios))
                     .addComponent(btnReporte)
                     .addComponent(btnEmpleado)
                     .addComponent(btnConfiguracion))
