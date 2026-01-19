@@ -247,7 +247,7 @@ public class Productos extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtInsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
@@ -326,11 +326,46 @@ public class Productos extends javax.swing.JPanel {
         if (vacio()){
             JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
         } else {  
-                insertarOmodificar("WITH nuevo_producto AS (INSERT INTO producto (Id_Producto, Nombre, Descripcion, Costo, Existencias) "+
-                "VALUES ('"+txtCodigoBarras.getText()+"', '"+txtInsumo.getText()+"', '"+txtDescripcion.getText()+"', "+txtPrecioCosto1.getText()+", "+txtExistencias.getText()+
-                ") RETURNING Id_Producto)INSERT INTO precioproducto (Id_Producto, tipoCliente, Precio) SELECT Id_Producto, 'externo', "+txtPrecioVentaExterno.getText().replace(",", ".")+" "+
-                "FROM nuevo_producto UNION ALL SELECT Id_Producto, 'interno', "+txtPrecioVentaInterno.getText()+" FROM nuevo_producto");
-        }
+//                insertarOmodificar("WITH nuevo_producto AS (INSERT INTO producto (Id_Producto, Nombre, Descripcion, Costo, Existencias) "+
+//                "VALUES ('"+txtCodigoBarras.getText()+"', '"+txtInsumo.getText()+"', '"+txtDescripcion.getText()+"', "+txtPrecioCosto1.getText()+", "+txtExistencias.getText()+
+//                ") RETURNING Id_Producto)INSERT INTO precioproducto (Id_Producto, tipoCliente, Precio) SELECT Id_Producto, 'externo', "+txtPrecioVentaExterno.getText().replace(",", ".")+" "+
+//                "FROM nuevo_producto UNION ALL SELECT Id_Producto, 'interno', "+txtPrecioVentaInterno.getText()+" FROM nuevo_producto");
+        
+
+            String idProducto = txtCodigoBarras.getText();
+            String nombre = txtInsumo.getText();
+            int existencias = Integer.parseInt(txtExistencias.getText());
+            double costo = Double.parseDouble(txtPrecioCosto1.getText());
+            double precioExt = Double.parseDouble(txtPrecioVentaExterno.getText());
+            double precioInt = Double.parseDouble(txtPrecioVentaInterno.getText());
+
+            String descripcion = txtDescripcion.getText();
+
+            int cant1 = ((Number) jSpinner2.getValue()).intValue();
+            String pres1 = jComboBox1.getSelectedItem().toString();
+
+            int cant2 = ((Number) jSpinner3.getValue()).intValue();
+            String pres2 = jComboBox2.getSelectedItem().toString();
+
+            String descripcionFinal = descripcion + " | "+ cant1 + " " + pres1 + " + "+ cant2 + " " + pres2;
+
+            boolean guardado = Controlador.Conectar.guardarProducto(
+                    idProducto,
+                    nombre,
+                    descripcionFinal,
+                    existencias,
+                    costo,
+                    precioExt,
+                    precioInt
+            );
+
+            if (guardado) {
+                JOptionPane.showMessageDialog(this, "Producto guardado correctamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al guardar el producto");
+            }
+
+                    }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -339,15 +374,55 @@ public class Productos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        if (vacio()){
-            JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
-        } else {
-            insertarOmodificar("WITH producto_actualizado AS ( UPDATE producto SET Nombre = '" + txtInsumo.getText() + "', " +
-             "Descripcion = '" + txtDescripcion.getText() + "', Costo = " + txtPrecioCosto1.getText() + ", Existencias = " + txtExistencias.getText() +
-             " WHERE Id_Producto = '" + txtCodigoBarras.getText() + "' RETURNING Id_Producto) UPDATE precioproducto SET Precio = CASE " +
-             " WHEN tipoCliente = 'externo' THEN " + txtPrecioVentaExterno.getText().replace(",", ".") + "  WHEN tipoCliente = 'interno' THEN " + txtPrecioVentaInterno.getText() +
-             " END WHERE Id_Producto IN (SELECT Id_Producto FROM producto_actualizado)");
-        }
+//        if (vacio()){
+//            JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
+//        } else {
+//            insertarOmodificar("WITH producto_actualizado AS ( UPDATE producto SET Nombre = '" + txtInsumo.getText() + "', " +
+//             "Descripcion = '" + txtDescripcion.getText() + "', Costo = " + txtPrecioCosto1.getText() + ", Existencias = " + txtExistencias.getText() +
+//             " WHERE Id_Producto = '" + txtCodigoBarras.getText() + "' RETURNING Id_Producto) UPDATE precioproducto SET Precio = CASE " +
+//             " WHEN tipoCliente = 'externo' THEN " + txtPrecioVentaExterno.getText().replace(",", ".") + "  WHEN tipoCliente = 'interno' THEN " + txtPrecioVentaInterno.getText() +
+//             " END WHERE Id_Producto IN (SELECT Id_Producto FROM producto_actualizado)");
+//        }
+        
+            if (vacio()) {
+                JOptionPane.showMessageDialog(this, "Error: Hay campos vacíos");
+                return;
+            }
+
+            String idProducto = txtCodigoBarras.getText();
+            String nombre = txtInsumo.getText();
+            int existencias = Integer.parseInt(txtExistencias.getText());
+            double costo = Double.parseDouble(txtPrecioCosto1.getText());
+            double precioExt = Double.parseDouble(txtPrecioVentaExterno.getText());
+            double precioInt = Double.parseDouble(txtPrecioVentaInterno.getText());
+
+            String descripcion = txtDescripcion.getText();
+
+            int cant1 = ((Number) jSpinner2.getValue()).intValue();
+            String pres1 = jComboBox1.getSelectedItem().toString();
+
+            int cant2 = ((Number) jSpinner3.getValue()).intValue();
+            String pres2 = jComboBox2.getSelectedItem().toString();
+
+            String descripcionFinal = descripcion + " | "
+                    + cant1 + " " + pres1 + " + "
+                    + cant2 + " " + pres2;
+
+            boolean actualizado = Controlador.Conectar.modificarProducto(
+                    idProducto,
+                    nombre,
+                    descripcionFinal,
+                    existencias,
+                    costo,
+                    precioExt,
+                    precioInt
+            );
+
+            if (actualizado) {
+                JOptionPane.showMessageDialog(this, "Producto actualizado correctamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al actualizar el producto");
+            }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     public void insertarOmodificar(String x){   

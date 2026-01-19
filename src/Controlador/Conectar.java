@@ -322,10 +322,6 @@ public class Conectar {
     }
     
     
-    
-    
-    
-    
    
 //        public static void EditarEmpleado(int id, String nombre, String apellido, String telefono, String correo) {
 //            String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefono = ?,correo=?, id_turno = ? WHERE id_empleado = ?";
@@ -413,24 +409,130 @@ public class Conectar {
     }
         
     public String validarUser(String usuario, String pass) {
-    String rol = null;
-    // Ajusta los nombres de las columnas a como estén en tu tabla Postgres
-    String sql = "SELECT rol FROM usuarios WHERE rol = ? AND password = ?";
-    try (Connection cn = conectaBD();
-         PreparedStatement pst = cn.prepareStatement(sql)){
-        
-        pst.setString(1, usuario);
-        pst.setString(2, pass);
-        
-        ResultSet rs = pst.executeQuery();
-        
-        if (rs.next()) {
-            rol = rs.getString("rol");
+        String rol = null;
+        // Ajusta los nombres de las columnas a como estén en tu tabla Postgres
+        String sql = "SELECT rol FROM usuarios WHERE rol = ? AND password = ?";
+        try (Connection cn = conectaBD();
+             PreparedStatement pst = cn.prepareStatement(sql)){
+
+            pst.setString(1, usuario);
+            pst.setString(2, pass);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                rol = rs.getString("rol");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en la validación: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.err.println("Error en la validación: " + e.getMessage());
+        return rol; // Retorna el rol o null si no lo encuentra
+    }    
+    
+    public static boolean guardarProducto(
+            String idProducto,
+            String nombre,
+            String descripcion,
+            int existencias,
+            double costo,
+            double precioExterno,
+            double precioInterno){
+
+        String sqlProducto = """
+            INSERT INTO producto (id_producto, nombre, descripcion, existencias, costo)
+            VALUES (?, ?, ?, ?, ?)
+        """;
+
+        String sqlPrecio = """
+            INSERT INTO precioproducto (tipo_cliente, precio, id_producto)
+            VALUES (?, ?, ?)
+        """;
+        try (Connection con = Conectar.getConexion()){
+            con.setAutoCommit(false);
+            try (PreparedStatement psProducto = con.prepareStatement(sqlProducto)) {
+                psProducto.setString(1, idProducto);
+                psProducto.setString(2, nombre);
+                psProducto.setString(3, descripcion);
+                psProducto.setInt(4, existencias);
+                psProducto.setDouble(5, costo);
+                psProducto.executeUpdate();
+            }
+            try (PreparedStatement psPrecio = con.prepareStatement(sqlPrecio)) {
+                psPrecio.setString(1, "Externo");
+                psPrecio.setDouble(2, precioExterno);
+                psPrecio.setString(3, idProducto);
+                psPrecio.executeUpdate();
+            }
+            try (PreparedStatement psPrecio = con.prepareStatement(sqlPrecio)) {
+                psPrecio.setString(1, "Interno");
+                psPrecio.setDouble(2, precioInterno);
+                psPrecio.setString(3, idProducto);
+                psPrecio.executeUpdate();
+            }
+            con.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-    return rol; // Retorna el rol o null si no lo encuentra
-}    
+
+    
+    public static boolean modificarProducto(
+                String idProducto,
+                String nombre,
+                String descripcion,
+                int existencias,
+                double costo,
+                double precioExterno,
+                double precioInterno){
+
+            String sqlProducto = """
+                UPDATE producto
+                SET nombre = ?, descripcion = ?, existencias = ?, costo = ?
+                WHERE id_producto = ?
+            """;
+
+            String sqlPrecio = """
+                UPDATE precioproducto
+                SET precio = ?
+                WHERE id_producto = ? AND tipo_cliente = ?
+            """;
+
+            try (Connection con = getConexion()) {
+                con.setAutoCommit(false);
+                try (PreparedStatement ps = con.prepareStatement(sqlProducto)) {
+                    ps.setString(1, nombre);
+                    ps.setString(2, descripcion);
+                    ps.setInt(3, existencias);
+                    ps.setDouble(4, costo);
+                    ps.setString(5, idProducto);
+                    ps.executeUpdate();
+                }
+
+                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                    ps.setDouble(1, precioExterno);
+                    ps.setString(2, idProducto);
+                    ps.setString(3, "Externo");
+                    ps.executeUpdate();
+                }
+
+                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                    ps.setDouble(1, precioInterno);
+                    ps.setString(2, idProducto);
+                    ps.setString(3, "Interno");
+                    ps.executeUpdate();
+                }
+
+                con.commit();
+                return true;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+    
 }
 

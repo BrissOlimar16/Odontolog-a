@@ -26,6 +26,7 @@ public class Tratamientos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Agregar = new javax.swing.JDialog();
         jPanel22 = new javax.swing.JPanel();
         lbTitulo3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -38,6 +39,17 @@ public class Tratamientos extends javax.swing.JPanel {
         EditarTratamiento = new javax.swing.JButton();
         Regresar = new javax.swing.JButton();
         SeleccionarTratamiento = new javax.swing.JButton();
+
+        javax.swing.GroupLayout AgregarLayout = new javax.swing.GroupLayout(Agregar.getContentPane());
+        Agregar.getContentPane().setLayout(AgregarLayout);
+        AgregarLayout.setHorizontalGroup(
+            AgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        AgregarLayout.setVerticalGroup(
+            AgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setPreferredSize(new java.awt.Dimension(1000, 650));
 
@@ -204,7 +216,7 @@ public class Tratamientos extends javax.swing.JPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -232,6 +244,7 @@ public class Tratamientos extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog Agregar;
     private javax.swing.JButton AgregarTratamiento;
     private javax.swing.JTextField BuscarTratamiento;
     private javax.swing.JButton EditarTratamiento;
