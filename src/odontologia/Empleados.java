@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerListModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -120,6 +121,11 @@ public class Empleados extends javax.swing.JPanel {
 
         buttonGroup1.add(matutino);
         matutino.setText("Matutino");
+        matutino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matutinoActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(vespertino);
         vespertino.setText("Vespertino");
@@ -197,10 +203,10 @@ public class Empleados extends javax.swing.JPanel {
             }
         });
 
-        HoraFin.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1764532800000L), new java.util.Date(1764532800000L), new java.util.Date(1764550800000L), java.util.Calendar.HOUR));
+        HoraFin.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1764532800000L), null, null, java.util.Calendar.HOUR));
         HoraFin.setEditor(new javax.swing.JSpinner.DateEditor(HoraFin, "HH:mm"));
 
-        HoraInicio.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1764597600000L), new java.util.Date(1763906400000L), new java.util.Date(1764626400000L), java.util.Calendar.HOUR));
+        HoraInicio.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.HOUR));
         HoraInicio.setEditor(new javax.swing.JSpinner.DateEditor(HoraInicio, "HH:mm"));
 
         usuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cajero 1", " ", "Cajero 2" }));
@@ -247,7 +253,7 @@ public class Empleados extends javax.swing.JPanel {
                         .addComponent(jLabel35)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(HoraInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
             .addGroup(registrarE1Layout.createSequentialGroup()
                 .addGroup(registrarE1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(registrarE1Layout.createSequentialGroup()
@@ -736,7 +742,7 @@ public class Empleados extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void vespertinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vespertinoActionPerformed
-        // TODO add your handling code here:
+    configurarHoras("Vespertino");
     }//GEN-LAST:event_vespertinoActionPerformed
 
     private void NombreEmpleado3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NombreEmpleado3ActionPerformed
@@ -816,7 +822,17 @@ public class Empleados extends javax.swing.JPanel {
         usuario.getSelectedItem().toString(),
         contraseñaE2.getText(),this
     );
-
+        matriculaEmpleado3.setText("");
+        NombreEmpleado3.setText("");
+        apellidosEmpleados3.setText("");
+        telefonoE.setText("");
+        correoE.setText("");
+        usuario.setSelectedItem("");
+        contraseñaE2.setText("");
+        buttonGroup1.clearSelection();
+        usuario.setSelectedIndex(0);
+        Registra.setVisible(false);
+        Controlador.Funciones.cargarEmpleadosEnTabla(registros);
     }//GEN-LAST:event_GuardarActionPerformed
 
     
@@ -836,6 +852,8 @@ public class Empleados extends javax.swing.JPanel {
 //        Controlador.Funciones.limpiaTabla(modelo);
         String matricula = matriculaEmpleado4.getText();
         Controlador.Funciones.eliminarEmpleado(matricula, this);
+        matriculaEmpleado4.setText("");
+        Eliminar.setVisible(false);
     }//GEN-LAST:event_EliminarEMActionPerformed
 
     private void matriculaEmpleado4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matriculaEmpleado4ActionPerformed
@@ -894,6 +912,10 @@ public class Empleados extends javax.swing.JPanel {
         Editar.setVisible(false);
     }//GEN-LAST:event_cancelar6ActionPerformed
 
+    private void matutinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matutinoActionPerformed
+    configurarHoras("Matutino");
+    }//GEN-LAST:event_matutinoActionPerformed
+
     public  void consultarEmpleados(String query){
      Controlador.Conectar con = new Controlador.Conectar();
      ResultSet r = con.consultas(query);
@@ -927,6 +949,18 @@ public class Empleados extends javax.swing.JPanel {
         contraseñaE2.setText("");
     }
     
+    public void configurarHoras(String turno) {
+    try {
+        java.text.SimpleDateFormat formato = new java.text.SimpleDateFormat("HH:mm");
+        if (turno.equals("Matutino")) {
+            HoraInicio.setValue(formato.parse("08:00"));
+            HoraFin.setValue(formato.parse("14:00"));
+        } else {
+            HoraInicio.setValue(formato.parse("14:00"));
+            HoraFin.setValue(formato.parse("20:00"));
+        }
+    } catch (Exception e) {e.printStackTrace();}
+}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ConsultarE;

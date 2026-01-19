@@ -5,6 +5,9 @@ import static Controlador.Funciones.limpiaTabla;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,7 +46,7 @@ public class Interfaz extends javax.swing.JFrame {
     Dimension tamanio = Toolkit.getDefaultToolkit().getScreenSize();
     
     public String buscar="";
-    
+    Controlador.Conectar con = new Controlador.Conectar();
     public Interfaz() {
         initComponents();
 //        NombreUsuario.setText("Ingresar Usuario");
@@ -53,6 +56,7 @@ public class Interfaz extends javax.swing.JFrame {
         ContraseñaUsuario.setEchoChar((char) 0);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         setResizable(false);
+        con.llenarComboUsuarios(Usuario);
         t1 = (DefaultTableModel)tablaBusqueda.getModel();
         inicializarPanels();
     }
@@ -215,7 +219,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/cerrar.png"))); // NOI18N
 
-        Usuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", "cajero1", " " }));
         Usuario.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102)));
         Usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -660,7 +663,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1138, 580));
-        setPreferredSize(new java.awt.Dimension(1200, 800));
         setSize(new java.awt.Dimension(1200, 800));
 
         Pantalla.setPreferredSize(new java.awt.Dimension(1200, 800));
@@ -670,8 +672,8 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/UNSIS (1).png"))); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(255, 153, 153));
-        jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(153, 153, 153));
+        jButton1.setFont(new java.awt.Font("Liberation Sans", 0, 12)); // NOI18N
         jButton1.setText("X");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -687,16 +689,16 @@ public class Interfaz extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -954,7 +956,7 @@ public class Interfaz extends javax.swing.JFrame {
                         .addComponent(btnReimprimir)
                         .addGap(18, 18, 18)
                         .addComponent(btnDevoluciones, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(234, Short.MAX_VALUE))
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 1236, Short.MAX_VALUE)
         );
         PantallaLayout.setVerticalGroup(
@@ -990,7 +992,7 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(btnSalidas)
                     .addComponent(btnBorrar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(PantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnReimprimir)
@@ -1015,25 +1017,24 @@ public class Interfaz extends javax.swing.JFrame {
 //            Caja.setVisible(true);
 //        }
 
-        Controlador.Conectar con = new Controlador.Conectar();
         String usuario = Usuario.getSelectedItem().toString();
         String contraseña = new String(ContraseñaUsuario.getPassword());
-        String rolEncontrado = con.validarUsuario(usuario, contraseña);
-
+        String rolEncontrado = con.validarUser(usuario, contraseña);
         if (rolEncontrado != null) {
-            if (rolEncontrado.equals("Administrador")) {
-                // Abrir ventana Admin con todos los permisos
+            IngresasUsuario.dispose();
+            Caja.setLocationRelativeTo(null);
+            Caja.setVisible(true);
+            if (rolEncontrado.equalsIgnoreCase("Administrador")) {
                 IngresasUsuario.setVisible(false);
                 Caja.setLocationRelativeTo(null);
                 Caja.setVisible(true);
             } else {
-                // Abrir ventana Cajero y ocultar botones de "Eliminar" o "Usuarios"
                 IngresasUsuario.setVisible(false);
                 Caja.setLocationRelativeTo(null);
                 Caja.setVisible(true);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+            JOptionPane.showMessageDialog(null, "Contraseña incorrecta para el usuario " + usuario);
         }
     }//GEN-LAST:event_IngresarAppActionPerformed
 
@@ -1259,6 +1260,8 @@ public class Interfaz extends javax.swing.JFrame {
         }
         else return false;
     }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog BusquedaProducto;
     private javax.swing.JDialog Caja;

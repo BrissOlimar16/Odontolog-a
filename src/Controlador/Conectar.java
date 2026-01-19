@@ -1,8 +1,8 @@
 
 package Controlador;
 import java.sql.*;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class Conectar {
     public static  Connection c;   
@@ -396,7 +396,41 @@ public class Conectar {
 
             PreparedStatement ps = getConexion().prepareStatement(sql);
             return ps.executeQuery();
+        }        
+        
+        public void llenarComboUsuarios(JComboBox combo) {
+        String sql = "SELECT rol FROM usuarios";
+        java.sql.ResultSet rs = consultas(sql);
+        try{                
+            combo.removeAllItems(); // Limpia lo que haya (ej. "Item 1", "Item 2")
+            combo.addItem("Seleccione un usuario");
+            while (rs.next()) {
+                combo.addItem(rs.getString("rol"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar usuarios: " + e.getMessage());
         }
-
+    }
+        
+    public String validarUser(String usuario, String pass) {
+    String rol = null;
+    // Ajusta los nombres de las columnas a como estén en tu tabla Postgres
+    String sql = "SELECT rol FROM usuarios WHERE rol = ? AND password = ?";
+    try (Connection cn = conectaBD();
+         PreparedStatement pst = cn.prepareStatement(sql)){
+        
+        pst.setString(1, usuario);
+        pst.setString(2, pass);
+        
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            rol = rs.getString("rol");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error en la validación: " + e.getMessage());
+    }
+    return rol; // Retorna el rol o null si no lo encuentra
+}    
 }
 
