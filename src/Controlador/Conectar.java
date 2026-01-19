@@ -50,7 +50,7 @@ public class Conectar {
     public java.sql.ResultSet consultas(String consul){
         java.sql.ResultSet r=null;
         try {
-            java.sql.Statement stm= c.createStatement();
+            java.sql.Statement stm= getConexion().createStatement();
             r = stm.executeQuery(consul); 
         }catch(SQLException e){
            System.out.println(e.getMessage());
@@ -61,7 +61,7 @@ public class Conectar {
     public void ejecutar(String stm){
         try{
             MENSAJE="";
-            Statement s=c.createStatement();
+            Statement s=getConexion().createStatement();
             s.executeUpdate(stm);
         }catch(SQLException e ){
             MENSAJE=e.getMessage();
