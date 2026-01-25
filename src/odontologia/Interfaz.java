@@ -33,8 +33,8 @@ public class Interfaz extends javax.swing.JFrame {
     public static Object[] linea=new Object[8];
     public static String id="", codi="";
     //public static String query= "SELECT * FROM producto";
-    public static String query= "SELECT p.Id_Producto, p.Nombre, p.Descripcion, p.Costo, p.Existencias, pp.tipoCliente, pp.Precio " +
-    "FROM producto p JOIN precioproducto pp ON p.Id_Producto = pp.Id_Producto WHERE pp.tipoCliente = 'externo' ORDER BY p.Id_Producto, pp.Precio";
+    public static String query= "SELECT p.Id_producto, p.nombre, p.descripcion, p.costo, p.existencias, pp.tipocliente, pp.Precio " +
+    "FROM producto p JOIN precioproducto pp ON p.Id_Producto = pp.Id_Producto WHERE pp.tipocliente = 'externo' ORDER BY p.Id_Producto, pp.Precio";
     
    String query2 = "SELECT p.id_producto, p.nombre, p.descripcion, p.costo, p.existencias, " +
                 "pp_ext.precio AS precio_externo, pp_int.precio AS precio_interno " +
@@ -866,7 +866,7 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
-        CorteCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/odontologia/informe-de-venta.png"))); // NOI18N
+        CorteCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/informe-de-venta.png"))); // NOI18N
         CorteCaja.setText("Corte");
         CorteCaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -209,7 +209,7 @@ public class Empleados extends javax.swing.JPanel {
         HoraInicio.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.HOUR));
         HoraInicio.setEditor(new javax.swing.JSpinner.DateEditor(HoraInicio, "HH:mm"));
 
-        usuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cajero 1", " ", "Cajero 2" }));
+        usuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cajero 1", "Cajero 2" }));
 
         javax.swing.GroupLayout registrarE1Layout = new javax.swing.GroupLayout(registrarE1);
         registrarE1.setLayout(registrarE1Layout);
@@ -524,22 +524,22 @@ public class Empleados extends javax.swing.JPanel {
                                 .addGroup(editarE1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel50)
                                     .addComponent(jLabel49))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                         .addGroup(editarE1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(editarE1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(editarE1Layout.createSequentialGroup()
-                                    .addComponent(editar1)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cancelar6))
-                                .addComponent(jLabel54))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarE1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                                 .addGroup(editarE1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(telefonoE2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(apellidosEmpleados5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(NombreEmpleado5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(editarE1Layout.createSequentialGroup()
-                                .addComponent(matriculaEmpleado5, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(editarE1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(editarE1Layout.createSequentialGroup()
+                                        .addComponent(editar1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cancelar6))
+                                    .addComponent(jLabel54)
+                                    .addComponent(matriculaEmpleado5, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(editarE1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)

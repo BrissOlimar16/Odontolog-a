@@ -1352,7 +1352,7 @@
         <Component class="javax.swing.JButton" name="CorteCaja">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/odontologia/informe-de-venta.png"/>
+              <Image iconType="3" name="/Icon/informe-de-venta.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Corte"/>
           </Properties>

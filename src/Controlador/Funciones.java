@@ -184,7 +184,6 @@ public class Funciones extends Interfaz {
 
         if (respuesta == JOptionPane.YES_OPTION) {
             Controlador.Conectar.eliminarEmpleadoCompleto(id);
-            // Aquí podrías actualizar tu JTable para que ya no aparezca
         }
     }
     
@@ -262,6 +261,13 @@ public class Funciones extends Interfaz {
             }
         }
 
+    public static void eliminarProducto(String idProducto, Component jdialog) throws SQLException{
+        //int id = Integer.parseInt(Matricula);
+        int respuesta = JOptionPane.showConfirmDialog(jdialog, "¿Estás seguro de eliminar el producto?");
+        if (respuesta == JOptionPane.YES_OPTION) {
+            Controlador.Conectar.eliminarProducto(idProducto);
+            JOptionPane.showMessageDialog(jdialog, "Producto eliminado ");
+        }
+    }
     
-     
 }

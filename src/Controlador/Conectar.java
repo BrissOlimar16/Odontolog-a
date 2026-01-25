@@ -533,6 +533,51 @@ public class Conectar {
             }
         }
 
+//    public static boolean eliminarProducto(String idProducto) throws SQLException{
+//        String sqlProducto = "DELETE FROM producto WHERE id_producto = ?";
+//        String sqlPrecio = "DELETE FROM precioproducto WHERE id_producto = ?";
+//         try(PreparedStatement ps2 = c.prepareStatement(sqlPrecio)){
+//            ps2.setString(1, idProducto);
+//            ps2.executeUpdate();
+//        }
+//        try(PreparedStatement ps = c.prepareStatement(sqlProducto)){
+//            ps.setString(1, idProducto);
+//            ps.executeUpdate();
+//            return true;
+//        }
+//        catch (SQLException e) {
+//            System.out.println(e);
+//            return false;
+//        }
+//    }
     
-}
+    
+    public static boolean eliminarProducto(String idProducto) throws SQLException {
+        String sqlPrecio = "DELETE FROM precioproducto WHERE id_producto = ?";
+        String sqlProducto = "DELETE FROM producto WHERE id_producto = ?";
+        if (c == null || c.isClosed()) {
+            System.out.println("La conexión estaba cerrada. Reintentando conectar...");
+            c = new Controlador.Conectar().conectaBD();
+        }
+        try {
+            c.setAutoCommit(false);
+            try (PreparedStatement ps2 = c.prepareStatement(sqlPrecio)) {
+                ps2.setString(1, idProducto);
+                ps2.executeUpdate();
+            }
+            try (PreparedStatement ps = c.prepareStatement(sqlProducto)) {
+                ps.setString(1, idProducto);
+                ps.executeUpdate();
+            }
+            c.commit();
+            return true;
 
+        } catch (SQLException e) {
+            if (c != null) c.rollback();
+            System.out.println("Error al eliminar: " + e.getMessage());
+            return false;
+        } finally {
+            if (c != null) c.setAutoCommit(true);
+        }
+    }
+}

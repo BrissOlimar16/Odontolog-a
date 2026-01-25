@@ -177,6 +177,11 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
 
         btnModificarCliente.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         btnModificarCliente.setText("Modificar Cliente");
+        btnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarClienteActionPerformed(evt);
+            }
+        });
 
         btnEliminarCliente.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         btnEliminarCliente.setText("Eliminar Cliente");
@@ -432,6 +437,34 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
             Funciones.consultarC(quer,t2);
         }
     }//GEN-LAST:event_txtBuscarClienteKeyReleased
+
+    private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
+        if(seleccionado()){
+            int fila = tablaCliente.getSelectedRow();
+                if (fila == -1) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un cliente");
+                    return;
+                }
+                try {
+                    String id = tablaCliente.getValueAt(fila, 0).toString();
+                        String sql = "UPDATE cliente SET nombre='" + txtNombre.getText() + "', apellido='"  +txtApellidos.getText() +"', telefono='" + txtTelefono.getText() +
+                                "', correo='" + txtCorreo.getText() +"', id_cliente='" + txtMatricula.getText() + "', tipo_cliente='" + tipo + "', ocupacion='" + txtOcupacion.getText().trim() +"' WHERE id_cliente=" + id;
+                        new Controlador.Conectar().ejecutar(sql);
+                        if (Controlador.Conectar.MENSAJE.equals("")) {
+                            JOptionPane.showMessageDialog(null, "¡Cliente actualizado con éxito!");
+
+                            Funciones.limpiaTabla(t2);
+                            Funciones.consultarC(quer, t2);
+                        } 
+                        else {
+                           JOptionPane.showMessageDialog(null, "Error en BD: " + Controlador.Conectar.MENSAJE);
+                        }
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
+                }
+            }
+    }//GEN-LAST:event_btnModificarClienteActionPerformed
     
     public void insertarCliente(String x){   
         try{            
