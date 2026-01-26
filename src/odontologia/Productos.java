@@ -55,6 +55,7 @@ public class Productos extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setToolTipText("");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona", "Caja", "Bote", "Jeringa", "Bolsas" }));

@@ -1045,7 +1045,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         limpiaTabla(t1);
-        BusquedaProducto.setLocation(900, 150);
+        BusquedaProducto.setLocation(800, 150);
         BusquedaProducto.setVisible(true);
         //Funciones.limpiaTabla(t1);
 //        BusquedaProducto.setVisible(true);
