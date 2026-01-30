@@ -777,6 +777,12 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel2.setText("Codigo de producto:");
 
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoActionPerformed(evt);
+            }
+        });
+
         btnAgrgar.setText("Agregar producto");
 
         btnReimprimir.setText("Reimprimir último ticket");
@@ -1208,6 +1214,10 @@ public class Interfaz extends javax.swing.JFrame {
     private void cancelarIngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarIngresoActionPerformed
         System.exit(0);
     }//GEN-LAST:event_cancelarIngresoActionPerformed
+
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoActionPerformed
 
     
     public static void main(String args[]) {

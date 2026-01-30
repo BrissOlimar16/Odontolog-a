@@ -1,7 +1,10 @@
 package Controlador;
 
+import static Controlador.Conectar.getConexion;
 import java.awt.Color;
 import java.awt.Component;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Time;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
@@ -9,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import odontologia.Interfaz;
 import static odontologia.Nuevo_Cliente.t2;
@@ -269,5 +274,78 @@ public class Funciones extends Interfaz {
             JOptionPane.showMessageDialog(jdialog, "Producto eliminado ");
         }
     }
+    
+    public static List<Producto> obtenerProductos() {
+        List<Producto> lista = new ArrayList<>();
+        String sql = "SELECT id_producto, nombre FROM producto";
+
+        try (Connection con = Controlador.Conectar.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Producto p = new Producto();
+                p.setIdProducto(rs.getString("id_producto"));
+                p.setNombre(rs.getString("nombre"));
+                lista.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    
+
+//    public boolean guardarPaqueteConProductos(
+//            Paquete paquete,
+//            List<DetallePaquete> detalles) {
+//
+//        String sqlPaquete = """
+//            INSERT INTO paquete (nombre, descripcion, grupo)
+//            VALUES (?, ?, ?)
+//        """;
+//
+//        String sqlDetalle = """
+//            INSERT INTO detallepaquete (id_paquete, id_producto, cantidad)
+//            VALUES (?, ?, ?)
+//        """;
+//
+//        try (Connection con = Conectar.getConexion()) {
+//            con.setAutoCommit(false);
+//            int idPaquete;
+//            try (PreparedStatement ps = con.prepareStatement(
+//                    sqlPaquete, Statement.RETURN_GENERATED_KEYS)) {
+//
+//                ps.setString(1, paquete.getNombre());
+//                ps.setString(2, paquete.getDescripcion());
+//                ps.setString(3, paquete.getGrupo());
+//                ps.executeUpdate();
+//
+//                ResultSet rs = ps.getGeneratedKeys();
+//                rs.next();
+//                idPaquete = rs.getInt(1);
+//            }
+//
+//            try (PreparedStatement ps = con.prepareStatement(sqlDetalle)) {
+//                for (DetallePaquete d : detalles) {
+//                    ps.setInt(1, idPaquete);
+//                    ps.setString(2, d.getIdProducto());
+//                    ps.setInt(3, d.getCantidad());
+//                    ps.addBatch();
+//                }
+//                ps.executeBatch();
+//            }
+//
+//            con.commit();
+//            return true;
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
+
     
 }

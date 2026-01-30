@@ -820,8 +820,8 @@ public class Empleados extends javax.swing.JPanel {
         telefonoE.getText(),
         correoE.getText(),
         usuario.getSelectedItem().toString(),
-        contraseñaE2.getText(),this
-    );
+        contraseñaE2.getText(),this);
+        //limpia los campos 
         matriculaEmpleado3.setText("");
         NombreEmpleado3.setText("");
         apellidosEmpleados3.setText("");

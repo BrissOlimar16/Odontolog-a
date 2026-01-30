@@ -4,6 +4,13 @@
  */
 package odontologia;
 
+import Controlador.DetallePaquete;
+import Controlador.Producto;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Alexandra
@@ -34,14 +41,18 @@ public class Tratamientos extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         nombreTratamiento = new javax.swing.JTextField();
-        descripciónT = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        descripcionT = new javax.swing.JTextField();
+        grupo = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         precioEx = new javax.swing.JTextField();
         precioIn = new javax.swing.JTextField();
         guardar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaProductos = new javax.swing.JTable();
         jPanel22 = new javax.swing.JPanel();
         lbTitulo3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -55,8 +66,9 @@ public class Tratamientos extends javax.swing.JPanel {
         Regresar = new javax.swing.JButton();
         SeleccionarTratamiento = new javax.swing.JButton();
 
-        Agregar.setLocation(new java.awt.Point(500, 200));
-        Agregar.setSize(new java.awt.Dimension(406, 387));
+        Agregar.setTitle("Registro de Tratamientos");
+        Agregar.setLocation(new java.awt.Point(400, 50));
+        Agregar.setSize(new java.awt.Dimension(535, 670));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -92,7 +104,12 @@ public class Tratamientos extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel5.setText("Grupo");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        grupo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "General", "Preventiva", "Operatoria Dental", "Exodoncia", "Terapia Pulpar", "Rehabilitación", "Radiografia", "Tomografia", "Otro" }));
+        grupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grupoActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
         jLabel6.setText("Precio para Externos");
@@ -107,6 +124,11 @@ public class Tratamientos extends javax.swing.JPanel {
         });
 
         guardar.setText("Guardar");
+        guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarActionPerformed(evt);
+            }
+        });
 
         cancelar.setText("Cancelar");
         cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -115,16 +137,50 @@ public class Tratamientos extends javax.swing.JPanel {
             }
         });
 
+        modificar.setText("Guardar");
+        modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel8.setText("Seleccione los productos que contiene el tratameinto");
+
+        tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Seleccionar", "Código", "Nombre", "Cantidad"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(tablaProductos);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(precioEx, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel2)
@@ -136,41 +192,44 @@ public class Tratamientos extends javax.swing.JPanel {
                                         .addComponent(jLabel5))
                                     .addGap(18, 18, 18)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(descripciónT)
-                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(descripcionT)
+                                        .addComponent(grupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel7)
                                     .addGap(18, 18, 18)
                                     .addComponent(precioIn))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(precioEx, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGap(33, 33, 33)
+                                    .addComponent(guardar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(modificar)
+                                    .addGap(47, 47, 47)
+                                    .addComponent(cancelar)))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(guardar)
-                        .addGap(82, 82, 82)
-                        .addComponent(cancelar)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel8)))
+                .addContainerGap(25, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(nombreTratamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4))
-                    .addComponent(descripciónT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(descripcionT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -179,11 +238,16 @@ public class Tratamientos extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(precioIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
+                    .addComponent(modificar)
                     .addComponent(cancelar))
-                .addGap(50, 50, 50))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout AgregarLayout = new javax.swing.GroupLayout(Agregar.getContentPane());
@@ -194,7 +258,7 @@ public class Tratamientos extends javax.swing.JPanel {
         );
         AgregarLayout.setVerticalGroup(
             AgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setPreferredSize(new java.awt.Dimension(1000, 650));
@@ -371,10 +435,14 @@ public class Tratamientos extends javax.swing.JPanel {
 
     private void EditarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarTratamientoActionPerformed
         Agregar.setVisible(true);
+        guardar.setVisible(false);
+        modificar.setVisible(true);
     }//GEN-LAST:event_EditarTratamientoActionPerformed
 
     private void AgregarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarTratamientoActionPerformed
         Agregar.setVisible(true);
+        modificar.setVisible(false);
+        guardar.setVisible(true);
     }//GEN-LAST:event_AgregarTratamientoActionPerformed
 
     private void EliminarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarTratamientoActionPerformed
@@ -390,9 +458,82 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_precioInActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_cancelarActionPerformed
 
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        String nombre = nombreTratamiento.getText();
+        String descripcion = descripcionT.getText();
+        String clasificacion = grupo.getSelectedItem().toString();
+        double precioExterno = Double.parseDouble(precioEx.getText());
+        double precioInterno = Double.parseDouble(precioIn.getText());
+
+        List<DetallePaquete> detalles = new ArrayList<>();
+
+        for (int i = 0; i < tablaProductos.getRowCount(); i++) {
+            boolean seleccionado = (boolean) tablaProductos.getValueAt(i, 0);
+
+            if (seleccionado) {
+                String idProducto = tablaProductos.getValueAt(i, 1).toString();
+                int cantidad = Integer.parseInt(
+                        tablaProductos.getValueAt(i, 3).toString()
+                );
+
+                DetallePaquete d = new DetallePaquete();
+                d.setIdProducto(idProducto);
+                d.setCantidad(cantidad);
+
+                detalles.add(d);
+            }
+        }
+
+        boolean ok = Controlador.Conectar.guardarTratamiento(
+                nombre,
+                descripcion,
+                clasificacion,
+                precioExterno,
+                precioInterno,
+                detalles
+        );
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Paquete guardado correctamente");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al guardar paquete");
+        }
+
+
+    }//GEN-LAST:event_guardarActionPerformed
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        String nombre = nombreTratamiento.getText();
+        String Descripcion = descripcionT.getText();
+        String clasificación = grupo.getSelectedItem().toString();
+        double precioExterno = Double.parseDouble(precioEx.getText());
+        double precioInterno = Double.parseDouble(precioIn.getText());
+        //Controlador.Conectar.modificarPaquete(nombre, Descripcion, clasificación, precioExterno, precioInterno);
+    }//GEN-LAST:event_modificarActionPerformed
+
+    private void grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grupoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grupoActionPerformed
+
+    private void llenarTablaP() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
+        modelo.setRowCount(0);
+
+        Controlador.Funciones pro = new Controlador.Funciones();
+        List<Producto> productos = pro.obtenerProductos();
+
+        for (Controlador.Producto p : productos) {
+            modelo.addRow(new Object[]{
+                false,              
+                p.getIdProducto(),
+                p.getNombre(),
+                1   
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Agregar;
@@ -403,9 +544,9 @@ public class Tratamientos extends javax.swing.JPanel {
     private javax.swing.JButton Regresar;
     private javax.swing.JButton SeleccionarTratamiento;
     private javax.swing.JButton cancelar;
-    private javax.swing.JTextField descripciónT;
+    private javax.swing.JTextField descripcionT;
+    private javax.swing.JComboBox<String> grupo;
     private javax.swing.JButton guardar;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -413,15 +554,19 @@ public class Tratamientos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lbTitulo3;
+    private javax.swing.JButton modificar;
     private javax.swing.JTextField nombreTratamiento;
     private javax.swing.JTextField precioEx;
     private javax.swing.JTextField precioIn;
+    private javax.swing.JTable tablaProductos;
     private javax.swing.JTable tratamientos;
     // End of variables declaration//GEN-END:variables
 }
