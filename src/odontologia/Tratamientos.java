@@ -22,6 +22,7 @@ public class Tratamientos extends javax.swing.JPanel {
      */
     public Tratamientos() {
         initComponents();
+        //llenarTablaP();
     }
 
     /**
@@ -437,12 +438,14 @@ public class Tratamientos extends javax.swing.JPanel {
         Agregar.setVisible(true);
         guardar.setVisible(false);
         modificar.setVisible(true);
+        llenarTablaP();
     }//GEN-LAST:event_EditarTratamientoActionPerformed
 
     private void AgregarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarTratamientoActionPerformed
         Agregar.setVisible(true);
         modificar.setVisible(false);
         guardar.setVisible(true);
+        llenarTablaP();
     }//GEN-LAST:event_AgregarTratamientoActionPerformed
 
     private void EliminarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarTratamientoActionPerformed
@@ -458,7 +461,7 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_precioInActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-        this.setVisible(false);
+        Agregar.setVisible(false);
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
@@ -518,7 +521,7 @@ public class Tratamientos extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_grupoActionPerformed
 
-    private void llenarTablaP() {
+    public void llenarTablaP() {
         DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
         modelo.setRowCount(0);
 

@@ -1129,6 +1129,7 @@ public class Interfaz extends javax.swing.JFrame {
         this.add(tm);
         tm.setBounds(0, 0, this.getWidth(), this.getHeight());
         tm.setVisible(true);
+        //tm.llenarTablaP();
     }//GEN-LAST:event_btnServiciosActionPerformed
 
     private void txtBusquedaPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaPKeyReleased
