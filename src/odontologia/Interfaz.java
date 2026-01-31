@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -1129,7 +1130,7 @@ public class Interfaz extends javax.swing.JFrame {
         this.add(tm);
         tm.setBounds(0, 0, this.getWidth(), this.getHeight());
         tm.setVisible(true);
-        //tm.llenarTablaP();
+        Controlador.Funciones.TablaPaquetes(tm.tratamientos);
     }//GEN-LAST:event_btnServiciosActionPerformed
 
     private void txtBusquedaPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaPKeyReleased
@@ -1248,12 +1249,12 @@ public class Interfaz extends javax.swing.JFrame {
         });
     }
     
-    public void mostrarPanel(JPanel panel) {
-        Pantalla.removeAll();
-        Pantalla.add(panel);
-        Pantalla.revalidate();
-        Pantalla.repaint();
-    }
+//    public void mostrarPanel(JPanel panel) {
+//        Pantalla.removeAll();
+//        Pantalla.add(panel);
+//        Pantalla.revalidate();
+//        Pantalla.repaint();
+//    }
 
     
     public void inicializarPanels(){

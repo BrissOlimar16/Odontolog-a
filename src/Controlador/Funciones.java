@@ -297,54 +297,59 @@ public class Funciones extends Interfaz {
     
     
 
-//    public boolean guardarPaqueteConProductos(
-//            Paquete paquete,
-//            List<DetallePaquete> detalles) {
-//
-//        String sqlPaquete = """
-//            INSERT INTO paquete (nombre, descripcion, grupo)
-//            VALUES (?, ?, ?)
-//        """;
-//
-//        String sqlDetalle = """
-//            INSERT INTO detallepaquete (id_paquete, id_producto, cantidad)
-//            VALUES (?, ?, ?)
-//        """;
-//
-//        try (Connection con = Conectar.getConexion()) {
-//            con.setAutoCommit(false);
-//            int idPaquete;
-//            try (PreparedStatement ps = con.prepareStatement(
-//                    sqlPaquete, Statement.RETURN_GENERATED_KEYS)) {
-//
-//                ps.setString(1, paquete.getNombre());
-//                ps.setString(2, paquete.getDescripcion());
-//                ps.setString(3, paquete.getGrupo());
-//                ps.executeUpdate();
-//
-//                ResultSet rs = ps.getGeneratedKeys();
-//                rs.next();
-//                idPaquete = rs.getInt(1);
-//            }
-//
-//            try (PreparedStatement ps = con.prepareStatement(sqlDetalle)) {
-//                for (DetallePaquete d : detalles) {
-//                    ps.setInt(1, idPaquete);
-//                    ps.setString(2, d.getIdProducto());
-//                    ps.setInt(3, d.getCantidad());
-//                    ps.addBatch();
-//                }
-//                ps.executeBatch();
-//            }
-//
-//            con.commit();
-//            return true;
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
+    public static void TablaPaquetes(JTable tabla) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Código");
+        modelo.addColumn("Tratamiento");
+        modelo.addColumn("Grupo");
+        modelo.addColumn("Cantidad");
+        modelo.addColumn("Precio Externo");
+        modelo.addColumn("Precio Interno");
+
+        String sql = """
+            SELECT 
+                p.id_paquete AS codigo,
+                p.nombre AS tratamiento,
+                p.grupo,
+                MIN(FLOOR(pr.existencias / dp.cantidad)) AS cantidad,
+                MAX(pe.precio) AS precio_externo,
+                MAX(pi.precio) AS precio_interno
+            FROM paquete p
+            JOIN detallepaquete dp ON p.id_paquete = dp.id_paquete
+            JOIN producto pr ON dp.id_producto = pr.id_producto
+            LEFT JOIN preciopaquete pe 
+                ON p.id_paquete = pe.id_paquete AND pe.tipo_cliente = 'Externo'
+            LEFT JOIN preciopaquete pi 
+                ON p.id_paquete = pi.id_paquete AND pi.tipo_cliente = 'Interno'
+            GROUP BY p.id_paquete, p.nombre, p.grupo
+        """;
+
+        try (Connection con = getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getInt("codigo"),
+                    rs.getString("tratamiento"),
+                    rs.getString("grupo"),
+                    rs.getInt("cantidad"),           // 👈 paquetes disponibles
+                    rs.getDouble("precio_externo"),
+                    rs.getDouble("precio_interno")
+                };
+                modelo.addRow(fila);
+            }
+
+            tabla.setModel(modelo);
+            tabla.revalidate();
+            tabla.repaint();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     

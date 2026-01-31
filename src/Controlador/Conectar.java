@@ -614,137 +614,88 @@ public class Conectar {
     }
 
 
-    
-    
-    
-//    
-//    public static boolean modificarPaquete(
-//                String nombre,
-//                String descripcion,
-//                String grupo,
-//                double precioExterno,
-//                double precioInterno){
-//
-//            String sqlProducto = "UPDATE paquete SET nombre = ?, descripcion = ?, grupo = ? WHERE id_producto = ?";
-//            String sqlPrecio = "UPDATE preciopaquete SET precio = ? WHERE id_producto = ? AND tipo_cliente = ?";
-//
-//            try (Connection con = getConexion()) {
-//                con.setAutoCommit(false);
-//                try (PreparedStatement ps = con.prepareStatement(sqlProducto)) {
-//                    ps.setString(1, nombre);
-//                    ps.setString(2, descripcion);
-//                    ps.setString(3, grupo);
-//                   // ps.setString(5, idProducto);
-//                    ps.executeUpdate();
-//                }
-//
-//                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
-//                    ps.setDouble(1, precioExterno);
-//                    //ps.setString(2, idProducto); Id del paquete
-//                    ps.setString(3, "Externo");
-//                    ps.executeUpdate();
-//                }
-//
-//                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
-//                    ps.setDouble(1, precioInterno);
-//                    //ps.setString(2, idProducto); Id del paquete
-//                    ps.setString(3, "Interno");
-//                    ps.executeUpdate();
-//                }
-//
-//                con.commit();
-//                return true;
-//
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//                return false;
-//            }
-//        }
-//
-//    
-//    
-//        public boolean guardarTratamiento(
-//                Paquete paquete,
-//                double precioInterno,
-//                double precioExterno,
-//                List<DetallePaquete> productos) {
-//
-//            String sqlPaquete = """
-//                INSERT INTO paquete(nombre, descripcion, grupo)
-//                VALUES (?, ?, ?)
-//                RETURNING id_paquete
-//            """;
-//
-//            String sqlPrecio = """
-//                INSERT INTO preciopaquete(tipo_cliente, precio, id_paquete)
-//                VALUES (?, ?, ?)
-//            """;
-//
-//            String sqlDetalle = """
-//                INSERT INTO detallepaquete(id_paquete, id_producto, cantidad)
-//                VALUES (?, ?, ?)
-//            """;
-//
-//            try {
-//                // 🔒 Inicia transacción
-//                conn.setAutoCommit(false);
-//
-//                // 1️⃣ Insertar PAQUETE y obtener id
-//                PreparedStatement psPaquete = conn.prepareStatement(sqlPaquete);
-//                psPaquete.setString(1, paquete.getNombre());
-//                psPaquete.setString(2, paquete.getDescripcion());
-//                psPaquete.setString(3, paquete.getGrupo());
-//
-//                ResultSet rs = psPaquete.executeQuery();
-//                rs.next();
-//                int idPaquete = rs.getInt("id_paquete");
-//
-//                // 2️⃣ Insertar PRECIOS (Interno / Externo)
-//                PreparedStatement psPrecio = conn.prepareStatement(sqlPrecio);
-//
-//                psPrecio.setString(1, "Interno");
-//                psPrecio.setDouble(2, precioInterno);
-//                psPrecio.setInt(3, idPaquete);
-//                psPrecio.executeUpdate();
-//
-//                psPrecio.setString(1, "Externo");
-//                psPrecio.setDouble(2, precioExterno);
-//                psPrecio.setInt(3, idPaquete);
-//                psPrecio.executeUpdate();
-//
-//                // 3️⃣ Insertar PRODUCTOS del paquete
-//                PreparedStatement psDetalle = conn.prepareStatement(sqlDetalle);
-//
-//                for (DetallePaquete d : productos) {
-//                    psDetalle.setInt(1, idPaquete);
-//                    psDetalle.setString(2, d.getIdProducto());
-//                    psDetalle.setInt(3, d.getCantidad());
-//                    psDetalle.executeUpdate();
-//                }
-//
-//                // ✅ Confirmar transacción
-//                conn.commit();
-//                return true;
-//
-//            } catch (Exception e) {
-//                // ❌ Algo falló → deshacer TODO
-//                try {
-//                    conn.rollback();
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//                e.printStackTrace();
-//                return false;
-//
-//            } finally {
-//                try {
-//                    conn.setAutoCommit(true);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
+  
+    public static boolean modificarPaquete(
+        int idPaquete,
+        String nombre,
+        String descripcion,
+        String grupo,
+        double precioExterno,
+        double precioInterno) {
 
+        String sqlPaquete = "UPDATE paquete SET nombre = ?, descripcion = ?, grupo = ? WHERE id_paquete = ?";
+        String sqlPrecio  = "UPDATE preciopaquete SET precio = ? WHERE id_paquete = ? AND tipo_cliente = ?";
+
+        try (Connection con = getConexion()) {
+            con.setAutoCommit(false);
+            try (PreparedStatement ps = con.prepareStatement(sqlPaquete)) {
+                ps.setString(1, nombre);
+                ps.setString(2, descripcion);
+                ps.setString(3, grupo);
+                ps.setInt(4, idPaquete); 
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setDouble(1, precioExterno);
+                ps.setInt(2, idPaquete);
+                ps.setString(3, "Externo");
+                ps.executeUpdate();
+            }
+
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setDouble(1, precioInterno);
+                ps.setInt(2, idPaquete);
+                ps.setString(3, "Interno");
+                ps.executeUpdate();
+            }
+
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public static boolean eliminarPaquete(int idPaquete) {
+
+        String sqlDetalle = "DELETE FROM detallepaquete WHERE id_paquete = ?";
+        String sqlPrecio  = "DELETE FROM preciopaquete WHERE id_paquete = ?";
+        String sqlPaquete = "DELETE FROM paquete WHERE id_paquete = ?";
+
+        try (Connection con = getConexion()) {
+            con.setAutoCommit(false);
+
+            // 1. Eliminar productos del paquete
+            try (PreparedStatement ps = con.prepareStatement(sqlDetalle)) {
+                ps.setInt(1, idPaquete);
+                ps.executeUpdate();
+            }
+
+            // 2. Eliminar precios del paquete
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setInt(1, idPaquete);
+                ps.executeUpdate();
+            }
+
+            // 3. Eliminar el paquete
+            try (PreparedStatement ps = con.prepareStatement(sqlPaquete)) {
+                ps.setInt(1, idPaquete);
+                ps.executeUpdate();
+            }
+
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    
 
     
 }

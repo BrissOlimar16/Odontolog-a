@@ -22,7 +22,6 @@ public class Tratamientos extends javax.swing.JPanel {
      */
     public Tratamientos() {
         initComponents();
-        //llenarTablaP();
     }
 
     /**
@@ -54,6 +53,8 @@ public class Tratamientos extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaProductos = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
+        codigo = new javax.swing.JTextField();
         jPanel22 = new javax.swing.JPanel();
         lbTitulo3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -169,49 +170,60 @@ public class Tratamientos extends javax.swing.JPanel {
         });
         jScrollPane4.setViewportView(tablaProductos);
 
+        jLabel9.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        jLabel9.setText("Código");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(precioEx, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(42, 42, 42)
-                                    .addComponent(nombreTratamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jLabel5))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(descripcionT)
-                                        .addComponent(grupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel7)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(precioIn))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGap(33, 33, 33)
-                                    .addComponent(guardar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(modificar)
-                                    .addGap(47, 47, 47)
-                                    .addComponent(cancelar)))
+                                .addComponent(jLabel5)
+                                .addGap(53, 53, 53)
+                                .addComponent(grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(guardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(modificar)
+                                .addGap(47, 47, 47)
+                                .addComponent(cancelar))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jLabel8)))
+                        .addGap(87, 87, 87)
+                        .addComponent(jLabel8))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(precioIn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(precioEx, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(nombreTratamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(descripcionT, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(25, Short.MAX_VALUE))
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,19 +231,22 @@ public class Tratamientos extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(nombreTratamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4))
-                    .addComponent(descripcionT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                    .addComponent(nombreTratamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(descripcionT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(precioEx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -239,11 +254,11 @@ public class Tratamientos extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(precioIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardar)
                     .addComponent(modificar)
@@ -296,17 +311,17 @@ public class Tratamientos extends javax.swing.JPanel {
 
         tratamientos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Tratamiento Dental", "Grupo", "Cantidad", "Precio"
+                "Código", "Tratamiento", "Grupo", "Cantidad", "Precio Externos", "Precio Internos"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, true, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -401,10 +416,10 @@ public class Tratamientos extends javax.swing.JPanel {
                         .addGap(52, 52, 52)
                         .addComponent(SeleccionarTratamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -415,41 +430,76 @@ public class Tratamientos extends javax.swing.JPanel {
                 .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(15, 15, 15)
                                 .addComponent(SeleccionarTratamiento))
                             .addComponent(BuscarTratamiento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
+        Controlador.Funciones.TablaPaquetes(tratamientos);
         Interfaz.Pantalla.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_RegresarActionPerformed
 
     private void EditarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarTratamientoActionPerformed
-        Agregar.setVisible(true);
+
+        int fila = tratamientos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un tratamiento de la tabla");
+            return;
+        }
+
+        codigo.setText(tratamientos.getValueAt(fila, 0).toString());
+        nombreTratamiento.setText(tratamientos.getValueAt(fila, 1).toString());
+        grupo.setSelectedItem(tratamientos.getValueAt(fila, 2).toString());
+        precioEx.setText(tratamientos.getValueAt(fila, 4).toString());
+        precioIn.setText(tratamientos.getValueAt(fila, 5).toString());
+
+        llenarTablaP();
         guardar.setVisible(false);
         modificar.setVisible(true);
-        llenarTablaP();
+        Agregar.setVisible(true);
     }//GEN-LAST:event_EditarTratamientoActionPerformed
 
     private void AgregarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarTratamientoActionPerformed
+        llenarTablaP();
         Agregar.setVisible(true);
         modificar.setVisible(false);
         guardar.setVisible(true);
-        llenarTablaP();
     }//GEN-LAST:event_AgregarTratamientoActionPerformed
 
     private void EliminarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarTratamientoActionPerformed
-        // TODO add your handling code here:
+        int fila = tratamientos.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un tratamiento de la tabla");
+            return;
+        }
+        int idPaquete = Integer.parseInt(tratamientos.getValueAt(fila, 0).toString());
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que deseas eliminar este tratamiento?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (opcion == JOptionPane.YES_OPTION) {
+            boolean eliminado = Controlador.Conectar.eliminarPaquete(idPaquete);
+
+            if (eliminado) {
+                JOptionPane.showMessageDialog(this, "Tratamiento eliminado correctamente");
+                Controlador.Funciones.TablaPaquetes(tratamientos);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al eliminar el tratamiento");
+            }
+        }
     }//GEN-LAST:event_EliminarTratamientoActionPerformed
 
     private void SeleccionarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeleccionarTratamientoActionPerformed
@@ -461,6 +511,7 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_precioInActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+        limpiarFormulario();
         Agregar.setVisible(false);
     }//GEN-LAST:event_cancelarActionPerformed
 
@@ -501,6 +552,10 @@ public class Tratamientos extends javax.swing.JPanel {
 
         if (ok) {
             JOptionPane.showMessageDialog(this, "Paquete guardado correctamente");
+            Controlador.Funciones.TablaPaquetes(tratamientos);
+            limpiarFormulario();
+            Agregar.setVisible(false);
+
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar paquete");
         }
@@ -509,12 +564,25 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_guardarActionPerformed
 
     private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        int id = Integer.parseInt(codigo.getText());
         String nombre = nombreTratamiento.getText();
-        String Descripcion = descripcionT.getText();
-        String clasificación = grupo.getSelectedItem().toString();
+        String descripcion = descripcionT.getText();
+        String clasificacion = grupo.getSelectedItem().toString();
         double precioExterno = Double.parseDouble(precioEx.getText());
         double precioInterno = Double.parseDouble(precioIn.getText());
-        //Controlador.Conectar.modificarPaquete(nombre, Descripcion, clasificación, precioExterno, precioInterno);
+
+        boolean ok = Controlador.Conectar.modificarPaquete(
+                id, nombre, descripcion, clasificacion, precioExterno, precioInterno
+        );
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Tratamiento actualizado");
+            limpiarFormulario();
+            Agregar.setVisible(false);
+            Controlador.Funciones.TablaPaquetes(tratamientos);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar");
+        }
     }//GEN-LAST:event_modificarActionPerformed
 
     private void grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grupoActionPerformed
@@ -537,6 +605,20 @@ public class Tratamientos extends javax.swing.JPanel {
             });
         }
     }
+    
+    private void limpiarFormulario() {
+        codigo.setText("");
+        nombreTratamiento.setText("");
+        descripcionT.setText("");
+        precioEx.setText("");
+        precioIn.setText("");
+        grupo.setSelectedIndex(0);
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
+        modelo.setRowCount(0);
+    }
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Agregar;
@@ -547,6 +629,7 @@ public class Tratamientos extends javax.swing.JPanel {
     private javax.swing.JButton Regresar;
     private javax.swing.JButton SeleccionarTratamiento;
     private javax.swing.JButton cancelar;
+    private javax.swing.JTextField codigo;
     private javax.swing.JTextField descripcionT;
     private javax.swing.JComboBox<String> grupo;
     private javax.swing.JButton guardar;
@@ -558,6 +641,7 @@ public class Tratamientos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel22;
@@ -570,6 +654,6 @@ public class Tratamientos extends javax.swing.JPanel {
     private javax.swing.JTextField precioEx;
     private javax.swing.JTextField precioIn;
     private javax.swing.JTable tablaProductos;
-    private javax.swing.JTable tratamientos;
+    public static javax.swing.JTable tratamientos;
     // End of variables declaration//GEN-END:variables
 }
