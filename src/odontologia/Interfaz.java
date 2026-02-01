@@ -30,6 +30,7 @@ public class Interfaz extends javax.swing.JFrame {
     Nuevo_Cliente nc;
     Tratamientos tm;
     Empleados Em;
+    Configuracion conf;
     public static Object[] linea=new Object[8];
     public static String id="", codi="";
     public String buscar="";
@@ -116,7 +117,6 @@ public class Interfaz extends javax.swing.JFrame {
         btnClientes = new javax.swing.JButton();
         btnProductos = new javax.swing.JButton();
         btnInventario = new javax.swing.JButton();
-        btnConfiguracion = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
@@ -126,7 +126,6 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         btnAgrgar = new javax.swing.JButton();
-        btnReimprimir = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -137,12 +136,12 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        btnDevoluciones = new javax.swing.JButton();
         btnServicios = new javax.swing.JButton();
         CorteCaja = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         tablaVenta = new javax.swing.JTable();
         btnEmpleado = new javax.swing.JButton();
+        btnConfiguracion = new javax.swing.JButton();
 
         IngresasUsuario.setTitle("Ingresar Usuario ");
         IngresasUsuario.setResizable(false);
@@ -725,10 +724,6 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
-        btnConfiguracion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/configuracion-de-sincronizacion.png"))); // NOI18N
-        btnConfiguracion.setText("Configuración");
-        btnConfiguracion.setDisabledIcon(null);
-
         btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/reporte-de-negocios.png"))); // NOI18N
         btnReporte.setText("Reporte");
         btnReporte.addActionListener(new java.awt.event.ActionListener() {
@@ -783,8 +778,11 @@ public class Interfaz extends javax.swing.JFrame {
         });
 
         btnAgrgar.setText("Agregar producto");
-
-        btnReimprimir.setText("Reimprimir último ticket");
+        btnAgrgar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgrgarActionPerformed(evt);
+            }
+        });
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
         jPanel5.setPreferredSize(new java.awt.Dimension(1, 85));
@@ -861,8 +859,6 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        btnDevoluciones.setText("Ventas del día y Devoluciones");
-
         btnServicios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/silla-de-dentista.png"))); // NOI18N
         btnServicios.setText("Servicios");
         btnServicios.addActionListener(new java.awt.event.ActionListener() {
@@ -913,6 +909,15 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        btnConfiguracion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/configuracion-de-sincronizacion.png"))); // NOI18N
+        btnConfiguracion.setText("Configuración");
+        btnConfiguracion.setDisabledIcon(null);
+        btnConfiguracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfiguracionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PantallaLayout = new javax.swing.GroupLayout(Pantalla);
         Pantalla.setLayout(PantallaLayout);
         PantallaLayout.setHorizontalGroup(
@@ -955,13 +960,8 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnSalidas, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PantallaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnReimprimir)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDevoluciones, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(234, Short.MAX_VALUE))
+                        .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(233, Short.MAX_VALUE))
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 1236, Short.MAX_VALUE)
         );
         PantallaLayout.setVerticalGroup(
@@ -976,9 +976,10 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(btnServicios)
                     .addComponent(CorteCaja)
                     .addComponent(btnReporte)
-                    .addComponent(btnEmpleado)
-                    .addComponent(btnConfiguracion))
-                .addGap(6, 6, 6)
+                    .addGroup(PantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEmpleado)
+                        .addComponent(btnConfiguracion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addGroup(PantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -998,11 +999,7 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(btnBorrar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(PantallaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnReimprimir)
-                    .addComponent(btnDevoluciones))
-                .addGap(12, 12, 12)
+                .addGap(47, 47, 47)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1219,6 +1216,17 @@ public class Interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoActionPerformed
 
+    private void btnAgrgarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgrgarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgrgarActionPerformed
+
+    private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
+        Pantalla.setVisible(false);
+        this.add(conf);
+        conf.setBounds(0, 0, this.getWidth(), this.getHeight());
+        conf.setVisible(true);
+    }//GEN-LAST:event_btnConfiguracionActionPerformed
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1262,6 +1270,7 @@ public class Interfaz extends javax.swing.JFrame {
         nc = new Nuevo_Cliente();
         tm = new Tratamientos();
         Em= new Empleados();
+        conf = new Configuracion();
     }
 
     public boolean seleccionado(){
@@ -1293,7 +1302,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnCobrar;
     private javax.swing.JButton btnConfiguracion;
-    private javax.swing.JButton btnDevoluciones;
     private javax.swing.JButton btnEliminarP;
     private javax.swing.JButton btnEmpleado;
     private javax.swing.JButton btnEntradas;
@@ -1301,7 +1309,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnInventario;
     private javax.swing.JButton btnModificarP;
     private javax.swing.JButton btnProductos;
-    private javax.swing.JButton btnReimprimir;
     private javax.swing.JButton btnReporte;
     private javax.swing.JButton btnSalidas;
     private javax.swing.JButton btnServicios;
