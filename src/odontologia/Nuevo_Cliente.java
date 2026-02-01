@@ -412,8 +412,8 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     private void InternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InternoActionPerformed
         jpExtras.setVisible(true);
         tipo="interno";
-        ocupa="";
-        folio=0;
+        //ocupa="";
+        //folio=0;
     }//GEN-LAST:event_InternoActionPerformed
 
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
@@ -472,8 +472,10 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                 String tipoC = rs.getString("tipo_cliente");
                 if ("Interno".equalsIgnoreCase(tipoC)) {
                     Interno.setSelected(true);
-                    tipo="interno";
                     jpExtras.setVisible(true);
+                    tipo="interno";
+                    folio= Long.parseLong(rs.getString("id_cliente"));
+                    ocupa= txtOcupacion.getText(); 
                 } else {
                     Externo.setSelected(true);
                     folio= Long.parseLong(rs.getString("id_cliente"));
@@ -490,39 +492,41 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSeleccionarModificarClienteActionPerformed
 
     private void btnModificaciarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificaciarClienteActionPerformed
-        if (vacio()){           
-            JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
+    if (vacio()) {           
+        JOptionPane.showMessageDialog(null, "Error: Hay campos obligatorios vacíos.");
+        return;
+    }
+    int fila = tablaCliente.getSelectedRow();
+    if (seleccionado()) {
+        JOptionPane.showMessageDialog(null, "Seleccione el cliente en la tabla");
+        return;
+    }
+
+    try {
+        String idOriginal = tablaCliente.getValueAt(fila, 0).toString();
+        String sql = "UPDATE cliente SET " +
+                     "nombre='" + txtNombre.getText().trim() + "', " +
+                     "apellido='" + txtApellidos.getText().trim() + "', " +
+                     "telefono='" + txtTelefono.getText().trim() + "', " +
+                     "correo='" + txtCorreo.getText().trim() + "', " +
+                     "tipo_cliente='" + tipo + "', " +
+                     "ocupacion='" + txtOcupacion.getText().trim() + "' " +
+                     "WHERE id_cliente='" + idOriginal + "'";
+
+        new Controlador.Conectar().ejecutar(sql);
+        
+        if (Controlador.Conectar.MENSAJE.equals("")) {
+            JOptionPane.showMessageDialog(null, "Cliente actualizado con éxito");
+            txtMatricula.setEditable(true);
+            Funciones.limpiaTabla(t2);
+            Funciones.consultarC(quer, t2);
+            limpia();
         } else {
-            if(seleccionado()){
-                int fila = tablaCliente.getSelectedRow();
-                try {
-                    String idOriginal = tablaCliente.getValueAt(fila, 0).toString();
-                    String sql = "UPDATE cliente SET " +
-                                 "nombre='" + txtNombre.getText().trim() + "', " +
-                                 "apellido='" + txtApellidos.getText().trim() + "', " +
-                                 "telefono='" + txtTelefono.getText().trim() + "', " +
-                                 "correo='" + txtCorreo.getText().trim() + "', " +
-                                 "id_cliente='" + idOriginal + "', " +
-                                 "tipo_cliente='" + tipo + "', " +
-                                 "ocupacion='" + txtOcupacion.getText().trim() + "' " +
-                                 "WHERE id_cliente='" + idOriginal + "'";
-                    new Controlador.Conectar().ejecutar(sql);
-                    if (Controlador.Conectar.MENSAJE.equals("")) {
-                        JOptionPane.showMessageDialog(null, "Cliente actualizado con éxito");
-                        txtMatricula.setEditable(true);
-                        Funciones.limpiaTabla(t2);
-                        Funciones.consultarC(quer, t2);
-                        limpia();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Error en BD: " + Controlador.Conectar.MENSAJE);
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Seleccione el cliente en la tabla");
-            }
+            JOptionPane.showMessageDialog(null, "Error en BD: " + Controlador.Conectar.MENSAJE);
         }
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
+    }
     }//GEN-LAST:event_btnModificaciarClienteActionPerformed
     
     public void insertarCliente(String x){   
@@ -554,14 +558,13 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     }
     
     private boolean vacio() {
-    if (txtNombre.getText().trim().isEmpty() || 
-        txtApellidos.getText().trim().isEmpty() || 
-        txtTelefono.getText().trim().isEmpty() || 
-        txtCorreo.getText().trim().isEmpty() || 
-        tipo=="" || ocupa=="" || folio==0) {       
-        return true; 
-    }
-        return false;
+       return txtNombre.getText().trim().isEmpty() || 
+       txtApellidos.getText().trim().isEmpty() || 
+       txtTelefono.getText().trim().isEmpty() || 
+       txtCorreo.getText().trim().isEmpty() || 
+       (tipo == null || tipo.isEmpty()) || 
+       (ocupa == null || ocupa.isEmpty()) || 
+       folio == 0;
     }
     
     public boolean seleccionado(){
