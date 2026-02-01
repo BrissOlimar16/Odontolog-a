@@ -487,7 +487,10 @@ public class Productos extends javax.swing.JPanel {
             double porcentaje = Double.parseDouble(jSpinner1.getValue().toString());       
             double precioFinal = precio * (1 + (porcentaje / 100.0));
             txtPrecioVentaExterno.setText(String.format("%.2f", precioFinal));
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
+            txtPrecioCosto1.setText("");
+        }
     }
     
     public void limpia(){

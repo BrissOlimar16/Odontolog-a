@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static odontologia.Nuevo_Cliente.t2;
 
 /**
  *
@@ -17,11 +18,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Tratamientos extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Tratamientos
-     */
+    public static DefaultTableModel modelo = new DefaultTableModel();
     public Tratamientos() {
         initComponents();
+        
     }
 
     /**
@@ -339,7 +339,7 @@ public class Tratamientos extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(212, 701));
 
-        AgregarTratamiento.setText("Agragar Tratamiento");
+        AgregarTratamiento.setText("Agregar Tratamiento");
         AgregarTratamiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AgregarTratamientoActionPerformed(evt);
@@ -353,7 +353,7 @@ public class Tratamientos extends javax.swing.JPanel {
             }
         });
 
-        EditarTratamiento.setText("Editar Tratamiendo");
+        EditarTratamiento.setText("Modificar Tratamiendo");
         EditarTratamiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditarTratamientoActionPerformed(evt);
@@ -590,9 +590,8 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_grupoActionPerformed
 
     public void llenarTablaP() {
-        DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
+        modelo = (DefaultTableModel)tablaProductos.getModel();
         modelo.setRowCount(0);
-
         Controlador.Funciones pro = new Controlador.Funciones();
         List<Producto> productos = pro.obtenerProductos();
 
@@ -614,7 +613,7 @@ public class Tratamientos extends javax.swing.JPanel {
         precioIn.setText("");
         grupo.setSelectedIndex(0);
 
-        DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
+        //DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
         modelo.setRowCount(0);
     }
 

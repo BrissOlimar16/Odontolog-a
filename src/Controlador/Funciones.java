@@ -1,7 +1,7 @@
 package Controlador;
 
 import static Controlador.Conectar.getConexion;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Component;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,9 +15,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import odontologia.BusquedaInventario;
 import odontologia.Interfaz;
 import static odontologia.Nuevo_Cliente.t2;
-import odontologia.Productos;
+//import odontologia.Productos;
 
 public class Funciones extends Interfaz {
     public static void limpiaTabla(DefaultTableModel t){
@@ -98,15 +99,30 @@ public class Funciones extends Interfaz {
         return ThreadLocalRandom.current().nextInt(10_000_000, 100_000_000);
     }
     
+    //buscar productos
     public static void buscando(String buscar) {
         limpiaTabla(t1);
         if (!buscar.trim().isEmpty()) {
-            String query = "SELECT p.id_producto, p.nombre, p.descripcion, p.existencias, pp.precio " +
-                           "FROM producto p JOIN precioproducto pp ON p.id_producto = pp.id_producto " +
-                           "WHERE pp.tipoCliente = 'externo' AND (p.id_producto ILIKE '%" + buscar + "%' OR " +
-                           "p.nombre ILIKE '%" + buscar + "%' OR " + "p.descripcion ILIKE '%" + buscar + "%') ORDER BY p.id_producto";
+            String query = "SELECT p.id_producto, p.nombre, p.descripcion, p.costo, pp.precio, p.existencias " +
+                       "FROM producto p JOIN precioproducto pp ON p.id_producto = pp.id_producto " +
+                       "WHERE pp.tipo_cliente = 'Externo' AND (p.id_producto ILIKE '%" + buscar + "%' OR " +
+                       "p.nombre ILIKE '%" + buscar + "%' OR p.descripcion ILIKE '%" + buscar + "%') " +
+                       "ORDER BY p.id_producto";
             consultarP(query, t1);
         }
+    }
+    
+    public static void buscandoExistencias(String n) {
+        // Consulta que busca el producto y trae AMBOS precios haciendo JOINS laterales o condicionales
+        String query = "SELECT p.nombre, p.costo, p.existencias, " +
+                       "MAX(CASE WHEN pp.tipo_cliente = 'Externo' THEN pp.precio END) as precio_externo, " +
+                       "MAX(CASE WHEN pp.tipo_cliente = 'Interno' THEN pp.precio END) as precio_interno " +
+                       "FROM producto p " +
+                       "LEFT JOIN precioproducto pp ON p.id_producto = pp.id_producto " +
+                       "WHERE p.id_producto = '" + n + "' " +
+                       "GROUP BY p.id_producto, p.nombre, p.costo, p.existencias";
+
+        BusquedaInventario.traerExistencias(query);
     }
     
     public static void buscandoCliente(String busca){
@@ -333,7 +349,7 @@ public class Funciones extends Interfaz {
                     rs.getInt("codigo"),
                     rs.getString("tratamiento"),
                     rs.getString("grupo"),
-                    rs.getInt("cantidad"),           // 👈 paquetes disponibles
+                    rs.getInt("cantidad"),
                     rs.getDouble("precio_externo"),
                     rs.getDouble("precio_interno")
                 };

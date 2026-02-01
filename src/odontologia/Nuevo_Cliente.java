@@ -19,6 +19,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
         initComponents();
         c = new Controlador.Conectar().conectaBD();
         t2 = (DefaultTableModel)tablaCliente.getModel();
+        btnModificaciarCliente.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -47,13 +48,14 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
         btnGuardarCliente = new javax.swing.JButton();
-        btnModificarCliente = new javax.swing.JButton();
+        btnSeleccionarModificarCliente = new javax.swing.JButton();
         btnEliminarCliente = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
         txtBuscarCliente = new javax.swing.JTextField();
         lbTitulo7 = new javax.swing.JLabel();
+        btnModificaciarCliente = new javax.swing.JButton();
 
         jPanel16.setBackground(new java.awt.Color(0, 0, 153));
 
@@ -175,11 +177,11 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
             }
         });
 
-        btnModificarCliente.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        btnModificarCliente.setText("Modificar Cliente");
-        btnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
+        btnSeleccionarModificarCliente.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        btnSeleccionarModificarCliente.setText("Modificar Cliente");
+        btnSeleccionarModificarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarClienteActionPerformed(evt);
+                btnSeleccionarModificarClienteActionPerformed(evt);
             }
         });
 
@@ -200,7 +202,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                    .addComponent(btnModificarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                    .addComponent(btnSeleccionarModificarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                     .addComponent(btnEliminarCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
@@ -210,7 +212,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                 .addGap(49, 49, 49)
                 .addComponent(btnGuardarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnModificarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSeleccionarModificarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnEliminarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -268,13 +270,20 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                 .addGap(25, 25, 25)
                 .addComponent(txtBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         lbTitulo7.setBackground(new java.awt.Color(255, 255, 255));
         lbTitulo7.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lbTitulo7.setText("NUEVO CLIENTE ");
+
+        btnModificaciarCliente.setText("Guardar Cliente Modificado");
+        btnModificaciarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificaciarClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -290,7 +299,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                         .addComponent(lbTitulo7, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(60, 60, 60)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(ib, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,7 +312,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                                     .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jpExtras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jpExtras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addComponent(ib6, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -311,7 +320,8 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                                 .addGap(97, 97, 97)
                                 .addComponent(Externo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(30, 30, 30)
-                                .addComponent(Interno, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(Interno, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnModificaciarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -351,13 +361,15 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                             .addComponent(Interno))
                         .addGap(18, 18, 18)
                         .addComponent(jpExtras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(48, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificaciarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -400,6 +412,8 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     private void InternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InternoActionPerformed
         jpExtras.setVisible(true);
         tipo="interno";
+        ocupa="";
+        folio=0;
     }//GEN-LAST:event_InternoActionPerformed
 
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
@@ -424,7 +438,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                 Funciones.consultarC(quer,t2);
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Seleccione el cliente en la tabla");
+            JOptionPane.showMessageDialog(null, "Seleccione el cliente en la lista.");
             Funciones.buscandoCliente(busca);
         }
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
@@ -438,33 +452,78 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtBuscarClienteKeyReleased
 
-    private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
-        if(seleccionado()){
-            int fila = tablaCliente.getSelectedRow();
-                if (fila == -1) {
-                    JOptionPane.showMessageDialog(null, "Seleccione un cliente");
-                    return;
-                }
-                try {
-                    String id = tablaCliente.getValueAt(fila, 0).toString();
-                        String sql = "UPDATE cliente SET nombre='" + txtNombre.getText() + "', apellido='"  +txtApellidos.getText() +"', telefono='" + txtTelefono.getText() +
-                                "', correo='" + txtCorreo.getText() +"', id_cliente='" + txtMatricula.getText() + "', tipo_cliente='" + tipo + "', ocupacion='" + txtOcupacion.getText().trim() +"' WHERE id_cliente=" + id;
-                        new Controlador.Conectar().ejecutar(sql);
-                        if (Controlador.Conectar.MENSAJE.equals("")) {
-                            JOptionPane.showMessageDialog(null, "¡Cliente actualizado con éxito!");
-
-                            Funciones.limpiaTabla(t2);
-                            Funciones.consultarC(quer, t2);
-                        } 
-                        else {
-                           JOptionPane.showMessageDialog(null, "Error en BD: " + Controlador.Conectar.MENSAJE);
-                        }
-                }
-                catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
+    private void btnSeleccionarModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarModificarClienteActionPerformed
+    int fila = tablaCliente.getSelectedRow();
+    if (fila != -1) {
+        String id = tablaCliente.getValueAt(fila, 0).toString();
+        
+        String sql = "SELECT * FROM cliente WHERE id_cliente = '" + id + "'";
+        java.sql.ResultSet rs = new Controlador.Conectar().consultas(sql);
+        txtMatricula.setEditable(false);
+        try {
+            if (rs.next()) {
+                txtNombre.setText(rs.getString("nombre"));
+                txtApellidos.setText(rs.getString("apellido"));
+                txtTelefono.setText(rs.getString("telefono"));
+                txtCorreo.setText(rs.getString("correo"));
+                txtMatricula.setText(rs.getString("id_cliente"));
+                txtOcupacion.setText(rs.getString("ocupacion"));
+                btnModificaciarCliente.setVisible(true);
+                String tipoC = rs.getString("tipo_cliente");
+                if ("Interno".equalsIgnoreCase(tipoC)) {
+                    Interno.setSelected(true);
+                    tipo="interno";
+                    jpExtras.setVisible(true);
+                } else {
+                    Externo.setSelected(true);
+                    folio= Long.parseLong(rs.getString("id_cliente"));
+                    tipo="externo";
+                    ocupa="ciudadano";
                 }
             }
-    }//GEN-LAST:event_btnModificarClienteActionPerformed
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage());
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Seleccione un cliente de la lista.");
+    }
+    }//GEN-LAST:event_btnSeleccionarModificarClienteActionPerformed
+
+    private void btnModificaciarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificaciarClienteActionPerformed
+        if (vacio()){           
+            JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
+        } else {
+            if(seleccionado()){
+                int fila = tablaCliente.getSelectedRow();
+                try {
+                    String idOriginal = tablaCliente.getValueAt(fila, 0).toString();
+                    String sql = "UPDATE cliente SET " +
+                                 "nombre='" + txtNombre.getText().trim() + "', " +
+                                 "apellido='" + txtApellidos.getText().trim() + "', " +
+                                 "telefono='" + txtTelefono.getText().trim() + "', " +
+                                 "correo='" + txtCorreo.getText().trim() + "', " +
+                                 "id_cliente='" + idOriginal + "', " +
+                                 "tipo_cliente='" + tipo + "', " +
+                                 "ocupacion='" + txtOcupacion.getText().trim() + "' " +
+                                 "WHERE id_cliente='" + idOriginal + "'";
+                    new Controlador.Conectar().ejecutar(sql);
+                    if (Controlador.Conectar.MENSAJE.equals("")) {
+                        JOptionPane.showMessageDialog(null, "Cliente actualizado con éxito");
+                        txtMatricula.setEditable(true);
+                        Funciones.limpiaTabla(t2);
+                        Funciones.consultarC(quer, t2);
+                        limpia();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error en BD: " + Controlador.Conectar.MENSAJE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione el cliente en la tabla");
+            }
+        }
+    }//GEN-LAST:event_btnModificaciarClienteActionPerformed
     
     public void insertarCliente(String x){   
         try{            
@@ -486,6 +545,9 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
         txtCorreo.setText("");
         txtMatricula.setText("");
         txtOcupacion.setText("");
+        Externo.setSelected(false);
+        Interno.setSelected(false);
+        btnModificaciarCliente.setVisible(false);
         tipo="";
         ocupa=""; 
         folio=0;
@@ -505,8 +567,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     public boolean seleccionado(){
         if (tablaCliente.getSelectedRow()!=-1){
            return true;
-        }
-        else return false;
+        }else return false;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -515,7 +576,8 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnGuardarCliente;
-    private javax.swing.JButton btnModificarCliente;
+    private javax.swing.JButton btnModificaciarCliente;
+    private javax.swing.JButton btnSeleccionarModificarCliente;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel ib;
     private javax.swing.JLabel ib1;

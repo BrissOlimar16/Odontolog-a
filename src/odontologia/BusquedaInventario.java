@@ -17,6 +17,11 @@ public class BusquedaInventario extends javax.swing.JPanel {
         initComponents();     
         cp = new Controlador.Conectar().conectaBD();
         t = (DefaultTableModel)tablaInventario.getModel();
+        txtPrecioCosto2.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { calcularPrecio(); }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { calcularPrecio(); }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { calcularPrecio(); } });
+        panel.setVisible(false);
     }
     
     @SuppressWarnings("unchecked")
@@ -34,23 +39,25 @@ public class BusquedaInventario extends javax.swing.JPanel {
         jLabel69 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         lbTitulo = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        lbDescripcion1 = new javax.swing.JLabel();
+        panel = new javax.swing.JPanel();
+        lbNombre = new javax.swing.JLabel();
         lbDisponibles1 = new javax.swing.JLabel();
         lbTexto1 = new javax.swing.JLabel();
         lbPrecioCosto1 = new javax.swing.JLabel();
         lbMinimo1 = new javax.swing.JLabel();
         lbGanancia1 = new javax.swing.JLabel();
-        lbMaximo1 = new javax.swing.JLabel();
         lbPorcentaje1 = new javax.swing.JLabel();
-        txtDescripcion1 = new javax.swing.JTextField();
         txtPrecioCosto2 = new javax.swing.JTextField();
-        txtPrecioVenta2 = new javax.swing.JTextField();
-        txtDisponible1 = new javax.swing.JTextField();
-        txtMinimo1 = new javax.swing.JTextField();
-        txtMaximo1 = new javax.swing.JTextField();
+        txtPrecioExterno = new javax.swing.JTextField();
+        txtDisponible = new javax.swing.JTextField();
+        txtMasExistencias = new javax.swing.JTextField();
         jSpinner2 = new javax.swing.JSpinner();
         lbPrecioVenta1 = new javax.swing.JLabel();
+        lb = new javax.swing.JLabel();
+        lbMinimo2 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        lbPrecioVenta2 = new javax.swing.JLabel();
+        txtPrecioVentaInterno = new javax.swing.JTextField();
         txtCodigoBarras1 = new javax.swing.JTextField();
         lbCodigo_Barras1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -59,6 +66,7 @@ public class BusquedaInventario extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnGuardar1 = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
         jSeparator1 = new javax.swing.JSeparator();
 
         Inventario.setTitle("INVENTARIO");
@@ -132,7 +140,7 @@ public class BusquedaInventario extends javax.swing.JPanel {
                         .addComponent(jLabel68, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(123, 123, 123)
                         .addComponent(jLabel69, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addContainerGap(262, Short.MAX_VALUE))
         );
         InventarioLayout.setVerticalGroup(
             InventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,63 +186,78 @@ public class BusquedaInventario extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panel.setBackground(new java.awt.Color(204, 204, 204));
+        panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lbDescripcion1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        lbDescripcion1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbDescripcion1.setText("Descripción");
-        jPanel1.add(lbDescripcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 133, -1));
+        lbNombre.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        lbNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbNombre.setText("Nombre");
+        panel.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 290, -1));
 
         lbDisponibles1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbDisponibles1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbDisponibles1.setText("Hay");
-        jPanel1.add(lbDisponibles1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 70, -1));
+        panel.add(lbDisponibles1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, 70, -1));
 
         lbTexto1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbTexto1.setText("en este momento.");
-        jPanel1.add(lbTexto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 270, 117, -1));
+        panel.add(lbTexto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 340, 117, -1));
 
         lbPrecioCosto1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbPrecioCosto1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbPrecioCosto1.setText("Precio Costo");
-        jPanel1.add(lbPrecioCosto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 97, -1));
+        panel.add(lbPrecioCosto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 97, -1));
 
         lbMinimo1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        lbMinimo1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbMinimo1.setText("Mínimo");
-        jPanel1.add(lbMinimo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 80, -1));
+        lbMinimo1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbMinimo1.setText("al inventario.");
+        panel.add(lbMinimo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 380, 110, -1));
 
         lbGanancia1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbGanancia1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbGanancia1.setText("Ganancia");
-        jPanel1.add(lbGanancia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 97, -1));
-
-        lbMaximo1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        lbMaximo1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbMaximo1.setText("Máximo");
-        jPanel1.add(lbMaximo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 68, -1));
+        panel.add(lbGanancia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 97, -1));
 
         lbPorcentaje1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbPorcentaje1.setText("%");
-        jPanel1.add(lbPorcentaje1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 21, -1));
-        jPanel1.add(txtDescripcion1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 229, -1));
-        jPanel1.add(txtPrecioCosto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 118, -1));
+        panel.add(lbPorcentaje1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, 21, -1));
+        panel.add(txtPrecioCosto2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 118, -1));
+        panel.add(txtPrecioExterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, 118, -1));
+        panel.add(txtDisponible, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 340, 71, -1));
+        panel.add(txtMasExistencias, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 71, -1));
 
-        txtPrecioVenta2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrecioVenta2ActionPerformed(evt);
+        jSpinner2.setModel(new javax.swing.SpinnerNumberModel(20, null, null, 1));
+        jSpinner2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinner2StateChanged(evt);
             }
         });
-        jPanel1.add(txtPrecioVenta2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, 118, -1));
-        jPanel1.add(txtDisponible1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 71, -1));
-        jPanel1.add(txtMinimo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 310, 71, -1));
-        jPanel1.add(txtMaximo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 71, -1));
-        jPanel1.add(jSpinner2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 118, -1));
+        panel.add(jSpinner2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 150, 118, -1));
 
         lbPrecioVenta1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbPrecioVenta1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbPrecioVenta1.setText("Precio Venta");
-        jPanel1.add(lbPrecioVenta1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 97, -1));
+        lbPrecioVenta1.setText("Precio Venta Externo");
+        panel.add(lbPrecioVenta1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 130, -1));
+
+        lb.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        lb.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lb.setText("Nombre");
+        panel.add(lb, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 133, -1));
+
+        lbMinimo2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        lbMinimo2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbMinimo2.setText("Agregar");
+        panel.add(lbMinimo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 380, 80, -1));
+
+        jSeparator2.setBackground(new java.awt.Color(102, 102, 102));
+        jSeparator2.setForeground(new java.awt.Color(102, 102, 102));
+        panel.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, 550, 10));
+
+        lbPrecioVenta2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        lbPrecioVenta2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbPrecioVenta2.setText("Precio Venta Interno");
+        panel.add(lbPrecioVenta2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, -1, -1));
+        panel.add(txtPrecioVentaInterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, 120, -1));
 
         lbCodigo_Barras1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbCodigo_Barras1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -269,7 +292,14 @@ public class BusquedaInventario extends javax.swing.JPanel {
         });
 
         btnGuardar1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        btnGuardar1.setText("Guardar Producto");
+        btnGuardar1.setText("Agregar Inventario");
+        btnGuardar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardar1ActionPerformed(evt);
+            }
+        });
+
+        jSeparator3.setForeground(new java.awt.Color(102, 102, 102));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -280,16 +310,19 @@ public class BusquedaInventario extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnGuardar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator3))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGap(48, 48, 48)
                 .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
@@ -318,8 +351,8 @@ public class BusquedaInventario extends javax.swing.JPanel {
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
@@ -339,18 +372,15 @@ public class BusquedaInventario extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
+                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtPrecioVenta2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioVenta2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecioVenta2ActionPerformed
-
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //Inventario.setVisible(true);
         //BusquedaInventario.setVisible(false);
@@ -370,26 +400,116 @@ public class BusquedaInventario extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
-    String buscar = txtCodigoBarras1.getText().trim();    
-            try {
-                int n = Integer.parseInt(buscar);
-                Funciones.buscando(n+"");
-//                txtBusquedaP.setText(n+"");
-//                txtCodigo.setText("");
-//                BusquedaProducto.setLocation(900, 150);
-//                BusquedaProducto.setVisible(true);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
-                txtCodigoBarras1.setText("");
-            } 
+//    String buscar = txtCodigoBarras1.getText().trim(); 
+//    if(txtCodigoBarras1.getText().trim().isEmpty()){
+//        JOptionPane.showMessageDialog(null, "Error: Un campo vacío");
+//    } else{
+//        try {
+//            int n = Integer.parseInt(buscar);
+//            //Funciones.buscando(n+""); 
+//        //                txtBusquedaP.setText(n+"");
+//        //                txtCodigo.setText("");
+//        //                BusquedaProducto.setLocation(900, 150);
+//        //                BusquedaProducto.setVisible(true);
+//        } catch (NumberFormatException e) {
+//            JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
+//            txtCodigoBarras1.setText("");
+//        }
+//    } 
+    String buscar = txtCodigoBarras1.getText().trim(); 
+    if(buscar.isEmpty()){
+        JOptionPane.showMessageDialog(null, "Error: El campo de código está vacío");
+    } else {
+        try {
+            // No es estrictamente necesario convertirlo a int si tu id_producto es String (varchar)
+            // pero lo mantenemos para validar que sean solo números según tu requisito
+            Integer.parseInt(buscar); 
+
+            // Llamamos al nuevo método
+            Funciones.buscandoExistencias(buscar);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
+            txtCodigoBarras1.setText("");
+        }
+    }
     }//GEN-LAST:event_btnbuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         Interfaz.Pantalla.setVisible(true);
         this.setVisible(false);
+        panel.setVisible(false);
+        txtCodigoBarras1.setText("");
+        limpia();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void jSpinner2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner2StateChanged
+        calcularPrecio();
+    }//GEN-LAST:event_jSpinner2StateChanged
 
+    private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
+    try {
+        String id = txtCodigoBarras1.getText().trim();
+        String nombre = lbNombre.getText();
+        double costo = Double.parseDouble(txtPrecioCosto2.getText());
+        double pExterno = Double.parseDouble(txtPrecioExterno.getText());
+        double pInterno = Double.parseDouble(txtPrecioVentaInterno.getText());
+        
+        String masExistencias = txtMasExistencias.getText().trim();
+        int cantidadSumar = masExistencias.isEmpty() ? 0 : Integer.parseInt(masExistencias);
+
+        Controlador.Conectar.ModificarExistencias(id, nombre, costo, cantidadSumar, pExterno, pInterno);
+        
+        panel.setVisible(false);
+        txtCodigoBarras1.setText("");
+        limpia();
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Asegúrese de que los precios y cantidades sean números.");
+    }
+    }//GEN-LAST:event_btnGuardar1ActionPerformed
+    
+    private void calcularPrecio() {
+        try {
+            double precio = txtPrecioCosto2.getText().trim().isEmpty() ? 0 : Double.parseDouble(txtPrecioCosto2.getText());
+            double porcentaje = Double.parseDouble(jSpinner2.getValue().toString());       
+            double precioFinal = precio * (1 + (porcentaje / 100.0));
+            txtPrecioExterno.setText(String.format("%.2f", precioFinal));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
+            txtPrecioCosto2.setText("");
+        }
+    }
+
+    public static void traerExistencias(String query) {
+        java.sql.ResultSet r = new Controlador.Conectar().consultas(query);
+        try {
+            if (r.next()) {            
+                lbNombre.setText(r.getString("nombre"));
+                txtPrecioCosto2.setText(String.valueOf(r.getDouble("costo")));
+                txtPrecioExterno.setText(String.valueOf(r.getDouble("precio_externo")));
+                txtPrecioVentaInterno.setText(String.valueOf(r.getDouble("precio_interno")));
+                txtDisponible.setText(r.getString("existencias"));
+
+                // Si tienes un componente para "Hay X en este momento"
+                // txtMasExistencias.setText(r.getString("existencias"));            
+                JOptionPane.showMessageDialog(null, "Producto encontrado con éxito.");
+                panel.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "El código de producto no existe.");
+            }
+        } catch (Exception ex) {
+            System.out.println("Error al extraer datos: " + ex.getMessage());
+        }
+    }
+    
+    public void limpia(){
+        lbNombre.setText("");
+        txtPrecioCosto2.setText("");
+        txtPrecioExterno.setText("");
+        txtPrecioVentaInterno.setText("");
+        txtDisponible.setText("");
+        txtMasExistencias.setText("");   
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Inventario;
@@ -403,31 +523,34 @@ public class BusquedaInventario extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JLabel jLabel69;
-    public javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JLabel lb;
     private javax.swing.JLabel lbCodigo_Barras1;
-    private javax.swing.JLabel lbDescripcion1;
     private javax.swing.JLabel lbDisponibles1;
     private javax.swing.JLabel lbGanancia1;
-    private javax.swing.JLabel lbMaximo1;
     private javax.swing.JLabel lbMinimo1;
+    private javax.swing.JLabel lbMinimo2;
+    public static javax.swing.JLabel lbNombre;
     private javax.swing.JLabel lbPorcentaje1;
     private javax.swing.JLabel lbPrecioCosto1;
     private javax.swing.JLabel lbPrecioVenta1;
+    private javax.swing.JLabel lbPrecioVenta2;
     private javax.swing.JLabel lbTexto1;
     private javax.swing.JLabel lbTitulo;
+    public static javax.swing.JPanel panel;
     private javax.swing.JTable tablaInventario;
     private javax.swing.JTextField txtCodigoBarras1;
-    private javax.swing.JTextField txtDescripcion1;
-    private javax.swing.JTextField txtDisponible1;
-    private javax.swing.JTextField txtMaximo1;
-    private javax.swing.JTextField txtMinimo1;
-    private javax.swing.JTextField txtPrecioCosto2;
-    private javax.swing.JTextField txtPrecioVenta2;
+    public static javax.swing.JTextField txtDisponible;
+    private javax.swing.JTextField txtMasExistencias;
+    public static javax.swing.JTextField txtPrecioCosto2;
+    public static javax.swing.JTextField txtPrecioExterno;
+    public static javax.swing.JTextField txtPrecioVentaInterno;
     // End of variables declaration//GEN-END:variables
 }

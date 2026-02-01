@@ -555,6 +555,41 @@ public class Conectar {
         }
     }
     
+    //Modifiacar producto solo el precio y las existencias
+    public static void ModificarExistencias(String id, String nombre, double costo, int stockNuevo, double pExterno, double pInterno) {
+    // Usamos la instancia para acceder a los métodos de ejecución
+    Conectar con = new Conectar();
+    
+    // 1. Query para actualizar producto (nombre, costo y suma de existencias)
+    String queryProducto = "UPDATE producto SET nombre = '" + nombre + "', " +
+                           "costo = " + costo + ", " +
+                           "existencias = existencias + " + stockNuevo + " " +
+                           "WHERE id_producto = '" + id + "'";
+    
+    // 2. Querys para actualizar los dos tipos de precios
+    String queryPrecioExt = "UPDATE precioproducto SET precio = " + pExterno + " " +
+                            "WHERE id_producto = '" + id + "' AND tipo_cliente = 'Externo'";
+    
+    String queryPrecioInt = "UPDATE precioproducto SET precio = " + pInterno + " " +
+                            "WHERE id_producto = '" + id + "' AND tipo_cliente = 'Interno'";
+
+    try {
+        // Ejecutamos las tres actualizaciones
+        con.ejecutar(queryProducto);
+        con.ejecutar(queryPrecioExt);
+        con.ejecutar(queryPrecioInt);
+        
+        // Verificamos si la variable estática MENSAJE quedó vacía (significa éxito)
+        if(Conectar.MENSAJE.equals("")) {
+             JOptionPane.showMessageDialog(null, "¡Cambios guardados y stock actualizado!");
+        } else {
+             JOptionPane.showMessageDialog(null, "Error al procesar: " + Conectar.MENSAJE);
+        }
+    } catch (Exception e) {
+        System.out.println("Error en ModificarExistencias: " + e.getMessage());
+    }
+}
+    
     
     public static boolean guardarTratamiento(
         String nombre,

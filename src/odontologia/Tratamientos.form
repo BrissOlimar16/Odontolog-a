@@ -595,7 +595,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="AgregarTratamiento">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Agragar Tratamiento"/>
+            <Property name="text" type="java.lang.String" value="Agregar Tratamiento"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AgregarTratamientoActionPerformed"/>
@@ -611,7 +611,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="EditarTratamiento">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Editar Tratamiendo"/>
+            <Property name="text" type="java.lang.String" value="Modificar Tratamiendo"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EditarTratamientoActionPerformed"/>

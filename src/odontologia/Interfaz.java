@@ -22,8 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class Interfaz extends javax.swing.JFrame {
     //Tablas
     public static DefaultTableModel t = new DefaultTableModel();
-    public static DefaultTableModel t1 = new DefaultTableModel();
-    
+    public static DefaultTableModel t1 = new DefaultTableModel(); 
     //Paneles
     BusquedaInventario bi;
     Productos p;
@@ -33,9 +32,9 @@ public class Interfaz extends javax.swing.JFrame {
     Empleados Em;
     public static Object[] linea=new Object[8];
     public static String id="", codi="";
-    //public static String query= "SELECT * FROM producto";
-    public static String query= "SELECT p.Id_producto, p.nombre, p.descripcion, p.costo, p.existencias, pp.tipocliente, pp.Precio " +
-    "FROM producto p JOIN precioproducto pp ON p.Id_Producto = pp.Id_Producto WHERE pp.tipocliente = 'externo' ORDER BY p.Id_Producto, pp.Precio";
+    public String buscar="";
+    public static String query="SELECT p.id_producto, p.nombre, p.descripcion, p.costo AS Costo, pp.precio AS Precio, p.existencias " +
+                      "FROM producto p INNER JOIN precioproducto pp ON p.id_producto = pp.id_producto WHERE pp.tipo_cliente = 'Externo'";
     
    String query2 = "SELECT p.id_producto, p.nombre, p.descripcion, p.costo, p.existencias, " +
                 "pp_ext.precio AS precio_externo, pp_int.precio AS precio_interno " +
@@ -46,7 +45,6 @@ public class Interfaz extends javax.swing.JFrame {
     
     Dimension tamanio = Toolkit.getDefaultToolkit().getScreenSize();
     
-    public String buscar="";
     Controlador.Conectar con = new Controlador.Conectar();
     public Interfaz() {
         initComponents();
