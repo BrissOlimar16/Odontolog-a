@@ -342,12 +342,6 @@ public class Productos extends javax.swing.JPanel {
         if (vacio()){
             JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
         } else {  
-//                insertarOmodificar("WITH nuevo_producto AS (INSERT INTO producto (Id_Producto, Nombre, Descripcion, Costo, Existencias) "+
-//                "VALUES ('"+txtCodigoBarras.getText()+"', '"+txtInsumo.getText()+"', '"+txtDescripcion.getText()+"', "+txtPrecioCosto1.getText()+", "+txtExistencias.getText()+
-//                ") RETURNING Id_Producto)INSERT INTO precioproducto (Id_Producto, tipoCliente, Precio) SELECT Id_Producto, 'externo', "+txtPrecioVentaExterno.getText().replace(",", ".")+" "+
-//                "FROM nuevo_producto UNION ALL SELECT Id_Producto, 'interno', "+txtPrecioVentaInterno.getText()+" FROM nuevo_producto");
-        
-
             String idProducto = txtCodigoBarras.getText();
             String nombre = txtInsumo.getText();
             int existencias = Integer.parseInt(txtExistencias.getText());
@@ -365,7 +359,7 @@ public class Productos extends javax.swing.JPanel {
 
             String descripcionFinal = descripcion + " | "+ cant1 + " " + pres1 + " + "+ cant2 + " " + pres2;
 
-            boolean guardado = Controlador.Conectar.guardarProducto(
+            boolean guardado = Controlador.Funciones.guardarProducto(
                     idProducto,
                     nombre,
                     descripcionFinal,
@@ -390,16 +384,6 @@ public class Productos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-//        if (vacio()){
-//            JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
-//        } else {
-//            insertarOmodificar("WITH producto_actualizado AS ( UPDATE producto SET Nombre = '" + txtInsumo.getText() + "', " +
-//             "Descripcion = '" + txtDescripcion.getText() + "', Costo = " + txtPrecioCosto1.getText() + ", Existencias = " + txtExistencias.getText() +
-//             " WHERE Id_Producto = '" + txtCodigoBarras.getText() + "' RETURNING Id_Producto) UPDATE precioproducto SET Precio = CASE " +
-//             " WHEN tipoCliente = 'externo' THEN " + txtPrecioVentaExterno.getText().replace(",", ".") + "  WHEN tipoCliente = 'interno' THEN " + txtPrecioVentaInterno.getText() +
-//             " END WHERE Id_Producto IN (SELECT Id_Producto FROM producto_actualizado)");
-//        }
-        
             if (vacio()) {
                 JOptionPane.showMessageDialog(this, "Error: Hay campos vacíos");
                 return;
@@ -424,7 +408,7 @@ public class Productos extends javax.swing.JPanel {
                     + cant1 + " " + pres1 + " + "
                     + cant2 + " " + pres2;
 
-            boolean actualizado = Controlador.Conectar.modificarProducto(
+            boolean actualizado = Controlador.Funciones.modificarProducto(
                     idProducto,
                     nombre,
                     descripcionFinal,

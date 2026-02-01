@@ -774,42 +774,6 @@ public class Empleados extends javax.swing.JPanel {
     }//GEN-LAST:event_EditarEActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
-//           String turno = "";
-//           if (matutino.isSelected()) turno = matutino.getText();
-//           else if (vespertino.isSelected()) turno = vespertino.getText();
-//           Date date = (Date) HoraInicio.getValue();
-//           java.sql.Time hora = new java.sql.Time(date.getTime());
-//           Date date1 = (Date) HoraFin.getValue();
-//           java.sql.Time hora1 = new java.sql.Time(date1.getTime());
-//           int idTurno = Controlador.Conectar.turnoBD(turno, hora, hora1);
-//           if (idTurno == -1) {
-//               JOptionPane.showMessageDialog(this, "Error al crear turno");
-//               return;
-//           }
-////           String matricula = matriculaEmpleado3.getText();
-////           int id = Integer.parseInt(matricula);
-//           int id=Integer.parseInt(matriculaEmpleado3.getText());
-//           String nombre = NombreEmpleado3.getText();
-//           String apellidos = apellidosEmpleados3.getText();
-//           String telefono = telefonoE.getText();
-//           String correo = correoE.getText();
-//           Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
-//           String Usuario = usuario.getSelectedItem().toString();
-//           String contraseña = contraseñaE2.getText();
-//           //Controlador.Conectar.CrearRol(Usuario.replace(" ", ""), contraseña);
-//           Controlador.Conectar.datosEmpleado(id, nombre, apellidos, telefono, correo, idTurno);
-//           String nombreUsuario = nombre.toLowerCase().trim() + id; 
-//        
-//           //String contraseña = contraseñaE2.getText();
-//           
-//           Controlador.Conectar.CrearRol(nombreUsuario, contraseña, Usuario, id);
-//           JOptionPane.showMessageDialog(this, "¡Éxito! Empleado guardado.\nUsuario: " + nombreUsuario + "\nRol: " + Usuario);
-//           limpiarCampos();
-//           Registra.setVisible(false);
-//           
-//           JOptionPane.showMessageDialog(this,"se guardo correctamente");
-
-
         Controlador.Funciones.registrarEmpleado(
         matutino.isSelected(),
         (Date) HoraInicio.getValue(),
@@ -841,15 +805,6 @@ public class Empleados extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelar5ActionPerformed
 
     private void EliminarEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarEMActionPerformed
-//        String matricula = matriculaEmpleado4.getText();
-//        int id = Integer.parseInt(matricula);
-//        String Usuario = usuario1.getSelectedItem().toString();
-//        Controlador.Conectar.eliminarET(id);
-//        Controlador.Conectar.EliminarRol(Usuario.replace(" ",""));
-//        JOptionPane.showMessageDialog(this,"se elimino correctamente");
-//        matriculaEmpleado4.setText("");
-//        Eliminar.setVisible(false);
-//        Controlador.Funciones.limpiaTabla(modelo);
         String matricula = matriculaEmpleado4.getText();
         Controlador.Funciones.eliminarEmpleado(matricula, this);
         matriculaEmpleado4.setText("");
@@ -861,14 +816,6 @@ public class Empleados extends javax.swing.JPanel {
     }//GEN-LAST:event_matriculaEmpleado4ActionPerformed
 
     private void editar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editar1ActionPerformed
-//        String matricula = matriculaEmpleado3.getText();
-//        int id = Integer.parseInt(matricula);
-//        String nombre = NombreEmpleado3.getText();
-//        String apellidos = apellidosEmpleados3.getText();
-//        String telefono = telefonoE.getText();
-//        String correo = correoE.getText();
-//        Controlador.Conectar.EditarEmpleado(id, nombre, apellidos, telefono, correo);
-        
         String textoId = matriculaEmpleado5.getText().trim();
 
         if (textoId.isEmpty()) {

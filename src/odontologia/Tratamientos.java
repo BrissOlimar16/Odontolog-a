@@ -491,7 +491,7 @@ public class Tratamientos extends javax.swing.JPanel {
                 JOptionPane.YES_NO_OPTION
         );
         if (opcion == JOptionPane.YES_OPTION) {
-            boolean eliminado = Controlador.Conectar.eliminarPaquete(idPaquete);
+            boolean eliminado = Controlador.Funciones.eliminarPaquete(idPaquete);
 
             if (eliminado) {
                 JOptionPane.showMessageDialog(this, "Tratamiento eliminado correctamente");
@@ -541,7 +541,7 @@ public class Tratamientos extends javax.swing.JPanel {
             }
         }
 
-        boolean ok = Controlador.Conectar.guardarTratamiento(
+        boolean ok = Controlador.Funciones.guardarTratamiento(
                 nombre,
                 descripcion,
                 clasificacion,
@@ -571,7 +571,7 @@ public class Tratamientos extends javax.swing.JPanel {
         double precioExterno = Double.parseDouble(precioEx.getText());
         double precioInterno = Double.parseDouble(precioIn.getText());
 
-        boolean ok = Controlador.Conectar.modificarPaquete(
+        boolean ok = Controlador.Funciones.modificarPaquete(
                 id, nombre, descripcion, clasificacion, precioExterno, precioInterno
         );
 
@@ -612,8 +612,6 @@ public class Tratamientos extends javax.swing.JPanel {
         precioEx.setText("");
         precioIn.setText("");
         grupo.setSelectedIndex(0);
-
-        //DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
         modelo.setRowCount(0);
     }
 

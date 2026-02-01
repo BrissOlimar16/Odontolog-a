@@ -1026,15 +1026,6 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void IngresarAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarAppActionPerformed
-//        String usuario = Usuario.getSelectedItem().toString();
-//        String contraseña = new String(ContraseñaUsuario.getPassword());
-//        string conectado = Controlador.Conectar.validarUsuario(usuario, contraseña);
-//       if(conectado){
-//            IngresasUsuario.setVisible(false);
-//            Caja.setLocationRelativeTo(null);
-//            Caja.setVisible(true);
-//        }
-
         String usuario = Usuario.getSelectedItem().toString();
         String contraseña = new String(ContraseñaUsuario.getPassword());
         String rolEncontrado = con.validarUser(usuario, contraseña);
@@ -1065,9 +1056,6 @@ public class Interfaz extends javax.swing.JFrame {
         limpiaTabla(t1);
         BusquedaProducto.setLocation(800, 150);
         BusquedaProducto.setVisible(true);
-        //Funciones.limpiaTabla(t1);
-//        BusquedaProducto.setVisible(true);
-//        BusquedaProducto.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
@@ -1103,7 +1091,6 @@ public class Interfaz extends javax.swing.JFrame {
         this.add(bi);
         bi.setBounds(0, 0, this.getWidth(), this.getHeight());
         bi.setVisible(true);
-        //bi.jPanel1.setVisible(false);
     }//GEN-LAST:event_btnInventarioActionPerformed
 
     private void ContraseñaUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ContraseñaUsuarioFocusGained
@@ -1177,7 +1164,6 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btnCancelarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPActionPerformed
         txtBusquedaP.setText("");
-        //Conectar.Funciones.limpiaTabla(t1);
         BusquedaProducto.setVisible(false);
     }//GEN-LAST:event_btnCancelarPActionPerformed
 
@@ -1249,15 +1235,13 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void ContraseñaUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ContraseñaUsuarioKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        IngresarApp.doClick(); // O llama directamente al método
-        // IngresarAppActionPerformed(null);
+        IngresarApp.doClick(); 
     }
     }//GEN-LAST:event_ContraseñaUsuarioKeyPressed
 
     private void MontoInicialKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MontoInicialKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        registroDinero.doClick(); // O llama directamente al método
-        // IngresarAppActionPerformed(null);
+        registroDinero.doClick(); 
     }
     }//GEN-LAST:event_MontoInicialKeyPressed
 
@@ -1289,12 +1273,6 @@ public class Interfaz extends javax.swing.JFrame {
         });
     }
     
-//    public void mostrarPanel(JPanel panel) {
-//        Pantalla.removeAll();
-//        Pantalla.add(panel);
-//        Pantalla.revalidate();
-//        Pantalla.repaint();
-//    }
 
     
     public void inicializarPanels(){

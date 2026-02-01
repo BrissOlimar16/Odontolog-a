@@ -382,57 +382,31 @@ public class BusquedaInventario extends javax.swing.JPanel {
 
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //Inventario.setVisible(true);
-        //BusquedaInventario.setVisible(false);
         Inventario.setVisible(true);
         Inventario.setSize(Pantalla.getSize());
         Inventario.setLocationRelativeTo(null);       
         Funciones.limpiaTabla(t);
         Funciones.consultarU(query,t);
-        //Pantalla.setVisible(false);        
-//        this.add(in);
-//        in.setBounds(0, 0, 466, 376);
-//        in.setVisible(true);
-//        Pantalla.removeAll();
-//        Pantalla.add(in);
-//        Pantalla.revalidate();
-//        Pantalla.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
-//    String buscar = txtCodigoBarras1.getText().trim(); 
-//    if(txtCodigoBarras1.getText().trim().isEmpty()){
-//        JOptionPane.showMessageDialog(null, "Error: Un campo vacío");
-//    } else{
-//        try {
-//            int n = Integer.parseInt(buscar);
-//            //Funciones.buscando(n+""); 
-//        //                txtBusquedaP.setText(n+"");
-//        //                txtCodigo.setText("");
-//        //                BusquedaProducto.setLocation(900, 150);
-//        //                BusquedaProducto.setVisible(true);
-//        } catch (NumberFormatException e) {
-//            JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
-//            txtCodigoBarras1.setText("");
-//        }
-//    } 
-    String buscar = txtCodigoBarras1.getText().trim(); 
-    if(buscar.isEmpty()){
-        JOptionPane.showMessageDialog(null, "Error: El campo de código está vacío");
-    } else {
-        try {
-            // No es estrictamente necesario convertirlo a int si tu id_producto es String (varchar)
-            // pero lo mantenemos para validar que sean solo números según tu requisito
-            Integer.parseInt(buscar); 
+        String buscar = txtCodigoBarras1.getText().trim(); 
+        if(buscar.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Error: El campo de código está vacío");
+        } else {
+            try {
+                // No es estrictamente necesario convertirlo a int si tu id_producto es String (varchar)
+                // pero lo mantenemos para validar que sean solo números según tu requisito
+                Integer.parseInt(buscar); 
 
-            // Llamamos al nuevo método
-            Funciones.buscandoExistencias(buscar);
+                // Llamamos al nuevo método
+                Funciones.buscandoExistencias(buscar);
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
-            txtCodigoBarras1.setText("");
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error de formato: El Código debe ser un número entero válido.");
+                txtCodigoBarras1.setText("");
+            }
         }
-    }
     }//GEN-LAST:event_btnbuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -458,7 +432,7 @@ public class BusquedaInventario extends javax.swing.JPanel {
         String masExistencias = txtMasExistencias.getText().trim();
         int cantidadSumar = masExistencias.isEmpty() ? 0 : Integer.parseInt(masExistencias);
 
-        Controlador.Conectar.ModificarExistencias(id, nombre, costo, cantidadSumar, pExterno, pInterno);
+        Controlador.Funciones.ModificarExistencias(id, nombre, costo, cantidadSumar, pExterno, pInterno);
         
         panel.setVisible(false);
         txtCodigoBarras1.setText("");
@@ -488,10 +462,7 @@ public class BusquedaInventario extends javax.swing.JPanel {
                 txtPrecioCosto2.setText(String.valueOf(r.getDouble("costo")));
                 txtPrecioExterno.setText(String.valueOf(r.getDouble("precio_externo")));
                 txtPrecioVentaInterno.setText(String.valueOf(r.getDouble("precio_interno")));
-                txtDisponible.setText(r.getString("existencias"));
-
-                // Si tienes un componente para "Hay X en este momento"
-                // txtMasExistencias.setText(r.getString("existencias"));            
+                txtDisponible.setText(r.getString("existencias"));           
                 JOptionPane.showMessageDialog(null, "Producto encontrado con éxito.");
                 panel.setVisible(true);
             } else {

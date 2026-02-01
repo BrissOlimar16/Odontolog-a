@@ -1,9 +1,13 @@
 package Controlador;
 
-import static Controlador.Conectar.getConexion;
+//import static Controlador.Conectar.getConexion;
 //import java.awt.Color;
+import static Controlador.Conectar.conectaBD;
+import static Controlador.Conectar.c;
+import static Controlador.Conectar.getConexion;
 import java.awt.Component;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Time;
 import java.util.Date;
@@ -12,8 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import odontologia.BusquedaInventario;
 import odontologia.Interfaz;
@@ -23,7 +29,7 @@ import static odontologia.Nuevo_Cliente.t2;
 public class Funciones extends Interfaz {
     public static void limpiaTabla(DefaultTableModel t){
         int a=t.getRowCount();  
-        while(a!=0){ // Ciclo para Borrar la Tabla 1
+        while(a!=0){
             if(a!=0)
                 t.removeRow(0);                      
             a=t.getRowCount();        
@@ -113,7 +119,6 @@ public class Funciones extends Interfaz {
     }
     
     public static void buscandoExistencias(String n) {
-        // Consulta que busca el producto y trae AMBOS precios haciendo JOINS laterales o condicionales
         String query = "SELECT p.nombre, p.costo, p.existencias, " +
                        "MAX(CASE WHEN pp.tipo_cliente = 'Externo' THEN pp.precio END) as precio_externo, " +
                        "MAX(CASE WHEN pp.tipo_cliente = 'Interno' THEN pp.precio END) as precio_interno " +
@@ -149,20 +154,18 @@ public class Funciones extends Interfaz {
         Component jdialog ){
          
         try {
-            // 1. TURNO
             String turno = matutinoSeleccionado ? "Matutino" : "Vespertino";
             Time hora = new Time(horaInicio.getTime());
             Time hora1 = new Time(horaFin.getTime());
 
-            int idTurno = Controlador.Conectar.turnoBD(turno, hora, hora1);
+            int idTurno = turnoBD(turno, hora, hora1);
 
             if (idTurno == -1) {
                 JOptionPane.showMessageDialog(jdialog, "Error al crear turno");
                 return;
             }
 
-            // 2. EMPLEADO
-            Controlador.Conectar.datosEmpleado(
+            datosEmpleado(
                     idEmpleado,
                     nombre,
                     apellidos,
@@ -170,11 +173,9 @@ public class Funciones extends Interfaz {
                     correo,
                     idTurno
             );
-
-            // 3. USUARIO Y ROL
             String nombreUsuario = nombre.toLowerCase().trim() + idEmpleado;
 
-            Controlador.Conectar.CrearRol(
+            CrearRol(
                     nombreUsuario,
                     contraseña,
                     rolSeleccionado,
@@ -204,7 +205,7 @@ public class Funciones extends Interfaz {
         int respuesta = JOptionPane.showConfirmDialog(jdialog, "¿Estás seguro de eliminar al empleado y su acceso?");
 
         if (respuesta == JOptionPane.YES_OPTION) {
-            Controlador.Conectar.eliminarEmpleadoCompleto(id);
+            eliminarEmpleadoCompleto(id);
         }
     }
     
@@ -219,7 +220,7 @@ public class Funciones extends Interfaz {
             Component jdialog
     ) {
         try {
-            boolean actualizado = Controlador.Conectar.actualizarEmpleado(
+            boolean actualizado = actualizarEmpleado(
                     idEmpleado,
                     nombre,
                     apellidos,
@@ -259,7 +260,7 @@ public class Funciones extends Interfaz {
             modelo.addColumn("Correo");
             modelo.addColumn("Turno");
 
-            try (ResultSet rs = Conectar.consultarEmpleados()) {
+            try (ResultSet rs = consultarEmpleados()) {
 
                 while (rs.next()) {
                     modelo.addRow(new Object[]{
@@ -283,10 +284,9 @@ public class Funciones extends Interfaz {
         }
 
     public static void eliminarProducto(String idProducto, Component jdialog) throws SQLException{
-        //int id = Integer.parseInt(Matricula);
         int respuesta = JOptionPane.showConfirmDialog(jdialog, "¿Estás seguro de eliminar el producto?");
         if (respuesta == JOptionPane.YES_OPTION) {
-            Controlador.Conectar.eliminarProducto(idProducto);
+            eliminarProducto(idProducto);
             JOptionPane.showMessageDialog(jdialog, "Producto eliminado ");
         }
     }
@@ -340,7 +340,7 @@ public class Funciones extends Interfaz {
             GROUP BY p.id_paquete, p.nombre, p.grupo
         """;
 
-        try (Connection con = getConexion();
+        try (Connection con = Controlador.Conectar.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -365,7 +365,443 @@ public class Funciones extends Interfaz {
         }
     }
 
+public String validarUsuario(String user, String pass) {
+    String sql = "SELECT rol FROM usuarios WHERE username = ? AND password = ?";
+    try (Connection con = Controlador.Conectar.conectaBD();
+         PreparedStatement pst = con.prepareStatement(sql)) {
+        
+        pst.setString(1, user);
+        pst.setString(2, pass);
+        ResultSet rs = pst.executeQuery();
 
+        if (rs.next()) {
+            return rs.getString("rol");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+    
+    
+    public static int turnoBD(String turno, java.sql.Time hora, java.sql.Time hora1){
+        try {
+            if (c == null || c.isClosed()) {
+                new Controlador.Conectar().conectaBD(); 
+            }
+        } catch (SQLException e) {
+            System.out.println("Error de conexión previa: " + e.getMessage());
+        }
+
+        String sql = "INSERT INTO turno (nombreturno, horainicio, horafin) VALUES (?, ?, ?);";
+
+        try (PreparedStatement pstm = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstm.setString(1, turno);
+            pstm.setTime(2, hora);
+            pstm.setTime(3, hora1);
+
+            pstm.executeUpdate();
+
+            ResultSet rs = pstm.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR REAL EN TURNO_BD: " + e.getMessage());
+            e.printStackTrace(); 
+        }
+        return -1;
+}
+
+
+   public static void datosEmpleado(int matricula, String nombre, String apellidos, String telefono, String correo, int idTurno){
+    String sql = "INSERT INTO empleado (id_empleado, nombre, apellido, telefonoo, correo, id_turno) VALUES (?, ?, ?, ?, ?, ?);";
+    try(PreparedStatement pstm = c.prepareStatement(sql)) {
+        pstm.setInt(1, matricula);
+        pstm.setString(2, nombre);
+        pstm.setString(3, apellidos);
+        pstm.setString(4, telefono);
+        pstm.setString(5, correo);
+        pstm.setInt(6, idTurno);
+        pstm.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println("Error al insertar empleado: " + e.getMessage());
+    }
+}
+
+    
+   
+   public static void CrearRol(String usuario, String contraseña, String rol, int idEmpleado) {
+        String sql = "INSERT INTO usuarios (username, password, rol, id_empleado) VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement pstm = c.prepareStatement(sql);
+            pstm.setString(1, usuario);
+            pstm.setString(2, contraseña);
+            pstm.setString(3, rol);
+            pstm.setInt(4, idEmpleado);
+            
+            pstm.executeUpdate();
+            System.out.println("Usuario " + usuario + " registrado con éxito en la tabla.");
+        } catch (SQLException e) {
+            System.out.println("Error al registrar usuario: " + e.getMessage());
+        }
+    }
+   
+   
+   
+   
+    public static int obtenerTurnoDeEmpleado(int idEmpleado) {
+        String sql = "SELECT id_turno FROM empleado WHERE id_empleado = ?";
+        try (PreparedStatement pstm = c.prepareStatement(sql)) {
+            pstm.setInt(1, idEmpleado);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id_turno");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener turno: " + e.getMessage());
+        }
+        return -1; 
+    }
+    
+    public static void eliminarEmpleadoCompleto(int idEmpleado) {
+        try {
+            if (c == null || c.isClosed()) new Conectar().conectaBD();
+            int idTurno = obtenerTurnoDeEmpleado(idEmpleado);
+            String sqlUsuario = "DELETE FROM usuarios WHERE id_empleado = ?";
+            try (PreparedStatement pstU = c.prepareStatement(sqlUsuario)) {
+                pstU.setInt(1, idEmpleado);
+                pstU.executeUpdate();
+                System.out.println("Usuario de acceso eliminado.");
+            }
+
+            String sqlEmpleado = "DELETE FROM empleado WHERE id_empleado = ?";
+            try (PreparedStatement pstE = c.prepareStatement(sqlEmpleado)) {
+                pstE.setInt(1, idEmpleado);
+                pstE.executeUpdate();
+                System.out.println("Datos del empleado eliminados.");
+            }
+
+            if (idTurno != -1) {
+                String sqlTurno = "DELETE FROM turno WHERE id_turno = ?";
+                try (PreparedStatement pstT = c.prepareStatement(sqlTurno)) {
+                    pstT.setInt(1, idTurno);
+                    pstT.executeUpdate();
+                    System.out.println("Turno del empleado eliminado.");
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Empleado y todos sus registros eliminados con éxito.");
+
+        } catch (SQLException e) {
+            System.out.println("Error crítico al eliminar: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar: " + e.getMessage());
+        }
+    }
+     
+        
+        public static boolean actualizarEmpleado(int idEmpleado, String nombre,
+        String apellidos,
+            String telefono,
+            String correo) throws SQLException {
+
+        String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefonoo = ?, correo = ? WHERE id_empleado = ?";
+
+        try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            ps.setString(2, apellidos);
+            ps.setString(3, telefono);
+            ps.setString(4, correo);
+            ps.setInt(5, idEmpleado);
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+        
+
+        
+        public static ResultSet consultarEmpleados() throws SQLException {
+
+            String sql = """
+                SELECT 
+                    e.id_empleado,
+                    e.nombre,
+                    e.apellido,
+                    e.telefonoo,
+                    e.correo,
+                    t.nombreturno
+                FROM empleado e
+                JOIN turno t ON e.id_turno = t.id_turno
+                ORDER BY e.id_empleado
+            """;
+
+            PreparedStatement ps = getConexion().prepareStatement(sql);
+            return ps.executeQuery();
+        }        
+        
+    
+    public static boolean guardarProducto(
+            String idProducto,
+            String nombre,
+            String descripcion,
+            int existencias,
+            double costo,
+            double precioExterno,
+            double precioInterno){
+
+        String sqlProducto = "INSERT INTO producto (id_producto, nombre, descripcion, existencias, costo) VALUES (?, ?, ?, ?, ?)";
+        String sqlPrecio = "INSERT INTO precioproducto (tipo_cliente, precio, id_producto) VALUES (?, ?, ?)";
+        
+        try (Connection con = Conectar.getConexion()){
+            con.setAutoCommit(false);
+            try (PreparedStatement psProducto = con.prepareStatement(sqlProducto)) {
+                psProducto.setString(1, idProducto);
+                psProducto.setString(2, nombre);
+                psProducto.setString(3, descripcion);
+                psProducto.setInt(4, existencias);
+                psProducto.setDouble(5, costo);
+                psProducto.executeUpdate();
+            }
+            try (PreparedStatement psPrecio = con.prepareStatement(sqlPrecio)) {
+                psPrecio.setString(1, "Externo");
+                psPrecio.setDouble(2, precioExterno);
+                psPrecio.setString(3, idProducto);
+                psPrecio.executeUpdate();
+            }
+            try (PreparedStatement psPrecio = con.prepareStatement(sqlPrecio)) {
+                psPrecio.setString(1, "Interno");
+                psPrecio.setDouble(2, precioInterno);
+                psPrecio.setString(3, idProducto);
+                psPrecio.executeUpdate();
+            }
+            con.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    
+    public static boolean modificarProducto(
+                String idProducto,
+                String nombre,
+                String descripcion,
+                int existencias,
+                double costo,
+                double precioExterno,
+                double precioInterno){
+
+            String sqlProducto = "UPDATE producto SET nombre = ?, descripcion = ?, existencias = ?, costo = ? WHERE id_producto = ?";
+            String sqlPrecio = "UPDATE precioproducto SET precio = ? WHERE id_producto = ? AND tipo_cliente = ?";
+
+            try (Connection con = getConexion()) {
+                con.setAutoCommit(false);
+                try (PreparedStatement ps = con.prepareStatement(sqlProducto)) {
+                    ps.setString(1, nombre);
+                    ps.setString(2, descripcion);
+                    ps.setInt(3, existencias);
+                    ps.setDouble(4, costo);
+                    ps.setString(5, idProducto);
+                    ps.executeUpdate();
+                }
+                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                    ps.setDouble(1, precioExterno);
+                    ps.setString(2, idProducto);
+                    ps.setString(3, "Externo");
+                    ps.executeUpdate();
+                }
+                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                    ps.setDouble(1, precioInterno);
+                    ps.setString(2, idProducto);
+                    ps.setString(3, "Interno");
+                    ps.executeUpdate();
+                }
+                con.commit();
+                return true;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+    
+    public static boolean eliminarProducto(String idProducto) throws SQLException {
+        String sqlPrecio = "DELETE FROM precioproducto WHERE id_producto = ?";
+        String sqlProducto = "DELETE FROM producto WHERE id_producto = ?";
+        if (c == null || c.isClosed()) {
+            c = new Controlador.Conectar().conectaBD();
+        }
+        try {
+            c.setAutoCommit(false);
+            try (PreparedStatement ps2 = c.prepareStatement(sqlPrecio)) {
+                ps2.setString(1, idProducto);
+                ps2.executeUpdate();
+            }
+            try (PreparedStatement ps = c.prepareStatement(sqlProducto)) {
+                ps.setString(1, idProducto);
+                ps.executeUpdate();
+            }
+            c.commit();
+            return true;
+
+        } catch (SQLException e) {
+            if (c != null) c.rollback();
+            System.out.println("Error al eliminar: " + e.getMessage());
+            return false;
+        } finally {
+            if (c != null) c.setAutoCommit(true);
+        }
+    }
+    
+    
+    public static void ModificarExistencias(String id, String nombre, double costo, int stockNuevo, double pExterno, double pInterno) {
+        Conectar con = new Conectar();
+
+        String queryProducto = "UPDATE producto SET nombre = '" + nombre + "', " + "costo = " + costo + ", " +
+                               "existencias = existencias + " + stockNuevo + " " + "WHERE id_producto = '" + id + "'";
+        String queryPrecioExt = "UPDATE precioproducto SET precio = " + pExterno + " " + "WHERE id_producto = '" + id + "' AND tipo_cliente = 'Externo'";
+        String queryPrecioInt = "UPDATE precioproducto SET precio = " + pInterno + " " + "WHERE id_producto = '" + id + "' AND tipo_cliente = 'Interno'";
+
+        try {
+            con.ejecutar(queryProducto);
+            con.ejecutar(queryPrecioExt);
+            con.ejecutar(queryPrecioInt);
+            if(Conectar.MENSAJE.equals("")) {
+                 JOptionPane.showMessageDialog(null, "¡Cambios guardados y stock actualizado!");
+            } else {
+                 JOptionPane.showMessageDialog(null, "Error al procesar: " + Conectar.MENSAJE);
+            }
+        } catch (Exception e) {
+            System.out.println("Error en ModificarExistencias: " + e.getMessage());
+        }
+    }
+    
+    
+    public static boolean guardarTratamiento(
+        String nombre,
+        String descripcion,
+        String grupo,
+        double precioExterno,
+        double precioInterno,
+        List<DetallePaquete> productos) {
+
+        String sqlPaquete = "INSERT INTO paquete (nombre, descripcion, grupo) VALUES (?, ?, ?) RETURNING id_paquete";
+        String sqlPrecio = "INSERT INTO preciopaquete (tipo_cliente, precio, id_paquete) VALUES (?, ?, ?)";
+        String sqlDetalle = "INSERT INTO detallepaquete (id_paquete, id_producto, cantidad) VALUES (?, ?, ?)";
+
+        try (Connection c = getConexion()) {
+            c.setAutoCommit(false);
+            int idPaquete;
+            try (PreparedStatement ps = c.prepareStatement(sqlPaquete)) {
+                ps.setString(1, nombre);
+                ps.setString(2, descripcion);
+                ps.setString(3, grupo);
+
+                ResultSet rs = ps.executeQuery();
+                rs.next();
+                idPaquete = rs.getInt("id_paquete");
+            }
+            try (PreparedStatement ps = c.prepareStatement(sqlPrecio)) {
+                ps.setString(1, "Interno");
+                ps.setDouble(2, precioInterno);
+                ps.setInt(3, idPaquete);
+                ps.executeUpdate();
+
+                ps.setString(1, "Externo");
+                ps.setDouble(2, precioExterno);
+                ps.setInt(3, idPaquete);
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = c.prepareStatement(sqlDetalle)) {
+                for (DetallePaquete d : productos) {
+                    ps.setInt(1, idPaquete);
+                    ps.setString(2, d.getIdProducto());
+                    ps.setInt(3, d.getCantidad());
+                    ps.executeUpdate();
+                }
+            }
+            c.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+  
+    public static boolean modificarPaquete(
+        int idPaquete,
+        String nombre,
+        String descripcion,
+        String grupo,
+        double precioExterno,
+        double precioInterno) {
+
+        String sqlPaquete = "UPDATE paquete SET nombre = ?, descripcion = ?, grupo = ? WHERE id_paquete = ?";
+        String sqlPrecio  = "UPDATE preciopaquete SET precio = ? WHERE id_paquete = ? AND tipo_cliente = ?";
+
+        try (Connection con = getConexion()) {
+            con.setAutoCommit(false);
+            try (PreparedStatement ps = con.prepareStatement(sqlPaquete)) {
+                ps.setString(1, nombre);
+                ps.setString(2, descripcion);
+                ps.setString(3, grupo);
+                ps.setInt(4, idPaquete); 
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setDouble(1, precioExterno);
+                ps.setInt(2, idPaquete);
+                ps.setString(3, "Externo");
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setDouble(1, precioInterno);
+                ps.setInt(2, idPaquete);
+                ps.setString(3, "Interno");
+                ps.executeUpdate();
+            }
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+
+    public static boolean eliminarPaquete(int idPaquete) {
+
+        String sqlDetalle = "DELETE FROM detallepaquete WHERE id_paquete = ?";
+        String sqlPrecio  = "DELETE FROM preciopaquete WHERE id_paquete = ?";
+        String sqlPaquete = "DELETE FROM paquete WHERE id_paquete = ?";
+
+        try (Connection con = getConexion()) {
+            con.setAutoCommit(false);
+            try (PreparedStatement ps = con.prepareStatement(sqlDetalle)) {
+                ps.setInt(1, idPaquete);
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setInt(1, idPaquete);
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlPaquete)) {
+                ps.setInt(1, idPaquete);
+                ps.executeUpdate();
+            }
+
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     
