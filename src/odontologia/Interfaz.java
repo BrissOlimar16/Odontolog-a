@@ -5,6 +5,7 @@ import static Controlador.Funciones.limpiaTabla;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JComboBox;
@@ -186,6 +187,11 @@ public class Interfaz extends javax.swing.JFrame {
                 ContraseñaUsuarioFocusLost(evt);
             }
         });
+        ContraseñaUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ContraseñaUsuarioKeyPressed(evt);
+            }
+        });
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/UNSIS (1).png"))); // NOI18N
 
@@ -327,6 +333,11 @@ public class Interfaz extends javax.swing.JFrame {
         MontoInicial.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         MontoInicial.setText("$0.00");
         MontoInicial.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 102), new java.awt.Color(0, 0, 102)));
+        MontoInicial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                MontoInicialKeyPressed(evt);
+            }
+        });
 
         mensajeDinero.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         mensajeDinero.setText("Ingrese el monto inicial:");
@@ -798,6 +809,11 @@ public class Interfaz extends javax.swing.JFrame {
 
         btnCobrar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         btnCobrar.setText("cobrar");
+        btnCobrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCobrarActionPerformed(evt);
+            }
+        });
 
         jLabel14.setBackground(new java.awt.Color(255, 255, 255));
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
@@ -1226,6 +1242,24 @@ public class Interfaz extends javax.swing.JFrame {
         conf.setBounds(0, 0, this.getWidth(), this.getHeight());
         conf.setVisible(true);
     }//GEN-LAST:event_btnConfiguracionActionPerformed
+
+    private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
+        Controlador.Ticket.generaTicket();
+    }//GEN-LAST:event_btnCobrarActionPerformed
+
+    private void ContraseñaUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ContraseñaUsuarioKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        IngresarApp.doClick(); // O llama directamente al método
+        // IngresarAppActionPerformed(null);
+    }
+    }//GEN-LAST:event_ContraseñaUsuarioKeyPressed
+
+    private void MontoInicialKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_MontoInicialKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        registroDinero.doClick(); // O llama directamente al método
+        // IngresarAppActionPerformed(null);
+    }
+    }//GEN-LAST:event_MontoInicialKeyPressed
 
     
     public static void main(String args[]) {

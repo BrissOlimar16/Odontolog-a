@@ -1,0 +1,38 @@
+*********************************************
+        UNIVERSIDAD DE LA SIERRA SUR
+            CLÍNICA ODONTOLÓGICA
+*********************************************
+Calle Guillermo Rojas Mijangos S/N
+Esq. Av. Universidad, Col. Ciudad Universitaria
+Miahuatlán de Porfirio Díaz, Oaxaca, México
+---------------------------------------------
+FOLIO: TKT-00012345
+FECHA: 01/02/2026 14:43:55
+---------------------------------------------
+CONCEPTO                     CANT    P.UNIT    IMPORTE
+---------------------------------------------
+CONSULTA ODONTOLÓGICA        1    250.00     250.00
+RADIOGRAFÍA PERIAPICAL       2     75.00     150.00
+AMALGAMA DENTAL              1    120.00     120.00
+PROFILAXIS DENTAL            1    300.00     300.00
+---------------------------------------------
+                        SUBTOTAL:       820.00
+                       IVA (16%):       131.20
+                           TOTAL:       951.20
+---------------------------------------------
+EFECTIVO RECIBIDO: $850.00
+CAMBIO: $-101.20
+ATENDIÓ: Dra. Ana Rodríguez
+---------------------------------------------
+<< DATOS DEL PACIENTE >>
+NOMBRE: MARÍA GUADALUPE
+APELLIDOS: MARTÍNEZ HERNÁNDEZ
+MATRÍCULA/FOLIO: 2024005678
+TIPO: ESTUDIANTE UNSIS
+---------------------------------------------
+        ¡GRACIAS POR SU PREFERENCIA!
+                VUELVA PRONTO
+*********************************************
+     SERVICIO ODONTOLÓGICO UNIVERSITARIO
+            TEL: UNS-951 572 4100
+*********************************************
