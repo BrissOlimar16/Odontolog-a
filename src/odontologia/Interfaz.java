@@ -114,6 +114,7 @@ public class Interfaz extends javax.swing.JFrame {
         txtDesEntrada = new javax.swing.JTextField();
         btnGuardarEntrada = new javax.swing.JButton();
         btnCancelarEntrada = new javax.swing.JButton();
+        btnGuardarSalida1 = new javax.swing.JButton();
         BusquedaProducto = new javax.swing.JDialog();
         jLabel26 = new javax.swing.JLabel();
         txtBusquedaP = new javax.swing.JTextField();
@@ -533,6 +534,19 @@ public class Interfaz extends javax.swing.JFrame {
 
         btnCancelarEntrada.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         btnCancelarEntrada.setText("Cancelar");
+        btnCancelarEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarEntradaActionPerformed(evt);
+            }
+        });
+
+        btnGuardarSalida1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        btnGuardarSalida1.setText("Guardar");
+        btnGuardarSalida1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarSalida1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout Entrada_DineroLayout = new javax.swing.GroupLayout(Entrada_Dinero.getContentPane());
         Entrada_Dinero.getContentPane().setLayout(Entrada_DineroLayout);
@@ -548,6 +562,8 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(49, 77, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Entrada_DineroLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGuardarSalida1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnGuardarEntrada)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelarEntrada)
@@ -569,7 +585,8 @@ public class Interfaz extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(Entrada_DineroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardarEntrada)
-                    .addComponent(btnCancelarEntrada))
+                    .addComponent(btnCancelarEntrada)
+                    .addComponent(btnGuardarSalida1))
                 .addGap(20, 20, 20))
         );
 
@@ -944,12 +961,13 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(ib6)
                     .addComponent(ib7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1364,8 +1382,11 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_IngresarAppActionPerformed
 
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
+        btnGuardarSalida1.setVisible(false);
         Entrada_Dinero.setVisible(true);
         Entrada_Dinero.setLocationRelativeTo(null);
+        lbTitulo1.setText("Entradas de Efectivo");
+        btnGuardarEntrada.setVisible(true);
     }//GEN-LAST:event_btnEntradasActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -1385,9 +1406,11 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnSalidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidasActionPerformed
+        btnGuardarEntrada.setVisible(false);
         Entrada_Dinero.setVisible(true);
         Entrada_Dinero.setLocationRelativeTo(null);
         lbTitulo1.setText("Salida de Efectivo");
+        btnGuardarSalida1.setVisible(true);
     }//GEN-LAST:event_btnSalidasActionPerformed
 
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
@@ -1431,16 +1454,19 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_ContraseñaUsuarioFocusLost
 
     private void registroDineroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroDineroActionPerformed
-      Integer idEmp = Controlador.Sesion.idEmpleadoActual; 
-      double monto = Double.parseDouble(MontoInicial.getText().replaceAll("[^0-9.]", ""));
-      Integer idTur = (idEmp == null) ? null : 1; 
-      if (Controlador.Funciones.registrarAperturaCaja(monto, idEmp, idTur)) {
-          Caja.setVisible(false);
-          this.setLocationRelativeTo(null);
-          this.setVisible(true);
-          Pantalla.setSize(tamanio.width, tamanio.height);
-      }
-
+       Integer idEmp = Controlador.Sesion.idEmpleadoActual;
+        double monto = Double.parseDouble(MontoInicial.getText().replaceAll("[^0-9.]", ""));
+        Integer idTur = Controlador.Sesion.idTurnoActual;
+        Integer idCaja = Controlador.Funciones.registrarAperturaCaja(monto, idEmp, idTur);
+        if (idCaja != null) {
+            Controlador.Sesion.idCajaActual = idCaja;
+            Caja.setVisible(false);
+            this.setLocationRelativeTo(null);
+            this.setVisible(true);
+            Pantalla.setSize(tamanio.width, tamanio.height);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo abrir la caja.");
+        }
     }//GEN-LAST:event_registroDineroActionPerformed
 
     private void CorteCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CorteCajaActionPerformed
@@ -1520,7 +1546,40 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarPActionPerformed
 
     private void btnGuardarEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarEntradaActionPerformed
-        // TODO add your handling code here:
+        Integer idCaja = Controlador.Sesion.idCajaActual;
+        if (idCaja == null) {
+            JOptionPane.showMessageDialog(this, "No hay una caja abierta. Abre caja primero.");
+            return;
+        }
+
+        String textoMonto = txtCantidadEntrada.getText().trim();
+        if (textoMonto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresa un monto válido.");
+            return;
+        }
+
+        double monto;
+        try {
+            monto = Double.parseDouble(textoMonto.replaceAll("[^0-9.]", ""));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Formato de monto inválido.");
+            return;
+        }
+        String descripcion = txtDesEntrada.getText().trim();
+        if (descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresa una descripción.");
+            return;
+        }
+        boolean ok = Controlador.Funciones.registrarMovimientoCaja(idCaja, "ENTRADA", descripcion, monto);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Entrada registrada correctamente.");
+            txtCantidadEntrada.setText("");
+            txtDesEntrada.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar la entrada.");
+        }
+
     }//GEN-LAST:event_btnGuardarEntradaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1651,6 +1710,47 @@ public class Interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEfectivoKeyReleased
 
+    private void btnGuardarSalida1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarSalida1ActionPerformed
+        Integer idCaja = Controlador.Sesion.idCajaActual;
+        if (idCaja == null) {
+            JOptionPane.showMessageDialog(this, "No hay una caja abierta. Abre caja primero.");
+            return;
+        }
+
+        String textoMonto = txtCantidadEntrada.getText().trim();
+        if (textoMonto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresa un monto válido.");
+            return;
+        }
+
+        double monto;
+        try {
+            monto = Double.parseDouble(textoMonto.replaceAll("[^0-9.]", ""));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Formato de monto inválido.");
+            return;
+        }
+        String descripcion = txtDesEntrada.getText().trim();
+        if (descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresa una descripción.");
+            return;
+        }
+        boolean ok = Controlador.Funciones.registrarMovimientoCaja(idCaja, "SALIDA", descripcion, monto);
+
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Salida registrada correctamente.");
+            txtCantidadEntrada.setText("");
+            txtDesEntrada.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al registrar la salida.");
+        }
+
+    }//GEN-LAST:event_btnGuardarSalida1ActionPerformed
+
+    private void btnCancelarEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarEntradaActionPerformed
+        Entrada_Dinero.setVisible(false);
+    }//GEN-LAST:event_btnCancelarEntradaActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1740,6 +1840,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnEmpleado;
     private javax.swing.JButton btnEntradas;
     private javax.swing.JButton btnGuardarEntrada;
+    private javax.swing.JButton btnGuardarSalida1;
     private javax.swing.JButton btnInventario;
     private javax.swing.JButton btnModificarP;
     private javax.swing.JButton btnProductos;

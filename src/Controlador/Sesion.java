@@ -12,4 +12,6 @@ public class Sesion {
     public static String usuarioActual;
     public static String rolActual;
     public static Integer idEmpleadoActual;
+    public static Integer idTurnoActual;
+    public static Integer idCajaActual;
 }
