@@ -7,7 +7,7 @@ Esq. Av. Universidad, Col. Ciudad Universitaria
 Miahuatlán de Porfirio Díaz, Oaxaca, México
 ---------------------------------------------
 FOLIO: TKT-00012345
-FECHA: 01/02/2026 14:43:55
+FECHA: 01/02/2026 14:50:21
 ---------------------------------------------
 CONCEPTO                     CANT    P.UNIT    IMPORTE
 ---------------------------------------------

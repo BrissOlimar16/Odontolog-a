@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
  * @author david
  */
 public class Nuevo_Cliente extends javax.swing.JPanel {
-    public java.sql.Connection c = null;
+    public static java.sql.Connection c = null;
     public static DefaultTableModel t2 = new DefaultTableModel();
     static String quer="SELECT id_cliente, nombre || ' ' || apellido AS nombre_completo FROM cliente";
     String tipo="",ocupa="",busca="";
@@ -227,7 +227,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Folio", "Nombre"
+                "Folio/Matricula", "Nombre"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -380,25 +380,33 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClienteActionPerformed
-        if (Interno.isSelected()){
-            ocupa=txtOcupacion.getText().trim();
+        if (Interno.isSelected()) {
+            ocupa = txtOcupacion.getText().trim();
             try {
                 String texto = txtMatricula.getText().trim(); 
                 folio = Long.parseLong(texto);
+                if (Controlador.Funciones.existeRegistro("cliente", "id_cliente", String.valueOf(folio))) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Error: La matrícula o folio " + folio + " ya está registrado.", 
+                        "Cliente Duplicado", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 System.out.println("Folio convertido: " + folio);
             } catch (NumberFormatException e) {
-                System.out.println("Error: El campo no contiene un número válido.");
-                JOptionPane.showMessageDialog(null, "Por favor ingrese solo números");
+                JOptionPane.showMessageDialog(null, "Por favor ingrese una matrícula válida (solo números)");
+                return;
             }
         }
-        if (vacio()){           
+
+        if (vacio()) {           
             JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
-        } else {
-            
+        } else {       
             insertarCliente("INSERT INTO cliente (id_cliente,nombre,apellido, correo,telefono,tipo_cliente,ocupacion) VALUES " +
                             "("+folio+", '"+txtNombre.getText()+"', '"+txtApellidos.getText()+"', '"+txtCorreo.getText()+"', '"+txtTelefono.getText()+"', '"+tipo+"', '"+ocupa+"')");
             buttonGroup1.clearSelection();
             jpExtras.setVisible(false);
+            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
         }
     }//GEN-LAST:event_btnGuardarClienteActionPerformed
 
@@ -412,8 +420,6 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     private void InternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InternoActionPerformed
         jpExtras.setVisible(true);
         tipo="interno";
-        //ocupa="";
-        //folio=0;
     }//GEN-LAST:event_InternoActionPerformed
 
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
@@ -435,11 +441,13 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
                 }
                 txtBuscarCliente.setText("");
                 Funciones.limpiaTabla(t2);
-                Funciones.consultarC(quer,t2);
+                Funciones.consultarC(quer, t2);
             }
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione el cliente en la lista.");
             Funciones.buscandoCliente(busca);
+            Funciones.limpiaTabla(t2);
+            Funciones.consultarC(quer, t2);
         }
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
@@ -453,80 +461,78 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     }//GEN-LAST:event_txtBuscarClienteKeyReleased
 
     private void btnSeleccionarModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarModificarClienteActionPerformed
-    int fila = tablaCliente.getSelectedRow();
-    if (fila != -1) {
-        String id = tablaCliente.getValueAt(fila, 0).toString();
-        
-        String sql = "SELECT * FROM cliente WHERE id_cliente = '" + id + "'";
-        java.sql.ResultSet rs = new Controlador.Conectar().consultas(sql);
-        txtMatricula.setEditable(false);
-        try {
-            if (rs.next()) {
-                txtNombre.setText(rs.getString("nombre"));
-                txtApellidos.setText(rs.getString("apellido"));
-                txtTelefono.setText(rs.getString("telefono"));
-                txtCorreo.setText(rs.getString("correo"));
-                txtMatricula.setText(rs.getString("id_cliente"));
-                txtOcupacion.setText(rs.getString("ocupacion"));
-                btnModificaciarCliente.setVisible(true);
-                String tipoC = rs.getString("tipo_cliente");
-                if ("Interno".equalsIgnoreCase(tipoC)) {
-                    Interno.setSelected(true);
-                    jpExtras.setVisible(true);
-                    tipo="interno";
-                    folio= Long.parseLong(rs.getString("id_cliente"));
-                    ocupa= txtOcupacion.getText(); 
-                } else {
-                    Externo.setSelected(true);
-                    folio= Long.parseLong(rs.getString("id_cliente"));
-                    tipo="externo";
-                    ocupa="ciudadano";
+        int fila = tablaCliente.getSelectedRow();
+        if (fila != -1) {
+            String id = tablaCliente.getValueAt(fila, 0).toString();
+
+            String sql = "SELECT * FROM cliente WHERE id_cliente = '" + id + "'";
+            java.sql.ResultSet rs = new Controlador.Conectar().consultas(sql);
+            txtMatricula.setEditable(false);
+            btnSeleccionarModificarCliente.setVisible(false);
+            try {
+                if (rs.next()) {
+                    txtNombre.setText(rs.getString("nombre"));
+                    txtApellidos.setText(rs.getString("apellido"));
+                    txtTelefono.setText(rs.getString("telefono"));
+                    txtCorreo.setText(rs.getString("correo"));
+                    txtMatricula.setText(rs.getString("id_cliente"));
+                    txtOcupacion.setText(rs.getString("ocupacion"));
+                    btnModificaciarCliente.setVisible(true);
+                    String tipoC = rs.getString("tipo_cliente");
+                    if ("Interno".equalsIgnoreCase(tipoC)) {
+                        Interno.setSelected(true);
+                        jpExtras.setVisible(true);
+                        tipo="interno";
+                        folio= Long.parseLong(rs.getString("id_cliente"));
+                        ocupa= txtOcupacion.getText(); 
+                    } else {
+                        Externo.setSelected(true);
+                        folio= Long.parseLong(rs.getString("id_cliente"));
+                        tipo="externo";
+                        ocupa="ciudadano";
+                    }
                 }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage());
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un cliente de la lista.");
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "Seleccione un cliente de la lista.");
-    }
     }//GEN-LAST:event_btnSeleccionarModificarClienteActionPerformed
 
     private void btnModificaciarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificaciarClienteActionPerformed
-    if (vacio()) {           
-        JOptionPane.showMessageDialog(null, "Error: Hay campos obligatorios vacíos.");
-        return;
-    }
-    int fila = tablaCliente.getSelectedRow();
-    if (seleccionado()) {
-        JOptionPane.showMessageDialog(null, "Seleccione el cliente en la tabla");
-        return;
-    }
-
-    try {
-        String idOriginal = tablaCliente.getValueAt(fila, 0).toString();
-        String sql = "UPDATE cliente SET " +
-                     "nombre='" + txtNombre.getText().trim() + "', " +
-                     "apellido='" + txtApellidos.getText().trim() + "', " +
-                     "telefono='" + txtTelefono.getText().trim() + "', " +
-                     "correo='" + txtCorreo.getText().trim() + "', " +
-                     "tipo_cliente='" + tipo + "', " +
-                     "ocupacion='" + txtOcupacion.getText().trim() + "' " +
-                     "WHERE id_cliente='" + idOriginal + "'";
-
-        new Controlador.Conectar().ejecutar(sql);
-        
-        if (Controlador.Conectar.MENSAJE.equals("")) {
-            JOptionPane.showMessageDialog(null, "Cliente actualizado con éxito");
-            txtMatricula.setEditable(true);
-            Funciones.limpiaTabla(t2);
-            Funciones.consultarC(quer, t2);
-            limpia();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error en BD: " + Controlador.Conectar.MENSAJE);
+        if (vacio()) {           
+            JOptionPane.showMessageDialog(null, "Error: Hay campos obligatorios vacíos.");
+            return;
         }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
-    }
+        int fila = tablaCliente.getSelectedRow();
+        try {
+            String idOriginal = tablaCliente.getValueAt(fila, 0).toString();
+            String sql = "UPDATE cliente SET " +
+                         "nombre='" + txtNombre.getText().trim() + "', " +
+                         "apellido='" + txtApellidos.getText().trim() + "', " +
+                         "telefono='" + txtTelefono.getText().trim() + "', " +
+                         "correo='" + txtCorreo.getText().trim() + "', " +
+                         "tipo_cliente='" + tipo + "', " +
+                         "ocupacion='" + txtOcupacion.getText().trim() + "' " +
+                         "WHERE id_cliente='" + idOriginal + "'";
+
+            new Controlador.Conectar().ejecutar(sql);
+
+            if (Controlador.Conectar.MENSAJE.equals("")) {
+                JOptionPane.showMessageDialog(null, "Cliente actualizado con éxito");
+                txtMatricula.setEditable(true);
+                btnSeleccionarModificarCliente.setVisible(true);
+                Funciones.limpiaTabla(t2);
+                Funciones.consultarC(quer, t2);
+                btnModificaciarCliente.setVisible(false);
+                limpia();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error en BD: " + Controlador.Conectar.MENSAJE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error al modificar: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnModificaciarClienteActionPerformed
     
     public void insertarCliente(String x){   
@@ -551,6 +557,8 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
         txtOcupacion.setText("");
         Externo.setSelected(false);
         Interno.setSelected(false);
+        buttonGroup1.clearSelection();
+        jpExtras.setVisible(false);
         btnModificaciarCliente.setVisible(false);
         tipo="";
         ocupa=""; 
@@ -596,9 +604,9 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     public javax.swing.JPanel jpExtras;
     private javax.swing.JLabel lbTitulo6;
     private javax.swing.JLabel lbTitulo7;
-    private javax.swing.JTable tablaCliente;
+    public static javax.swing.JTable tablaCliente;
     private javax.swing.JTextField txtApellidos;
-    private javax.swing.JTextField txtBuscarCliente;
+    public static javax.swing.JTextField txtBuscarCliente;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNombre;

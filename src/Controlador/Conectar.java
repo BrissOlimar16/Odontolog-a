@@ -58,26 +58,26 @@ public class Conectar {
     }
     
       
-        public static Connection getConexion() throws SQLException {
-            if (c == null || c.isClosed()) {
-                c = DriverManager.getConnection(url, user, passwd);
-            }
-            return c;
+    public static Connection getConexion() throws SQLException {
+        if (c == null || c.isClosed()) {
+            c = DriverManager.getConnection(url, user, passwd);
         }
-     
-        public void llenarComboUsuarios(JComboBox combo) {
-            String sql = "SELECT rol FROM usuarios";
-            java.sql.ResultSet rs = consultas(sql);
-            try{                
-                combo.removeAllItems(); 
-                combo.addItem("Seleccione un usuario");
-                while (rs.next()) {
-                    combo.addItem(rs.getString("rol"));
-                }
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al cargar usuarios: " + e.getMessage());
+        return c;
+    }
+
+    public void llenarComboUsuarios(JComboBox combo) {
+        String sql = "SELECT rol FROM usuarios";
+        java.sql.ResultSet rs = consultas(sql);
+        try{                
+            combo.removeAllItems(); 
+            combo.addItem("Seleccione un usuario");
+            while (rs.next()) {
+                combo.addItem(rs.getString("rol"));
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar usuarios: " + e.getMessage());
         }
+    }
         
     public String validarUser(String usuario, String pass) {
         String rol = null;

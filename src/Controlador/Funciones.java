@@ -94,6 +94,42 @@ public class Funciones extends Interfaz {
         }  
     }
     
+    public static boolean consultarVenta(String query, DefaultTableModel t) {
+        java.sql.ResultSet r = new Controlador.Conectar().consultas(query);
+        try {
+            if (r.next()) {
+                String idProductoNuevo = r.getString("id_producto");
+                double precio = r.getDouble("Precio");
+
+                for (int fila = 0; fila < t.getRowCount(); fila++) {
+                    String idEnTabla = t.getValueAt(fila, 0).toString();
+
+                    if (idEnTabla.equals(idProductoNuevo)) {
+                        int cantActual = Integer.parseInt(t.getValueAt(fila, 4).toString());
+                        int nuevaCant = cantActual + 1;
+                        t.setValueAt(nuevaCant, fila, 4);
+                        t.setValueAt(nuevaCant * precio, fila, 5);
+                        return true;
+                    }
+                }
+                Object[] linea = new Object[6];
+                String nombreFull = r.getString("nombre") + " " + (r.getString("descripcion") == null ? "" : r.getString("descripcion"));
+
+                linea[0] = idProductoNuevo;
+                linea[1] = nombreFull;
+                linea[2] = precio;
+                linea[3] = r.getDouble("existencias");
+                linea[4] = 1;
+                linea[5] = precio;         
+                t.addRow(linea);
+                return true;
+            }
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return false;
+    }
+    
     private static String evaluarnull(String value) {
         if (value == null || value.trim().isEmpty()) {
             return "";
@@ -103,6 +139,30 @@ public class Funciones extends Interfaz {
     
     public static int generarNum() {
         return ThreadLocalRandom.current().nextInt(10_000_000, 100_000_000);
+    }
+    
+    public static double obtenerTotalImporte(DefaultTableModel t) {
+    double total = 0;
+    for (int i = 0; i < t.getRowCount(); i++) {
+        total += Double.parseDouble(t.getValueAt(i, 5).toString());
+    }
+    return total;
+}
+    
+    public static boolean existeRegistro(String tabla, String columna, String id) {
+        String sql = "SELECT COUNT(*) FROM " + tabla + " WHERE " + columna + " = ?";
+        try (Connection cn = Controlador.Conectar.getConexion(); 
+            PreparedStatement pst = cn.prepareStatement(sql)) {       
+            pst.setString(1, id);
+        try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al validar duplicado en " + tabla + ": " + e.getMessage());
+        }
+        return false;
     }
     
     //buscar productos
@@ -141,17 +201,21 @@ public class Funciones extends Interfaz {
         }
     }
     
-    public static void registrarEmpleado(boolean matutinoSeleccionado,
-        Date horaInicio,
-        Date horaFin,
-        int idEmpleado,
-        String nombre,
-        String apellidos,
-        String telefono,
-        String correo,
-        String rolSeleccionado,
-        String contraseña,
-        Component jdialog ){
+    public static boolean buscandoVenta(String buscar, DefaultTableModel t) {
+        if (!buscar.trim().isEmpty()) {
+            String query ="SELECT p.id_producto, p.nombre, p.descripcion, p.costo AS Costo, pp.precio AS Precio, p.existencias " +
+                          "FROM producto p INNER JOIN precioproducto pp ON p.id_producto = pp.id_producto " +
+                          "WHERE pp.tipo_cliente = 'Externo' AND p.id_producto = '" + buscar + "'";
+
+            return consultarVenta(query, t);
+        }
+        return false;
+    }
+    
+    public static void registrarEmpleado( boolean matutinoSeleccionado,
+        Date horaInicio, Date horaFin, int idEmpleado, String nombre,
+        String apellidos, String telefono, String correo, String rolSeleccionado,
+        String contraseña, Component jdialog ){
          
         try {
             String turno = matutinoSeleccionado ? "Matutino" : "Vespertino";
@@ -199,7 +263,6 @@ public class Funciones extends Interfaz {
     
     } 
     
-    
     public static void eliminarEmpleado(String Matricula, Component jdialog){
         int id = Integer.parseInt(Matricula);
         int respuesta = JOptionPane.showConfirmDialog(jdialog, "¿Estás seguro de eliminar al empleado y su acceso?");
@@ -208,17 +271,9 @@ public class Funciones extends Interfaz {
             eliminarEmpleadoCompleto(id);
         }
     }
-    
-
-    
-    public static void editarEmpleado(
-            int idEmpleado,
-            String nombre,
-            String apellidos,
-            String telefono,
-            String correo,
-            Component jdialog
-    ) {
+     
+    public static void editarEmpleado( int idEmpleado, String nombre,
+        String apellidos, String telefono, String correo, Component jdialog) {
         try {
             boolean actualizado = actualizarEmpleado(
                     idEmpleado,
@@ -311,8 +366,6 @@ public class Funciones extends Interfaz {
         return lista;
     }
     
-    
-
     public static void TablaPaquetes(JTable tabla) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Código");
@@ -365,7 +418,7 @@ public class Funciones extends Interfaz {
         }
     }
 
-public String validarUsuario(String user, String pass) {
+    public String validarUsuario(String user, String pass) {
     String sql = "SELECT rol FROM usuarios WHERE username = ? AND password = ?";
     try (Connection con = Controlador.Conectar.conectaBD();
          PreparedStatement pst = con.prepareStatement(sql)) {
@@ -382,7 +435,6 @@ public String validarUsuario(String user, String pass) {
     }
     return null;
 }
-    
     
     public static int turnoBD(String turno, java.sql.Time hora, java.sql.Time hora1){
         try {
@@ -413,8 +465,7 @@ public String validarUsuario(String user, String pass) {
         return -1;
 }
 
-
-   public static void datosEmpleado(int matricula, String nombre, String apellidos, String telefono, String correo, int idTurno){
+    public static void datosEmpleado(int matricula, String nombre, String apellidos, String telefono, String correo, int idTurno){
     String sql = "INSERT INTO empleado (id_empleado, nombre, apellido, telefonoo, correo, id_turno) VALUES (?, ?, ?, ?, ?, ?);";
     try(PreparedStatement pstm = c.prepareStatement(sql)) {
         pstm.setInt(1, matricula);
@@ -428,10 +479,8 @@ public String validarUsuario(String user, String pass) {
         System.out.println("Error al insertar empleado: " + e.getMessage());
     }
 }
-
-    
-   
-   public static void CrearRol(String usuario, String contraseña, String rol, int idEmpleado) {
+       
+    public static void CrearRol(String usuario, String contraseña, String rol, int idEmpleado) {
         String sql = "INSERT INTO usuarios (username, password, rol, id_empleado) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pstm = c.prepareStatement(sql);
@@ -446,9 +495,6 @@ public String validarUsuario(String user, String pass) {
             System.out.println("Error al registrar usuario: " + e.getMessage());
         }
     }
-   
-   
-   
    
     public static int obtenerTurnoDeEmpleado(int idEmpleado) {
         String sql = "SELECT id_turno FROM empleado WHERE id_empleado = ?";
@@ -498,12 +544,9 @@ public String validarUsuario(String user, String pass) {
             JOptionPane.showMessageDialog(null, "No se pudo eliminar: " + e.getMessage());
         }
     }
-     
-        
-        public static boolean actualizarEmpleado(int idEmpleado, String nombre,
-        String apellidos,
-            String telefono,
-            String correo) throws SQLException {
+          
+    public static boolean actualizarEmpleado(int idEmpleado, String nombre,
+        String apellidos, String telefono, String correo) throws SQLException {
 
         String sql = "UPDATE empleado SET nombre = ?, apellido = ?, telefonoo = ?, correo = ? WHERE id_empleado = ?";
 
@@ -517,10 +560,8 @@ public String validarUsuario(String user, String pass) {
             return ps.executeUpdate() > 0;
         }
     }
-        
-
-        
-        public static ResultSet consultarEmpleados() throws SQLException {
+            
+    public static ResultSet consultarEmpleados() throws SQLException {
 
             String sql = """
                 SELECT 
@@ -539,15 +580,8 @@ public String validarUsuario(String user, String pass) {
             return ps.executeQuery();
         }        
         
-    
-    public static boolean guardarProducto(
-            String idProducto,
-            String nombre,
-            String descripcion,
-            int existencias,
-            double costo,
-            double precioExterno,
-            double precioInterno){
+    public static boolean guardarProducto( String idProducto, String nombre,
+        String descripcion, int existencias, double costo, double precioExterno, double precioInterno){
 
         String sqlProducto = "INSERT INTO producto (id_producto, nombre, descripcion, existencias, costo) VALUES (?, ?, ?, ?, ?)";
         String sqlPrecio = "INSERT INTO precioproducto (tipo_cliente, precio, id_producto) VALUES (?, ?, ?)";
@@ -583,58 +617,66 @@ public String validarUsuario(String user, String pass) {
     }
 
     
-    public static boolean modificarProducto(
-                String idProducto,
-                String nombre,
-                String descripcion,
-                int existencias,
-                double costo,
-                double precioExterno,
-                double precioInterno){
+    public static boolean modificarProducto(String idProducto, String nombre, String descripcion, 
+                                        int existencias, double costo, double precioExterno, double precioInterno) {
 
-            String sqlProducto = "UPDATE producto SET nombre = ?, descripcion = ?, existencias = ?, costo = ? WHERE id_producto = ?";
-            String sqlPrecio = "UPDATE precioproducto SET precio = ? WHERE id_producto = ? AND tipo_cliente = ?";
-
-            try (Connection con = getConexion()) {
-                con.setAutoCommit(false);
-                try (PreparedStatement ps = con.prepareStatement(sqlProducto)) {
-                    ps.setString(1, nombre);
-                    ps.setString(2, descripcion);
-                    ps.setInt(3, existencias);
-                    ps.setDouble(4, costo);
-                    ps.setString(5, idProducto);
-                    ps.executeUpdate();
-                }
-                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
-                    ps.setDouble(1, precioExterno);
-                    ps.setString(2, idProducto);
-                    ps.setString(3, "Externo");
-                    ps.executeUpdate();
-                }
-                try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
-                    ps.setDouble(1, precioInterno);
-                    ps.setString(2, idProducto);
-                    ps.setString(3, "Interno");
-                    ps.executeUpdate();
-                }
-                con.commit();
-                return true;
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
+        String sqlProducto = "UPDATE producto SET nombre = ?, descripcion = ?, existencias = ?, costo = ? WHERE id_producto = ?";
+        String sqlPrecio = "UPDATE precioproducto SET precio = ? WHERE id_producto = ? AND tipo_cliente = ?";
+        Connection con = null;
+        try {
+            con = getConexion();
+            con.setAutoCommit(false);
+            try (PreparedStatement ps = con.prepareStatement(sqlProducto)) {
+                ps.setString(1, nombre);
+                ps.setString(2, descripcion);
+                ps.setInt(3, existencias);
+                ps.setDouble(4, costo);
+                ps.setString(5, idProducto);
+                ps.executeUpdate();
             }
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setDouble(1, precioExterno);
+                ps.setString(2, idProducto);
+                ps.setString(3, "Externo");
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = con.prepareStatement(sqlPrecio)) {
+                ps.setDouble(1, precioInterno);
+                ps.setString(2, idProducto);
+                ps.setString(3, "Interno");
+                ps.executeUpdate();
+            }
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                    System.err.println("Transacción revertida debido a un error.");
+                } catch (SQLException ex) {ex.printStackTrace();}
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            try { if(con != null) con.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
+    }
 
     
     public static boolean eliminarProducto(String idProducto) throws SQLException {
+        String sqlDetalleVenta = "DELETE FROM detalle_producto_venta WHERE id_producto = ?";
         String sqlPrecio = "DELETE FROM precioproducto WHERE id_producto = ?";
         String sqlProducto = "DELETE FROM producto WHERE id_producto = ?";
         if (c == null || c.isClosed()) {
             c = new Controlador.Conectar().conectaBD();
         }
         try {
-            c.setAutoCommit(false);
+            c.setAutoCommit(false); 
+            try (PreparedStatement ps3 = c.prepareStatement(sqlDetalleVenta)) {
+                ps3.setString(1, idProducto);
+                ps3.executeUpdate();
+            }
             try (PreparedStatement ps2 = c.prepareStatement(sqlPrecio)) {
                 ps2.setString(1, idProducto);
                 ps2.executeUpdate();
@@ -645,11 +687,8 @@ public String validarUsuario(String user, String pass) {
             }
             c.commit();
             return true;
-
         } catch (SQLException e) {
-            if (c != null) c.rollback();
-            System.out.println("Error al eliminar: " + e.getMessage());
-            return false;
+            if (c != null) c.rollback(); throw e;
         } finally {
             if (c != null) c.setAutoCommit(true);
         }
@@ -679,13 +718,8 @@ public String validarUsuario(String user, String pass) {
     }
     
     
-    public static boolean guardarTratamiento(
-        String nombre,
-        String descripcion,
-        String grupo,
-        double precioExterno,
-        double precioInterno,
-        List<DetallePaquete> productos) {
+    public static boolean guardarTratamiento( String nombre, String descripcion,String grupo, 
+        double precioExterno, double precioInterno, List<DetallePaquete> productos) {
 
         String sqlPaquete = "INSERT INTO paquete (nombre, descripcion, grupo) VALUES (?, ?, ?) RETURNING id_paquete";
         String sqlPrecio = "INSERT INTO preciopaquete (tipo_cliente, precio, id_paquete) VALUES (?, ?, ?)";
@@ -731,13 +765,8 @@ public String validarUsuario(String user, String pass) {
     }
 
   
-    public static boolean modificarPaquete(
-        int idPaquete,
-        String nombre,
-        String descripcion,
-        String grupo,
-        double precioExterno,
-        double precioInterno) {
+    public static boolean modificarPaquete( int idPaquete, String nombre,
+        String descripcion, String grupo, double precioExterno, double precioInterno) {
 
         String sqlPaquete = "UPDATE paquete SET nombre = ?, descripcion = ?, grupo = ? WHERE id_paquete = ?";
         String sqlPrecio  = "UPDATE preciopaquete SET precio = ? WHERE id_paquete = ? AND tipo_cliente = ?";
@@ -772,7 +801,6 @@ public String validarUsuario(String user, String pass) {
         }
     }
     
-
     public static boolean eliminarPaquete(int idPaquete) {
 
         String sqlDetalle = "DELETE FROM detallepaquete WHERE id_paquete = ?";
@@ -802,7 +830,5 @@ public String validarUsuario(String user, String pass) {
             return false;
         }
     }
-
-
-    
+  
 }

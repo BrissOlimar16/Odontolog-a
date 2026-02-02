@@ -8,6 +8,7 @@
         <Property name="location" type="java.awt.Point" editor="org.netbeans.beaninfo.editors.PointEditor">
           <Point value="[400, 50]"/>
         </Property>
+        <Property name="modal" type="boolean" value="true"/>
         <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[535, 670]"/>
         </Property>
@@ -567,10 +568,7 @@
                       <Component id="EliminarTratamiento" max="32767" attributes="0"/>
                       <Component id="EditarTratamiento" pref="166" max="32767" attributes="0"/>
                       <Component id="AgregarTratamiento" max="32767" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="Regresar" min="-2" pref="140" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="Regresar" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>

@@ -1,6 +1,7 @@
 package odontologia;
 
 import Controlador.Funciones;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static odontologia.Interfaz.Pantalla;
@@ -8,7 +9,7 @@ import static odontologia.Interfaz.*;
 
 /**
  *
- * @author Alexandra
+ * @author David
  */
 public class BusquedaInventario extends javax.swing.JPanel {
     public java.sql.Connection cp = null;
@@ -259,6 +260,12 @@ public class BusquedaInventario extends javax.swing.JPanel {
         panel.add(lbPrecioVenta2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, -1, -1));
         panel.add(txtPrecioVentaInterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, 120, -1));
 
+        txtCodigoBarras1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoBarras1KeyPressed(evt);
+            }
+        });
+
         lbCodigo_Barras1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lbCodigo_Barras1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbCodigo_Barras1.setText("Código de Barras");
@@ -441,6 +448,10 @@ public class BusquedaInventario extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "Asegúrese de que los precios y cantidades sean números.");
     }
     }//GEN-LAST:event_btnGuardar1ActionPerformed
+
+    private void txtCodigoBarras1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoBarras1KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {btnbuscar.doClick();}
+    }//GEN-LAST:event_txtCodigoBarras1KeyPressed
     
     private void calcularPrecio() {
         try {

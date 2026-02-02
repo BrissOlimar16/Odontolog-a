@@ -53,7 +53,6 @@ public class Productos extends javax.swing.JPanel {
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setToolTipText("");
@@ -162,14 +161,6 @@ public class Productos extends javax.swing.JPanel {
             }
         });
 
-        btnEliminar.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        btnEliminar.setText("Eliminar Producto");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -177,7 +168,6 @@ public class Productos extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -190,8 +180,6 @@ public class Productos extends javax.swing.JPanel {
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(131, 131, 131))
@@ -342,40 +330,43 @@ public class Productos extends javax.swing.JPanel {
         if (vacio()){
             JOptionPane.showMessageDialog(null, "Error: Hay un campo vacío");
         } else {  
-            String idProducto = txtCodigoBarras.getText();
-            String nombre = txtInsumo.getText();
-            int existencias = Integer.parseInt(txtExistencias.getText());
-            double costo = Double.parseDouble(txtPrecioCosto1.getText());
-            double precioExt = Double.parseDouble(txtPrecioVentaExterno.getText());
-            double precioInt = Double.parseDouble(txtPrecioVentaInterno.getText());
-
-            String descripcion = txtDescripcion.getText();
-
-            int cant1 = ((Number) jSpinner2.getValue()).intValue();
-            String pres1 = jComboBox1.getSelectedItem().toString();
-
-            int cant2 = ((Number) jSpinner3.getValue()).intValue();
-            String pres2 = jComboBox2.getSelectedItem().toString();
-
-            String descripcionFinal = descripcion + " | "+ cant1 + " " + pres1 + " + "+ cant2 + " " + pres2;
-
-            boolean guardado = Controlador.Funciones.guardarProducto(
-                    idProducto,
-                    nombre,
-                    descripcionFinal,
-                    existencias,
-                    costo,
-                    precioExt,
-                    precioInt
-            );
-
-            if (guardado) {
-                JOptionPane.showMessageDialog(this, "Producto guardado correctamente");
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al guardar el producto");
+            String idProducto = txtCodigoBarras.getText().trim();
+            if (existeProducto(idProducto)) {
+                JOptionPane.showMessageDialog(this, 
+                    "El código '" + idProducto + "' ya existe en la base de datos.\n" +
+                    "Por favor, use un código diferente o verifique el producto.", 
+                    "Producto Duplicado", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
             }
 
-                    }
+            String nombre = txtInsumo.getText();
+            try {
+                int existencias = Integer.parseInt(txtExistencias.getText());
+                double costo = Double.parseDouble(txtPrecioCosto1.getText());
+                double precioExt = Double.parseDouble(txtPrecioVentaExterno.getText());
+                double precioInt = Double.parseDouble(txtPrecioVentaInterno.getText());
+
+                String descripcion = txtDescripcion.getText();
+                int cant1 = ((Number) jSpinner2.getValue()).intValue();
+                String pres1 = jComboBox1.getSelectedItem().toString();
+                int cant2 = ((Number) jSpinner3.getValue()).intValue();
+                String pres2 = jComboBox2.getSelectedItem().toString();
+
+                String descripcionFinal = descripcion + " | "+ cant1 + " " + pres1 + " "+ cant2 + " " + pres2;
+                boolean guardado = Controlador.Funciones.guardarProducto(
+                        idProducto, nombre, descripcionFinal, existencias, costo, precioExt, precioInt);
+
+                if (guardado) {
+                    JOptionPane.showMessageDialog(this, "Producto guardado correctamente");
+                    limpia();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al guardar el producto");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: Verifique que los precios y existencias sean números válidos.");
+            }
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -384,71 +375,52 @@ public class Productos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-            if (vacio()) {
-                JOptionPane.showMessageDialog(this, "Error: Hay campos vacíos");
-                return;
-            }
-
+        if (vacio()) {
+            JOptionPane.showMessageDialog(this, "Error: Hay campos vacíos");
+            return;
+        }
+        try {
             String idProducto = txtCodigoBarras.getText();
             String nombre = txtInsumo.getText();
             int existencias = Integer.parseInt(txtExistencias.getText());
             double costo = Double.parseDouble(txtPrecioCosto1.getText());
             double precioExt = Double.parseDouble(txtPrecioVentaExterno.getText());
             double precioInt = Double.parseDouble(txtPrecioVentaInterno.getText());
-
             String descripcion = txtDescripcion.getText();
 
             int cant1 = ((Number) jSpinner2.getValue()).intValue();
             String pres1 = jComboBox1.getSelectedItem().toString();
-
             int cant2 = ((Number) jSpinner3.getValue()).intValue();
             String pres2 = jComboBox2.getSelectedItem().toString();
-
-            String descripcionFinal = descripcion + " | "
-                    + cant1 + " " + pres1 + " + "
-                    + cant2 + " " + pres2;
+            String descripcionFinal = descripcion + " | " + cant1 + " " + pres1 + " + " + cant2 + " " + pres2;
 
             boolean actualizado = Controlador.Funciones.modificarProducto(
-                    idProducto,
-                    nombre,
-                    descripcionFinal,
-                    existencias,
-                    costo,
-                    precioExt,
-                    precioInt
-            );
-
+                    idProducto, nombre, descripcionFinal, existencias, costo, precioExt, precioInt);
             if (actualizado) {
                 JOptionPane.showMessageDialog(this, "Producto actualizado correctamente");
+                limpia();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al actualizar el producto");
             }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: Verifique que los precios y existencias sean números válidos.");
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        String idProducto = txtCodigoBarras.getText();
-        try {
-            Controlador.Funciones.eliminarProducto(idProducto, this);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    public void traerProducto(String idProducto) {
+        String sql = "SELECT p.id_producto, p.nombre, p.descripcion, p.costo, p.existencias, " +
+                     "pp_ext.precio AS precio_externo, pp_int.precio AS precio_interno FROM producto p " +
+                     "LEFT JOIN precioproducto pp_ext ON p.id_producto = pp_ext.id_producto AND pp_ext.tipo_cliente = 'Externo' " +
+                     "LEFT JOIN precioproducto pp_int ON p.id_producto = pp_int.id_producto AND pp_int.tipo_cliente = 'Interno' " +
+                     "WHERE CAST(p.id_producto AS TEXT) = '" + idProducto + "'";
+        java.sql.ResultSet rs = new Controlador.Conectar().consultas(sql);
 
-    public void insertarOmodificar(String x){   
-        try{            
-            new Controlador.Conectar().ejecutar(x);
-            System.out.println(x);
-            JOptionPane.showMessageDialog(null, "Se inserto correctamente el producto");
-            limpia();
-        }catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-    }
-     
-     public void traerProducto (String query){
-        java.sql.ResultSet rs= new Controlador.Conectar().consultas(query);
-        try{                      
-           if (rs.next()) {
+        try {
+            if (rs == null) {
+                System.out.println("Error: El ResultSet regresó nulo. Verifica la conexión o la sintaxis.");
+                return; 
+            }
+            if (rs.next()) {
                 txtCodigoBarras.setText(rs.getString("id_producto"));
                 txtInsumo.setText(rs.getString("nombre"));
                 txtDescripcion.setText(rs.getString("descripcion"));
@@ -456,13 +428,15 @@ public class Productos extends javax.swing.JPanel {
                 txtExistencias.setText(rs.getString("existencias"));
                 txtPrecioVentaExterno.setText(rs.getString("precio_externo"));
                 txtPrecioVentaInterno.setText(rs.getString("precio_interno"));
-            }else {
-                System.out.println("La consulta no devolvió resultados para el código: ");
+
+                System.out.println("Producto cargado: " + rs.getString("nombre"));
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el producto con ID: " + idProducto);
             }
-        }catch(Exception ex) {
-            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println("Error al procesar el ResultSet: " + ex.getMessage());
             ex.printStackTrace();
-        }  
+        }
     }
     
     private void calcularPrecio() {
@@ -504,11 +478,14 @@ public class Productos extends javax.swing.JPanel {
         return false;
     }
 
+    public static boolean existeProducto(String idProducto) {
+        return Controlador.Funciones.existeRegistro("producto", "id_producto", idProducto);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnModificar;
+    public static javax.swing.JButton btnGuardar;
+    public static javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JPanel jPanel16;
