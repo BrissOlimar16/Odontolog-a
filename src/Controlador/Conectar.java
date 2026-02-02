@@ -77,14 +77,14 @@ public class Conectar {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar usuarios: " + e.getMessage());
         }
-    }
-        
+    }   
 
     public String validarUser(String usuario, String pass) {
         String rol = null;
-        String sql = "SELECT rol FROM usuarios WHERE rol = ? AND password = ?";
+        String sql = "SELECT rol FROM usuarios WHERE username = ? AND password = ?";
+
         try (Connection cn = conectaBD();
-             PreparedStatement pst = cn.prepareStatement(sql)){
+             PreparedStatement pst = cn.prepareStatement(sql)) {
 
             pst.setString(1, usuario);
             pst.setString(2, pass);
@@ -94,12 +94,12 @@ public class Conectar {
             if (rs.next()) {
                 rol = rs.getString("rol");
             }
+
         } catch (SQLException e) {
             System.err.println("Error en la validación: " + e.getMessage());
         }
-        return rol; 
-    }    
-
+        return rol;
+    }
 
     
     

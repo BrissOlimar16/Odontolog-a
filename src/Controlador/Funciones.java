@@ -874,4 +874,23 @@ public class Funciones extends Interfaz {
     }
     
 
+    public static String obtenerUsuarioDesdeRol(String rol) {
+        String sql = "SELECT username FROM usuarios WHERE rol = ?";
+
+        try (Connection con = getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, rol);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("username");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener usuario desde rol: " + e.getMessage());
+        }
+        return null;
+    }
+
 }

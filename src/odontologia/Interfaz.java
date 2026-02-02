@@ -1308,32 +1308,40 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void IngresarAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarAppActionPerformed
-        String usuario = Usuario.getSelectedItem().toString();
+       String rolSeleccionado = Usuario.getSelectedItem().toString();
         String contraseña = new String(ContraseñaUsuario.getPassword());
-        String rolEncontrado = con.validarUser(usuario, contraseña);
+
+        String usuarioReal = Controlador.Funciones.obtenerUsuarioDesdeRol(rolSeleccionado);
+
+        if (usuarioReal == null) {
+            JOptionPane.showMessageDialog(null, 
+                "No se encontró un usuario para el rol seleccionado.");
+            return;
+        }
+        String rolEncontrado = con.validarUser(usuarioReal, contraseña);
         if (rolEncontrado != null) {
+            Controlador.Sesion.usuarioActual = usuarioReal;
+            Controlador.Sesion.rolActual = rolEncontrado;
+
+            if (rolEncontrado.equalsIgnoreCase("Administrador")) {
+                Controlador.Sesion.idEmpleadoActual = null;
+            } else {
+                Controlador.Sesion.idEmpleadoActual =
+                    Controlador.Funciones.obtenerIdEmpleado(usuarioReal);
+            }
+            if (!rolEncontrado.equalsIgnoreCase("Administrador") 
+                && Controlador.Sesion.idEmpleadoActual == null) {
+
+                JOptionPane.showMessageDialog(null, "Este usuario no tiene empleado asignado.");
+                return;
+            }
             IngresasUsuario.dispose();
             Caja.setLocationRelativeTo(null);
             Caja.setVisible(true);
-            Controlador.Sesion.usuarioActual = usuario;
-            Controlador.Sesion.rolActual = rolEncontrado;
-            if (rolEncontrado.equalsIgnoreCase("Administrador")) {
-                IngresasUsuario.setVisible(false);
-                Caja.setLocationRelativeTo(null);
-                Caja.setVisible(true);
-                Controlador.Sesion.idEmpleadoActual = null;
-            } else {
-                
-                Controlador.Sesion.idEmpleadoActual = Controlador.Funciones.obtenerIdEmpleado(usuario);
-                System.out.println("Login exitoso. Usuario: " + usuario + " ID recuperado: " + Controlador.Sesion.idEmpleadoActual);
-                IngresasUsuario.setVisible(false);
-                Caja.setLocationRelativeTo(null);
-                Caja.setVisible(true);
-            }
+
         } else {
-            JOptionPane.showMessageDialog(null, "Contraseña incorrecta para el usuario " + usuario);
+            JOptionPane.showMessageDialog(null,  "Contraseña incorrecta para el rol " + rolSeleccionado);
         }
-            
     }//GEN-LAST:event_IngresarAppActionPerformed
 
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
@@ -1407,7 +1415,6 @@ public class Interfaz extends javax.swing.JFrame {
       Integer idEmp = Controlador.Sesion.idEmpleadoActual; 
       double monto = Double.parseDouble(MontoInicial.getText().replaceAll("[^0-9.]", ""));
       Integer idTur = (idEmp == null) ? null : 1; 
-      System.out.println("DEBUG: El ID del empleado es: " + Controlador.Sesion.idEmpleadoActual);
       if (Controlador.Funciones.registrarAperturaCaja(monto, idEmp, idTur)) {
           Caja.setVisible(false);
           this.setLocationRelativeTo(null);
