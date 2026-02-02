@@ -79,6 +79,7 @@ public class Conectar {
         }
     }
         
+
     public String validarUser(String usuario, String pass) {
         String rol = null;
         String sql = "SELECT rol FROM usuarios WHERE rol = ? AND password = ?";
@@ -98,5 +99,8 @@ public class Conectar {
         }
         return rol; 
     }    
+
+
+    
     
 }

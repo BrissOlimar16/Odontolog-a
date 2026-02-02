@@ -1315,11 +1315,17 @@ public class Interfaz extends javax.swing.JFrame {
             IngresasUsuario.dispose();
             Caja.setLocationRelativeTo(null);
             Caja.setVisible(true);
+            Controlador.Sesion.usuarioActual = usuario;
+            Controlador.Sesion.rolActual = rolEncontrado;
             if (rolEncontrado.equalsIgnoreCase("Administrador")) {
                 IngresasUsuario.setVisible(false);
                 Caja.setLocationRelativeTo(null);
                 Caja.setVisible(true);
+                Controlador.Sesion.idEmpleadoActual = null;
             } else {
+                
+                Controlador.Sesion.idEmpleadoActual = Controlador.Funciones.obtenerIdEmpleado(usuario);
+                System.out.println("Login exitoso. Usuario: " + usuario + " ID recuperado: " + Controlador.Sesion.idEmpleadoActual);
                 IngresasUsuario.setVisible(false);
                 Caja.setLocationRelativeTo(null);
                 Caja.setVisible(true);
@@ -1327,6 +1333,7 @@ public class Interfaz extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Contraseña incorrecta para el usuario " + usuario);
         }
+            
     }//GEN-LAST:event_IngresarAppActionPerformed
 
     private void btnEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasActionPerformed
@@ -1397,10 +1404,17 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_ContraseñaUsuarioFocusLost
 
     private void registroDineroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroDineroActionPerformed
-        Caja.setVisible(false);
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
-        Pantalla.setSize(tamanio.width, tamanio.height);
+      Integer idEmp = Controlador.Sesion.idEmpleadoActual; 
+      double monto = Double.parseDouble(MontoInicial.getText().replaceAll("[^0-9.]", ""));
+      Integer idTur = (idEmp == null) ? null : 1; 
+      System.out.println("DEBUG: El ID del empleado es: " + Controlador.Sesion.idEmpleadoActual);
+      if (Controlador.Funciones.registrarAperturaCaja(monto, idEmp, idTur)) {
+          Caja.setVisible(false);
+          this.setLocationRelativeTo(null);
+          this.setVisible(true);
+          Pantalla.setSize(tamanio.width, tamanio.height);
+      }
+
     }//GEN-LAST:event_registroDineroActionPerformed
 
     private void CorteCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CorteCajaActionPerformed

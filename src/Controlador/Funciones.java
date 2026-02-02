@@ -831,4 +831,47 @@ public class Funciones extends Interfaz {
         }
     }
   
+    public static boolean registrarAperturaCaja(Double monto, Integer idEmpleado, Integer idTurno) {
+        String sql = "INSERT INTO caja (fecha, hora_apertura, monto_inicial, estado, id_empleado, id_turno) "
+                   + "VALUES (CURRENT_DATE, CURRENT_TIME, ?, 'ABIERTA', ?, ?)";
+        try (Connection con = getConexion()){
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setDouble(1, monto);
+            if (idEmpleado != null) {
+                ps.setInt(2, idEmpleado);
+            } else {
+                ps.setNull(2, java.sql.Types.INTEGER);
+            }
+            if (idTurno != null) {
+                ps.setInt(3, idTurno);
+            } else {
+                ps.setNull(3, java.sql.Types.INTEGER);
+            }
+
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
+            return false;
+        }
+    }
+    
+
+    public static Integer obtenerIdEmpleado(String username) {
+        String sql = "SELECT id_empleado FROM usuarios WHERE username = ?";
+        try (Connection con = getConexion()){
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id_empleado");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener ID de empleado: " + e.getMessage());
+        }
+        return null;
+    }
+    
+
 }
