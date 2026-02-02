@@ -366,7 +366,7 @@ public class Funciones extends Interfaz {
         return lista;
     }
     
-    public static void TablaPaquetes(JTable tabla) {
+    public static void TablaPaquetes() {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("Código");
         modelo.addColumn("Tratamiento");
@@ -409,9 +409,9 @@ public class Funciones extends Interfaz {
                 modelo.addRow(fila);
             }
 
-            tabla.setModel(modelo);
-            tabla.revalidate();
-            tabla.repaint();
+            odontologia.Tratamientos.tratamientos.setModel(modelo);
+            odontologia.Tratamientos.tratamientos.revalidate();
+            odontologia.Tratamientos.tratamientos.repaint();
 
         } catch (SQLException e) {
             e.printStackTrace();

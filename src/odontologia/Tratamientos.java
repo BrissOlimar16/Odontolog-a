@@ -18,7 +18,8 @@ public class Tratamientos extends javax.swing.JPanel {
     
     public Tratamientos() {
         initComponents();
-        
+        //modelo = (DefaultTableModel)tablaProductos.getModel();
+        modificar.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -118,7 +119,7 @@ public class Tratamientos extends javax.swing.JPanel {
             }
         });
 
-        guardar.setText("Guardar");
+        guardar.setText("Guardar Trtatamiento");
         guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarActionPerformed(evt);
@@ -132,7 +133,7 @@ public class Tratamientos extends javax.swing.JPanel {
             }
         });
 
-        modificar.setText("Guardar");
+        modificar.setText("Actualizar Tratatmiento");
         modificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 modificarActionPerformed(evt);
@@ -180,14 +181,15 @@ public class Tratamientos extends javax.swing.JPanel {
                                 .addComponent(jLabel5)
                                 .addGap(53, 53, 53)
                                 .addComponent(grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(guardar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(modificar)
-                                .addGap(47, 47, 47)
-                                .addComponent(cancelar))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                    .addGap(33, 33, 33)
+                                    .addComponent(guardar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(modificar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cancelar))
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(87, 87, 87)
                         .addComponent(jLabel8))
@@ -422,8 +424,7 @@ public class Tratamientos extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -431,7 +432,8 @@ public class Tratamientos extends javax.swing.JPanel {
                                 .addComponent(SeleccionarTratamiento))
                             .addComponent(BuscarTratamiento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -442,13 +444,11 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_RegresarActionPerformed
 
     private void EditarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarTratamientoActionPerformed
-
         int fila = tratamientos.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "Selecciona un tratamiento de la tabla");
             return;
         }
-
         codigo.setText(tratamientos.getValueAt(fila, 0).toString());
         nombreTratamiento.setText(tratamientos.getValueAt(fila, 1).toString());
         grupo.setSelectedItem(tratamientos.getValueAt(fila, 2).toString());
@@ -462,10 +462,12 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_EditarTratamientoActionPerformed
 
     private void AgregarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarTratamientoActionPerformed
+        limpiarFormulario();
+        llenarTablaP();
         Agregar.setVisible(true);
         modificar.setVisible(false);
         guardar.setVisible(true);
-        llenarTablaP();
+        
     }//GEN-LAST:event_AgregarTratamientoActionPerformed
 
     private void EliminarTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarTratamientoActionPerformed
@@ -486,7 +488,7 @@ public class Tratamientos extends javax.swing.JPanel {
 
             if (eliminado) {
                 JOptionPane.showMessageDialog(this, "Tratamiento eliminado correctamente");
-                Controlador.Funciones.TablaPaquetes(tratamientos);
+                Controlador.Funciones.TablaPaquetes();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al eliminar el tratamiento");
             }
@@ -502,8 +504,9 @@ public class Tratamientos extends javax.swing.JPanel {
     }//GEN-LAST:event_precioInActionPerformed
 
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-        limpiarFormulario();
         Agregar.setVisible(false);
+        limpiarFormulario();
+        llenarTablaP();
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
@@ -542,15 +545,15 @@ public class Tratamientos extends javax.swing.JPanel {
         );
 
         if (ok) {
-            JOptionPane.showMessageDialog(this, "Paquete guardado correctamente");
-            Controlador.Funciones.TablaPaquetes(tratamientos);
+            Controlador.Funciones.TablaPaquetes();
+            JOptionPane.showMessageDialog(this, "Paquete guardado correctamente");           
+            Agregar.setVisible(false);
             limpiarFormulario();
             Agregar.setVisible(false);
-
+            modelo.setRowCount(0);
         } else {
             JOptionPane.showMessageDialog(this, "Error al guardar paquete");
         }
-
 
     }//GEN-LAST:event_guardarActionPerformed
 
@@ -570,7 +573,7 @@ public class Tratamientos extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Tratamiento actualizado");
             limpiarFormulario();
             Agregar.setVisible(false);
-            Controlador.Funciones.TablaPaquetes(tratamientos);
+            Controlador.Funciones.TablaPaquetes();
         } else {
             JOptionPane.showMessageDialog(this, "Error al actualizar");
         }
@@ -596,14 +599,14 @@ public class Tratamientos extends javax.swing.JPanel {
         }
     }
     
-    private void limpiarFormulario() {
+    public void limpiarFormulario() {
         codigo.setText("");
         nombreTratamiento.setText("");
         descripcionT.setText("");
         precioEx.setText("");
         precioIn.setText("");
         grupo.setSelectedIndex(0);
-        modelo.setRowCount(0);
+        //modelo.setRowCount(0);
     }
 
     

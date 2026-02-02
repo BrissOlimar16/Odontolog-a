@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import static odontologia.BusquedaInventario.txtPrecioCosto2;
 
 /**
  *
@@ -69,6 +70,10 @@ public class Interfaz extends javax.swing.JFrame {
         Funciones.limpiaTabla(tv);
         jPanel1.setVisible(false);
         jButton3.setVisible(false);
+        txtEfectivo.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) { calcularCambio(); }
+        public void removeUpdate(javax.swing.event.DocumentEvent e) { calcularCambio(); }
+        public void changedUpdate(javax.swing.event.DocumentEvent e) { calcularCambio(); }});
     }
 
     @SuppressWarnings("unchecked")
@@ -141,7 +146,8 @@ public class Interfaz extends javax.swing.JFrame {
         ib7 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtEfectivo = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
         Pantalla = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -572,6 +578,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel26.setText("Teclea las primeras letras o código del producto...");
 
+        txtBusquedaP.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtBusquedaP.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBusquedaPKeyReleased(evt);
@@ -681,7 +688,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBusquedaP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                 .addGap(26, 26, 26)
                 .addGroup(BusquedaProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnModificarP)
@@ -694,7 +701,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         Cobrar.setMinimumSize(new java.awt.Dimension(500, 520));
         Cobrar.setModal(true);
-        Cobrar.setPreferredSize(new java.awt.Dimension(500, 520));
         Cobrar.setSize(new java.awt.Dimension(500, 530));
 
         jPanel19.setBackground(new java.awt.Color(0, 0, 102));
@@ -728,7 +734,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         ib.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         ib.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        ib.setText("Ingresa Nombre, Apellidos, Matricula o Folio del cliente");
+        ib.setText("Ingresa Nombre apellidos, Matricula o Folio del cliente");
 
         jButton2.setText("Buscar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -753,7 +759,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         ib2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         ib2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ib2.setText("Folio/Matricula :");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -780,7 +785,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ib5)
-                    .addComponent(ib2))
+                    .addComponent(ib2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -872,7 +877,17 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel16.setText("00.00");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        txtEfectivo.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        txtEfectivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtEfectivoKeyReleased(evt);
+            }
+        });
+
+        jLabel21.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel21.setText("$");
 
         javax.swing.GroupLayout CobrarLayout = new javax.swing.GroupLayout(Cobrar.getContentPane());
         Cobrar.getContentPane().setLayout(CobrarLayout);
@@ -900,11 +915,14 @@ public class Interfaz extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(ib6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ib7)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(16, 16, 16)))
+                            .addGroup(CobrarLayout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(ib7))
+                        .addGap(19, 19, 19)))
                 .addContainerGap())
         );
         CobrarLayout.setVerticalGroup(
@@ -926,11 +944,12 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(ib6)
                     .addComponent(ib7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(CobrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1436,7 +1455,7 @@ public class Interfaz extends javax.swing.JFrame {
         this.add(tm);
         tm.setBounds(0, 0, this.getWidth(), this.getHeight());
         tm.setVisible(true);
-        Controlador.Funciones.TablaPaquetes(tm.tratamientos);
+        Controlador.Funciones.TablaPaquetes();
     }//GEN-LAST:event_btnServiciosActionPerformed
 
     private void txtBusquedaPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBusquedaPKeyReleased
@@ -1609,12 +1628,28 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Controlador.Ticket.generaTicket();
+        if (jLabel16.getText().equals(txtEfectivo.getText()) || !jLabel18.getText().equals("00.00") && !ib2.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "GRACIAS POR TU COMPRA :)");
+            Controlador.Ticket.generaTicket();
+            jLabel16.setText("00.00");
+            txtEfectivo.setText("");
+            jLabel18.setText("00.00");
+            jPanel1.setVisible(false);
+            jButton3.setVisible(false);
+            Controlador.Funciones.limpiaTabla(tv);
+        } else {
+            JOptionPane.showMessageDialog(null, "NO PUEDO REALIZAR ESTA VENTA...");
+        }
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtPersonaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPersonaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {jButton2.doClick();}
     }//GEN-LAST:event_txtPersonaKeyPressed
+
+    private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEfectivoKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEfectivoKeyReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1643,6 +1678,24 @@ public class Interfaz extends javax.swing.JFrame {
         });
     }
      
+    private void calcularCambio() {
+        try {
+            String textoTotal = jLabel16.getText().trim();
+            double totalAPagar = Double.parseDouble(textoTotal);
+            String textoEfectivo = txtEfectivo.getText().trim().replace(",", ".");
+            double efectivo = textoEfectivo.isEmpty() ? 0.0 : Double.parseDouble(textoEfectivo);
+            double cambio = efectivo - totalAPagar;
+            if (cambio < 0) {
+                jLabel18.setText("00.00");
+            } else {
+                jLabel18.setText(String.format("%.2f", cambio));
+            }
+
+        } catch (NumberFormatException e) {
+            jLabel18.setText("00.00");
+        }
+    }
+    
     public void inicializarPanels(){
         bi = new BusquedaInventario();
         p = new Productos();
@@ -1718,6 +1771,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
@@ -1749,7 +1803,6 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbCantidadEntrada;
     private javax.swing.JLabel lbDesEntrada;
     private javax.swing.JLabel lbTitulo1;
@@ -1761,6 +1814,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JTextField txtCantidadEntrada;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDesEntrada;
+    private javax.swing.JTextField txtEfectivo;
     private javax.swing.JTextField txtPersona;
     // End of variables declaration//GEN-END:variables
 }
