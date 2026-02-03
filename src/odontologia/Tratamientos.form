@@ -270,7 +270,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="guardar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Guardar Trtatamiento"/>
+                <Property name="text" type="java.lang.String" value="Guardar Tratamiento"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarActionPerformed"/>

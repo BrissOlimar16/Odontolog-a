@@ -119,7 +119,7 @@ public class Tratamientos extends javax.swing.JPanel {
             }
         });
 
-        guardar.setText("Guardar Trtatamiento");
+        guardar.setText("Guardar Tratamiento");
         guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardarActionPerformed(evt);
