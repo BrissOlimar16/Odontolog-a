@@ -12,15 +12,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Alexandra
  */
 public class Corte extends javax.swing.JPanel {
-//Controlador.Funciones con = new Controlador.Funciones();
-//public static DefaultTableModel modelo1 = new DefaultTableModel();
+public static DefaultTableModel modelo1 = new DefaultTableModel();
 
     /**
      * Creates new form Corte
      */
     public Corte() {
         initComponents();
-//        modelo1 = (DefaultTableModel) jTable1.getModel();
+        modelo1 = (DefaultTableModel) jTable1.getModel();
     }
 
     /**
@@ -221,22 +220,22 @@ public class Corte extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         CorteTurno.setVisible(true);
-        //cargarDatosCorte();
+        cargarDatosCorte();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-//        int respuesta = JOptionPane.showConfirmDialog(this, "¿Está seguro de cerrar el turno?");
-//        if (respuesta == JOptionPane.YES_OPTION) {
-//            double montoFinal = Double.parseDouble(jLabel34.getText());
-//            int idCaja = Controlador.Sesion.idCajaActual;
-//            if (con.finalizarTurno(idCaja, montoFinal)) {
-//                JOptionPane.showMessageDialog(this, "Turno Finalizado con éxito.");
-//                System.exit(0); 
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Error: No se pudo cerrar el turno en la base de datos.");
-//            }
-//        }
-//        System.exit(0);
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Está seguro de cerrar el turno?");
+        if (respuesta == JOptionPane.YES_OPTION) {
+            double montoFinal = Double.parseDouble(jLabel34.getText());
+            int idCaja = Controlador.Sesion.idCajaActual;
+            if (Controlador.Funciones.finalizarTurno(idCaja, montoFinal)) {
+                JOptionPane.showMessageDialog(this, "Turno Finalizado con éxito.");
+                System.exit(0); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: No se pudo cerrar el turno en la base de datos.");
+            }
+        }
+        System.exit(0);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
@@ -244,22 +243,30 @@ public class Corte extends javax.swing.JPanel {
         this.setVisible(false);
     }//GEN-LAST:event_RegresarActionPerformed
 
-//    private void cargarDatosCorte() {
-//        modelo1 = (DefaultTableModel) jTable1.getModel();
-//        int idCajaActiva = Controlador.Sesion.idCajaActual; 
-//        double inicial = con.obtenerMontoInicial(idCajaActiva);
-//        double ventas = con.obtenerTotalVentas(idCajaActiva);
-//        double entradas = con.obtenerTotalMovimientos(idCajaActiva, "ENTRADA");
-//        double salidas = con.obtenerTotalMovimientos(idCajaActiva, "SALIDA");
-//
-//        double totalCaja = inicial + ventas + entradas - salidas;
-//
-//        jLabel35.setText(String.format("%.2f", inicial));
-//        jLabel36.setText(String.format("%.2f", ventas));
-//        jLabel34.setText(String.format("%.2f", totalCaja));
-//
-//        con.llenarTablaProductos(idCajaActiva, modelo1);
-//    }
+    private void cargarDatosCorte() {
+        Integer idCajaActiva = Controlador.Sesion.idCajaActual; 
+
+        if (idCajaActiva == null) {
+            JOptionPane.showMessageDialog(this, "No hay caja abierta.");
+            return;
+        }
+
+        double inicial = Controlador.Funciones.obtenerMontoInicial(idCajaActiva);
+        double ventas = Controlador.Funciones.obtenerTotalVentas(idCajaActiva);
+        double entradas = Controlador.Funciones.obtenerTotalMovimientos(idCajaActiva, "ENTRADA");
+        double salidas = Controlador.Funciones.obtenerTotalMovimientos(idCajaActiva, "SALIDA");
+
+        double totalCaja = inicial + ventas + entradas - salidas;
+
+        jLabel35.setText(String.format("%.2f", inicial));
+        jLabel36.setText(String.format("%.2f", ventas));
+        jLabel34.setText(String.format("%.2f", totalCaja));
+
+        DefaultTableModel modelo1 = (DefaultTableModel) jTable1.getModel();
+        Controlador.Funciones.llenarTablaProductos(idCajaActiva, modelo1);
+    }
+
+
    
     
 

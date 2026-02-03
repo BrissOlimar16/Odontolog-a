@@ -402,11 +402,7 @@ public class BusquedaInventario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Error: El campo de código está vacío");
         } else {
             try {
-                // No es estrictamente necesario convertirlo a int si tu id_producto es String (varchar)
-                // pero lo mantenemos para validar que sean solo números según tu requisito
                 Integer.parseInt(buscar); 
-
-                // Llamamos al nuevo método
                 Funciones.buscandoExistencias(buscar);
 
             } catch (NumberFormatException e) {

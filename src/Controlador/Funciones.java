@@ -322,7 +322,7 @@ public class Funciones extends Interfaz {
                         rs.getInt("id_empleado"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
-                        rs.getString("telefonoo"),
+                        rs.getString("telefono"),
                         rs.getString("correo"),
                         rs.getString("nombreturno")
                     });
@@ -466,7 +466,7 @@ public class Funciones extends Interfaz {
 }
 
     public static void datosEmpleado(int matricula, String nombre, String apellidos, String telefono, String correo, int idTurno){
-    String sql = "INSERT INTO empleado (id_empleado, nombre, apellido, telefonoo, correo, id_turno) VALUES (?, ?, ?, ?, ?, ?);";
+    String sql = "INSERT INTO empleado (id_empleado, nombre, apellido, telefono, correo, id_turno) VALUES (?, ?, ?, ?, ?, ?);";
     try(PreparedStatement pstm = c.prepareStatement(sql)) {
         pstm.setInt(1, matricula);
         pstm.setString(2, nombre);
@@ -568,7 +568,7 @@ public class Funciones extends Interfaz {
                     e.id_empleado,
                     e.nombre,
                     e.apellido,
-                    e.telefonoo,
+                    e.telefono,
                     e.correo,
                     t.nombreturno
                 FROM empleado e
@@ -830,31 +830,7 @@ public class Funciones extends Interfaz {
             return false;
         }
     }
-  
-//    public static boolean registrarAperturaCaja(Double monto, Integer idEmpleado, Integer idTurno) {
-//        String sql = "INSERT INTO caja (fecha, hora_apertura, monto_inicial, estado, id_empleado, id_turno) "
-//                   + "VALUES (CURRENT_DATE, CURRENT_TIME, ?, 'ABIERTA', ?, ?)";
-//        try (Connection con = getConexion()){
-//            PreparedStatement ps = con.prepareStatement(sql);
-//            ps.setDouble(1, monto);
-//            if (idEmpleado != null) {
-//                ps.setInt(2, idEmpleado);
-//            } else {
-//                ps.setNull(2, java.sql.Types.INTEGER);
-//            }
-//            if (idTurno != null) {
-//                ps.setInt(3, idTurno);
-//            } else {
-//                ps.setNull(3, java.sql.Types.INTEGER);
-//            }
-//
-//            ps.executeUpdate();
-//            return true;
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
-//            return false;
-//        }
-//    }
+
     
     public static Integer registrarAperturaCaja(Double monto, Integer idEmpleado, Integer idTurno) {
         String sql = "INSERT INTO caja (fecha, hora_apertura, monto_inicial, estado, id_empleado, id_turno) "
@@ -950,78 +926,78 @@ public class Funciones extends Interfaz {
     }
 
     
-//    public double obtenerMontoInicial(int idCaja) {
-//        String sql = "SELECT monto_initial FROM caja WHERE id_caja = ?";
-//        try (Connection con = getConexion();
-//             PreparedStatement ps = con.prepareStatement(sql)) {
-//
-//            ps.setInt(1, idCaja);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) return rs.getDouble("monto_initial");
-//        } catch (SQLException e) { e.printStackTrace(); }
-//        return 0;
-//    }
-//
-//    public double obtenerTotalVentas(int idCaja) {
-//        String sql = "SELECT SUM(total) FROM venta WHERE id_caja = ?";
-//        try (Connection con = getConexion();
-//            PreparedStatement ps = con.prepareStatement(sql)) {
-//            ps.setInt(1, idCaja);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) return rs.getDouble(1);
-//        } catch (SQLException e) { e.printStackTrace(); }
-//        return 0;
-//    }
-//
-//    public double obtenerTotalMovimientos(int idCaja, String tipo) {
-//        String sql = "SELECT SUM(monto) FROM movimiento_caja WHERE id_caja = ? AND tipo = ?";
-//        try (Connection con = getConexion();
-//            PreparedStatement ps = con.prepareStatement(sql)) {
-//            ps.setInt(1, idCaja);
-//            ps.setString(2, tipo);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) return rs.getDouble(1);
-//        } catch (SQLException e) { e.printStackTrace(); }
-//        return 0;
-//    }
-//
-//        public void llenarTablaProductos(int idCaja, DefaultTableModel modelo) {
-//            
-//            modelo.setRowCount(0); 
-//
-//            String sql = "SELECT p.nombre, SUM(dv.cantidad) as cant, dv.precio_aplicado, SUM(dv.subtotal) as sub " +
-//                         "FROM detalle_producto_venta dv " +
-//                         "JOIN producto p ON dv.id_producto = p.id_producto " +
-//                         "JOIN venta v ON dv.id_venta = v.id_venta " +
-//                         "WHERE v.id_caja = ? GROUP BY p.nombre, dv.precio_aplicado";
-//
-//            try (Connection con = getConexion();
-//            PreparedStatement ps = con.prepareStatement(sql)) {
-//                ps.setInt(1, idCaja);
-//                ResultSet rs = ps.executeQuery();
-//                while (rs.next()) {
-//                    modelo.addRow(new Object[]{
-//                        rs.getString("nombre"),
-//                        rs.getInt("cant"),
-//                        rs.getDouble("precio_aplicado"),
-//                        rs.getDouble("sub")
-//                    });
-//                }
-//            } catch (SQLException e) { e.printStackTrace(); }
-//        }
-//    
-//    public boolean finalizarTurno(int idCaja, double montoCalculado) {
-//        String sql = "UPDATE caja SET hora_cierre = CURRENT_TIME, monto_final = ?, estado = 'CERRADA' WHERE id_caja = ?";
-//        try (Connection con = getConexion();
-//            PreparedStatement ps = con.prepareStatement(sql)) {
-//            ps.setDouble(1, montoCalculado);
-//            ps.setInt(2, idCaja);
-//            int filasAfectadas = ps.executeUpdate(); 
-//            return filasAfectadas > 0; 
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false; 
-//        }
-//    }
+    public static double obtenerMontoInicial(int idCaja) {
+        String sql = "SELECT monto_initial FROM caja WHERE id_caja = ?";
+        try (Connection con = getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idCaja);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getDouble("monto_initial");
+        } catch (SQLException e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    public static double obtenerTotalVentas(int idCaja) {
+        String sql = "SELECT SUM(total) FROM venta WHERE id_caja = ?";
+        try (Connection con = getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idCaja);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getDouble(1);
+        } catch (SQLException e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    public static double obtenerTotalMovimientos(int idCaja, String tipo) {
+        String sql = "SELECT SUM(monto) FROM movimiento_caja WHERE id_caja = ? AND tipo = ?";
+        try (Connection con = getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idCaja);
+            ps.setString(2, tipo);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getDouble(1);
+        } catch (SQLException e) { e.printStackTrace(); }
+        return 0;
+    }
+
+        public static void llenarTablaProductos(int idCaja, DefaultTableModel modelo) {
+            
+            modelo.setRowCount(0); 
+
+            String sql = "SELECT p.nombre, SUM(dv.cantidad) as cant, dv.precio_aplicado, SUM(dv.subtotal) as sub " +
+                         "FROM detalle_producto_venta dv " +
+                         "JOIN producto p ON dv.id_producto = p.id_producto " +
+                         "JOIN venta v ON dv.id_venta = v.id_venta " +
+                         "WHERE v.id_caja = ? GROUP BY p.nombre, dv.precio_aplicado";
+
+            try (Connection con = getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setInt(1, idCaja);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    modelo.addRow(new Object[]{
+                        rs.getString("nombre"),
+                        rs.getInt("cant"),
+                        rs.getDouble("precio_aplicado"),
+                        rs.getDouble("sub")
+                    });
+                }
+            } catch (SQLException e) { e.printStackTrace(); }
+        }
+    
+    public static boolean finalizarTurno(int idCaja, double montoCalculado) {
+        String sql = "UPDATE caja SET hora_cierre = CURRENT_TIME, monto_final = ?, estado = 'CERRADA' WHERE id_caja = ?";
+        try (Connection con = getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setDouble(1, montoCalculado);
+            ps.setInt(2, idCaja);
+            int filasAfectadas = ps.executeUpdate(); 
+            return filasAfectadas > 0; 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; 
+        }
+    }
 
 }

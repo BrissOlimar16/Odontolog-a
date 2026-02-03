@@ -11,23 +11,23 @@ public class Conectar {
     public static Connection server_con;
     private static Connection u;
     public static String MENSAJE="";
-    //private String host="localhost:5432";
-    //private String dbname="Odontologia";
-    //private String passwd="101621";
-   // private String passwd="david";
-//    String url="jdbc:postgresql://"+host+"/"+dbname;
-    public static String url="jdbc:postgresql://dpg-d5i8d6l6ubrc738ejqi0-a.oregon-postgres.render.com:5432/odontologia_826x?sslmode=require";
-    public static String user = "odontologia_826x_user";
-    public static String passwd="I5znXKCM0OmDQxu5oFbYtdavNJp6XMXs";
-    public static String URL="jdbc:postgresql://dpg-d5i8d6l6ubrc738ejqi0-a.oregon-postgres.render.com:5432/odontologia_826x?sslmode=require";
-
-    
+    private static String host="localhost:5432";
+    private static String dbname="Punto_De_VentaO";
+    private static String passwd="101621";
+    //private String passwd="david";
+    public static String url="jdbc:postgresql://"+host+"/"+dbname;
+//    public static String url="jdbc:postgresql://dpg-d5i8d6l6ubrc738ejqi0-a.oregon-postgres.render.com:5432/odontologia_826x?sslmode=require";
+//    public static String user = "odontologia_826x_user";
+//    public static String passwd="I5znXKCM0OmDQxu5oFbYtdavNJp6XMXs";
+//    public static String URL="jdbc:postgresql://dpg-d5i8d6l6ubrc738ejqi0-a.oregon-postgres.render.com:5432/odontologia_826x?sslmode=require";
+//
+//    
     public static java.sql.Connection conectaBD(){
-        //String url="jdbc:postgresql://"+host+"/"+dbname;
+        String url="jdbc:postgresql://"+host+"/"+dbname;
         MENSAJE="";
         try{
-           // c=DriverManager.getConnection(url,"postgres",passwd);
-           c=DriverManager.getConnection(url, user,passwd);
+            c=DriverManager.getConnection(url,"postgres",passwd);
+           //c=DriverManager.getConnection(url, user,passwd);
         }catch(SQLException ex) {
             MENSAJE=ex.getMessage();
             System.out.println(MENSAJE);
@@ -60,7 +60,8 @@ public class Conectar {
       
     public static Connection getConexion() throws SQLException {
         if (c == null || c.isClosed()) {
-            c = DriverManager.getConnection(url, user, passwd);
+            //c = DriverManager.getConnection(url, user, passwd);
+            c = DriverManager.getConnection(url, "postgres", passwd);
         }
         return c;
     }

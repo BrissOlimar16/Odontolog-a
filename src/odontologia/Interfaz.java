@@ -42,11 +42,6 @@ public class Interfaz extends javax.swing.JFrame {
     public static String query="SELECT p.id_producto, p.nombre, p.descripcion, p.costo AS Costo, pp.precio AS Precio, p.existencias " +
                       "FROM producto p INNER JOIN precioproducto pp ON p.id_producto = pp.id_producto WHERE pp.tipo_cliente = 'Externo'";
     
-//   String query2 = "SELECT p.id_producto, p.nombre, p.descripcion, p.costo, p.existencias, " +
-//                "pp_ext.precio AS precio_externo, pp_int.precio AS precio_interno FROM producto p " +
-//                "LEFT JOIN precioproducto pp_ext ON p.id_producto = pp_ext.id_producto AND pp_ext.tipocliente = 'externo' " +
-//                "LEFT JOIN precioproducto pp_int ON p.id_producto = pp_int.id_producto AND pp_int.tipocliente = 'interno' " +
-//                "WHERE CAST(p.id_producto AS TEXT) = '" + codi + "'";
     String query2 = "SELECT p.id_producto, p.nombre, p.descripcion, p.costo, p.existencias, " +
                 "pp_ext.precio AS precio_externo, pp_int.precio AS precio_interno FROM producto p " +
                 "LEFT JOIN precioproducto pp_ext ON p.id_producto = pp_ext.id_producto AND pp_ext.tipo_cliente = 'Externo' " +
@@ -58,8 +53,6 @@ public class Interfaz extends javax.swing.JFrame {
     Controlador.Conectar con = new Controlador.Conectar();
     public Interfaz() {
         initComponents();
-//        NombreUsuario.setText("Ingresar Usuario");
-//        NombreUsuario.setForeground(Color.GRAY);
         ContraseñaUsuario.setText("Contraseña");
         ContraseñaUsuario.setForeground(Color.GRAY);
         ContraseñaUsuario.setEchoChar((char) 0);
