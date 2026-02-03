@@ -585,7 +585,7 @@ public class Nuevo_Cliente extends javax.swing.JPanel {
     private javax.swing.JRadioButton Externo;
     private javax.swing.JRadioButton Interno;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEliminarCliente;
+    public static javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnGuardarCliente;
     private javax.swing.JButton btnModificaciarCliente;
     private javax.swing.JButton btnSeleccionarModificarCliente;

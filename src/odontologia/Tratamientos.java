@@ -616,7 +616,7 @@ public class Tratamientos extends javax.swing.JPanel {
     private javax.swing.JButton AgregarTratamiento;
     private javax.swing.JTextField BuscarTratamiento;
     private javax.swing.JButton EditarTratamiento;
-    private javax.swing.JButton EliminarTratamiento;
+    public static javax.swing.JButton EliminarTratamiento;
     private javax.swing.JButton Regresar;
     private javax.swing.JButton SeleccionarTratamiento;
     private javax.swing.JButton cancelar;

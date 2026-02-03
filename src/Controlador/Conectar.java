@@ -101,6 +101,40 @@ public class Conectar {
         return rol;
     }
 
-    
-    
+    public static boolean finalizarVenta(double total, int idEmpleado, int idCliente, List<DetalleVenta> productos) {
+        String sqlVenta = "INSERT INTO venta (fechahora, total, id_empleado, id_cliente) VALUES (NOW(), ?, ?, ?) RETURNING id_venta";
+        String sqlDetalle = "INSERT INTO detalle_producto_venta (id_venta, id_producto, cantidad, precio_aplicado, subtotal) VALUES (?, ?, ?, ?, ?)";
+
+        Connection cn = null;
+        try {
+            cn = getConexion();
+            cn.setAutoCommit(false); 
+
+            PreparedStatement pstVenta = cn.prepareStatement(sqlVenta);
+            pstVenta.setDouble(1, total);
+            pstVenta.setInt(2, idEmpleado);
+            pstVenta.setInt(3, idCliente);
+            ResultSet rs = pstVenta.executeQuery();
+
+            int idVenta = 0;
+            if (rs.next()) idVenta = rs.getInt(1);
+
+            PreparedStatement pstDetalle = cn.prepareStatement(sqlDetalle);
+            for (DetalleVenta p : productos) {
+                pstDetalle.setInt(1, idVenta);
+                pstDetalle.setString(2, p.getId());
+                pstDetalle.setInt(3, p.getCantidad());
+                pstDetalle.setDouble(4, p.getPrecio());
+                pstDetalle.setDouble(5, p.getSubtotal());
+                pstDetalle.addBatch();
+            }
+            pstDetalle.executeBatch();
+            cn.commit();
+            return true;
+        } catch (SQLException e) {
+            try { if(cn != null) cn.rollback(); } catch (SQLException ex) {}
+            MENSAJE = e.getMessage();
+            return false;
+        }
+    }
 }
